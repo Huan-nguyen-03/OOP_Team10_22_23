@@ -284,4 +284,20 @@ public class Sprite {
 
 		return output;
 	}
+
+	public int get_realWidth() {
+		return _realWidth;
+	}
+
+	public void set_realWidth(int _realWidth) {
+		this._realWidth = _realWidth;
+	}
+
+	public int get_realHeight() {
+		return _realHeight;
+	}
+
+	public void set_realHeight(int _realHeight) {
+		this._realHeight = _realHeight;
+	}
 }
