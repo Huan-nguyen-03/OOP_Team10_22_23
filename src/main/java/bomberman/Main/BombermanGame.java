@@ -27,8 +27,8 @@ public class BombermanGame extends Application {
     char matrix[][] = null;
     private GraphicsContext gc;
     private Canvas canvas;
-    private List<Entity> entities = new ArrayList<>();
-    private List<Entity> stillObjects = new ArrayList<>();
+//    private List<Entity> entities = new ArrayList<>();
+//    private List<Entity> stillObjects = new ArrayList<>();
 
 
     public static void main(String[] args) {
@@ -46,12 +46,12 @@ public class BombermanGame extends Application {
         root.getChildren().add(canvas);
 
         Bomber bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
+
 //        Bomber bomberman = new Bomber(1, 1, Sprite.movingSprite(Sprite.player_right, Sprite.player_right_1, Sprite.player_right_2, Bomber.ANIMATE, Bomber.TIME).getFxImage());
 //        entities.add(bomberman);
 
         // Tao scene
         Scene scene = new Scene(root);
-
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
@@ -79,9 +79,13 @@ public class BombermanGame extends Application {
                         break;
                     }
                     case SPACE: {
-                        Entity.listEvent.add(Entity.Integer.SPACE);
-                        BombItem bomb = new BombItem(bomberman.getX(), bomberman.getY(), Sprite.bomb.getFxImage());
-                        stillObjects.add(bomb);
+                        if (!Entity.listEvent.contains(Entity.Integer.SPACE))
+                            Entity.listEvent.add(Entity.Integer.SPACE);
+                        Bomb bomb = new Bomb(bomberman.getX()/Sprite.SCALED_SIZE, bomberman.getY()/Sprite.SCALED_SIZE, Sprite.bomb.getFxImage());
+//                        Flame f =  new Flame(bomb.getX()/Sprite.SCALED_SIZE + 1, bomb.getY()/Sprite.SCALED_SIZE, Sprite.bomb_exploded.getFxImage());
+//                        GlobalVariable.stillObjects.add(f);
+                        GlobalVariable.stillObjects.add(bomb);
+                        Bomb.listBomb.add(bomb);
                         break;
                     }
                 }
@@ -121,10 +125,11 @@ public class BombermanGame extends Application {
                 }
             };
         });
-        entities.add(bomberman);
+        GlobalVariable.entities.add(bomberman);
         // Them scene vao stage
 
         stage.setScene(scene);
+        stage.setTitle("Game Rác");
         stage.show();
 
         AnimationTimer timer = new AnimationTimer() {
@@ -194,33 +199,33 @@ public class BombermanGame extends Application {
                     switch (character) {
                         case '#' : {
                             Entity object = new Wall(j, i, Sprite.wall.getFxImage());
-                            stillObjects.add(object);
+                            GlobalVariable.stillObjects.add(object);
                             Entity.listBarrier.add(object);
                             break;
                         }
                         case '*' : {
                             Entity object = new Brick(j, i, Sprite.brick.getFxImage());
-                            stillObjects.add(object);
+                            GlobalVariable.stillObjects.add(object);
                             Entity.listBarrier.add(object);
                             break;
                         }
                         case '1' : {
                             Entity object1 = new Grass(j, i, Sprite.grass.getFxImage());
-                            stillObjects.add(object1);
+                            GlobalVariable.stillObjects.add(object1);
                             Entity object = new Balloon(j, i, Sprite.balloom_left1.getFxImage());
-                            entities.add(object);
+                            GlobalVariable.entities.add(object);
                             break;
                         }
                         case '2' : {
                             Entity object1 = new Grass(j, i, Sprite.grass.getFxImage());
-                            stillObjects.add(object1);
+                            GlobalVariable.stillObjects.add(object1);
                             Entity object = new Oneal(j, i, Sprite.oneal_left1.getFxImage());
-                            entities.add(object);
+                            GlobalVariable.entities.add(object);
                         }
 
                         default: {
                             Entity object = new Grass(j, i, Sprite.grass.getFxImage());
-                            stillObjects.add(object);
+                            GlobalVariable.stillObjects.add(object);
                             break;
                         }
                     }
@@ -238,15 +243,16 @@ public class BombermanGame extends Application {
         }
     }
     public void update() {
-        entities.forEach(Entity::update);
-//        for (int i = 0; i < entities.size(); i++) {
-//            entities.get(i).update(stillObjects);
-//        }
+        GlobalVariable.entities.forEach(Entity::update);
+//        GlobalVariable.stillObjects.forEach(Entity::update);
+        for (int i = 0; i < GlobalVariable.stillObjects.size(); i++) {
+            GlobalVariable.stillObjects.get(i).update();
+        }
     }
 
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        stillObjects.forEach(g -> g.render(gc));
-        entities.forEach(g -> g.render(gc));
+        GlobalVariable.stillObjects.forEach(g -> g.render(gc));
+        GlobalVariable.entities.forEach(g -> g.render(gc));
     }
 }
