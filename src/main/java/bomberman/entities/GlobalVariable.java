@@ -7,5 +7,4 @@ import java.util.List;
 public class GlobalVariable {
     public static List<Entity> entities = new ArrayList<>();
     public static List<Entity> stillObjects = new ArrayList<>();
-
 }

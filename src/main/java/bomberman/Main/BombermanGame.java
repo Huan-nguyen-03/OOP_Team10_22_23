@@ -82,7 +82,7 @@ public class BombermanGame extends Application {
                         if (!Entity.listEvent.contains(Entity.Integer.SPACE))
                             Entity.listEvent.add(Entity.Integer.SPACE);
                         Bomb bomb = new Bomb(bomberman.getX()/Sprite.SCALED_SIZE, bomberman.getY()/Sprite.SCALED_SIZE, Sprite.bomb.getFxImage());
-//                        Flame f =  new Flame(bomb.getX()/Sprite.SCALED_SIZE + 1, bomb.getY()/Sprite.SCALED_SIZE, Sprite.bomb_exploded.getFxImage());
+//                        Flame f =  new Flame(bomb.getX()/Sprite.SCALED_SIZE, bomb.getY()/Sprite.SCALED_SIZE, Sprite.bomb_exploded.getFxImage(), 0);
 //                        GlobalVariable.stillObjects.add(f);
                         GlobalVariable.stillObjects.add(bomb);
                         Bomb.listBomb.add(bomb);
