@@ -12,9 +12,7 @@ import java.util.List;
 public class Bomber extends Entity {
     public static int ANIMATE = 30;
     public static int TIME = 10;
-    public static final int VELOCITY = 2;
-
-//    CollisionChecker collisionChecker = new CollisionChecker(this, );
+    public static final int VELOCITY = 3;
 
     public Bomber(int x, int y, Image img) {
         super( x, y, img);

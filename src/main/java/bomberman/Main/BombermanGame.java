@@ -24,7 +24,6 @@ public class BombermanGame extends Application {
     public static final int WIDTH = 31;
     public static final int HEIGHT = 13;
 
-    char matrix[][] = null;
     private GraphicsContext gc;
     private Canvas canvas;
 //    private List<Entity> entities = new ArrayList<>();
@@ -45,7 +44,10 @@ public class BombermanGame extends Application {
         Group root = new Group();
         root.getChildren().add(canvas);
 
+        Map map = new Map();
+        map.loadMap();
         Bomber bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
+
 
 //        Bomber bomberman = new Bomber(1, 1, Sprite.movingSprite(Sprite.player_right, Sprite.player_right_1, Sprite.player_right_2, Bomber.ANIMATE, Bomber.TIME).getFxImage());
 //        entities.add(bomberman);
@@ -163,50 +165,54 @@ public class BombermanGame extends Application {
     }
 
     public void createMapFromFile () throws IOException {
-        BufferedReader bufferedReader = null;
+//        BufferedReader bufferedReader = null;
+//
+//        try {
+//            Reader reader = new FileReader("res/levels/Level1.txt");
+//
+//            bufferedReader = new BufferedReader(reader);
+//
+//
+//            String firstLine = bufferedReader.readLine();
+//            System.out.println(firstLine);
+//
+//            int level = 0;
+//            int row = 0;
+//            int column = 0;
+//
+//            String[] tokens = firstLine.split(" ");
+//            level = Integer.parseInt(tokens[0]);
+//            row = Integer.parseInt(tokens[1]);
+//            column = Integer.parseInt(tokens[2]);
+//
+//            GlobalVariable.map = new char[row][column];
+//
+//            for (int i = 0; i<row; i++) {
+//                String line = bufferedReader.readLine();
+//                for (int j = 0; j<column; j++) {
+//                    char character = line.charAt(j);
+//                    GlobalVariable.map[i][j] = character;
+//                }
+//            }
 
-        try {
-            Reader reader = new FileReader("res/levels/Level1.txt");
-
-            bufferedReader = new BufferedReader(reader);
-
-
-            String firstLine = bufferedReader.readLine();
-            System.out.println(firstLine);
-
-            int level = 0;
-            int row = 0;
-            int column = 0;
-
-            String[] tokens = firstLine.split(" ");
-            level = Integer.parseInt(tokens[0]);
-            row = Integer.parseInt(tokens[1]);
-            column = Integer.parseInt(tokens[2]);
-
-            matrix = new char[row][column];
-
-            for (int i = 0; i<row; i++) {
-                String line = bufferedReader.readLine();
-                for (int j = 0; j<column; j++) {
-                    char character = line.charAt(j);
-                    matrix[i][j] = character;
-                }
-            }
-
-            for (int i = 0; i<row; i++) {
-                for (int j = 0; j<column; j++) {
-                    char character = matrix[i][j];
+            for (int i = 0; i<Map.row; i++) {
+                for (int j = 0; j<Map.column; j++) {
+                    char character = Map.map[i][j];
                     switch (character) {
                         case '#' : {
                             Entity object = new Wall(j, i, Sprite.wall.getFxImage());
                             GlobalVariable.stillObjects.add(object);
                             Entity.listBarrier.add(object);
+                            Map.mapObjects[i][j] = object;  // để ý lỗi chỗ này
                             break;
                         }
                         case '*' : {
+                            Entity object1 = new Grass(j, i, Sprite.grass.getFxImage());
+                            GlobalVariable.stillObjects.add(object1);
                             Entity object = new Brick(j, i, Sprite.brick.getFxImage());
                             GlobalVariable.stillObjects.add(object);
                             Entity.listBarrier.add(object);
+                            Map.mapObjects[i][j] = object;
                             break;
                         }
                         case '1' : {
@@ -214,6 +220,7 @@ public class BombermanGame extends Application {
                             GlobalVariable.stillObjects.add(object1);
                             Entity object = new Balloon(j, i, Sprite.balloom_left1.getFxImage());
                             GlobalVariable.entities.add(object);
+                            Map.mapObjects[i][j] = object;
                             break;
                         }
                         case '2' : {
@@ -221,26 +228,28 @@ public class BombermanGame extends Application {
                             GlobalVariable.stillObjects.add(object1);
                             Entity object = new Oneal(j, i, Sprite.oneal_left1.getFxImage());
                             GlobalVariable.entities.add(object);
+                            Map.mapObjects[i][j] = object;
                         }
 
                         default: {
                             Entity object = new Grass(j, i, Sprite.grass.getFxImage());
                             GlobalVariable.stillObjects.add(object);
+                            Map.mapObjects[i][j] = object;
                             break;
                         }
                     }
                 }
             }
 
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } finally {
-            if (bufferedReader != null) {
-                bufferedReader.close();
-            }
-        }
+//        } catch (FileNotFoundException e) {
+//            throw new RuntimeException(e);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        } finally {
+//            if (bufferedReader != null) {
+//                bufferedReader.close();
+//            }
+//        }
     }
     public void update() {
         GlobalVariable.entities.forEach(Entity::update);

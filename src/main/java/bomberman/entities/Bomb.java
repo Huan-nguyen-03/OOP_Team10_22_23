@@ -17,12 +17,20 @@ public class Bomb extends Entity {
     private double timeBegin;       // the time the bomb was created
     private boolean checkExplosion;
 
+    private List<Brick> listBrickIsDestroyed = null;
+    enum OBJECT_IS_COLLIDED {
+        NONE,
+        BRICK,
+        WALL
+    }
+
     public Bomb(int x, int y, Image img) {
         super(x, y, img);
         timer2.setTime(LocalTime.now());
         timeBegin = timer2.switchBackToSecond();
-
+        listBrickIsDestroyed = new ArrayList<>();
         checkExplosion = false;
+
     }
 
     @Override
@@ -33,6 +41,10 @@ public class Bomb extends Entity {
             listEvent.remove(Integer.SPACE);
         }
 
+        if(checkExplosion && listBrickIsDestroyed.size() != 0) {
+            removeBrick();
+
+        }
         if (time() > TIME_EXPLOSION && !checkExplosion) {
             explosion();
             checkExplosion = true;
@@ -42,33 +54,76 @@ public class Bomb extends Entity {
             GlobalVariable.stillObjects.remove(listBomb.get(0));
             listBomb.remove(0);
         }
+
     }
 
     public void explosion() {
         Flame center = new Flame(this.getX()/Sprite.SCALED_SIZE, this.getY()/Sprite.SCALED_SIZE, Sprite.bomb_exploded.getFxImage(), Flame.Type.CENTER.ordinal());
         GlobalVariable.stillObjects.add(center);
 
-        for (int i=1; i <= SIZE - 1; i++) {
-            Flame top = new Flame(this.getX()/Sprite.SCALED_SIZE, this.getY()/Sprite.SCALED_SIZE - i, Sprite.explosion_vertical.getFxImage(), Flame.Type.VERTICAL.ordinal());
-            Flame down = new Flame(this.getX()/Sprite.SCALED_SIZE, this.getY()/Sprite.SCALED_SIZE + i, Sprite.explosion_vertical.getFxImage(), Flame.Type.VERTICAL.ordinal());
-            Flame right = new Flame(this.getX()/Sprite.SCALED_SIZE + i, this.getY()/Sprite.SCALED_SIZE, Sprite.explosion_horizontal.getFxImage(), Flame.Type.HORIZONTAL.ordinal());
-            Flame left = new Flame(this.getX()/Sprite.SCALED_SIZE - i, this.getY()/Sprite.SCALED_SIZE, Sprite.explosion_horizontal.getFxImage(), Flame.Type.HORIZONTAL.ordinal());
-            GlobalVariable.stillObjects.add(top);
-            GlobalVariable.stillObjects.add(down);
-            GlobalVariable.stillObjects.add(right);
-            GlobalVariable.stillObjects.add(left);
+        for (int i = 1; i <= SIZE; i++) {       // check right
+            if (checkExplosionCollision(this.getX()/Sprite.SCALED_SIZE + i, this.getY()/Sprite.SCALED_SIZE) != 0) {
+                if (checkExplosionCollision(this.getX()/Sprite.SCALED_SIZE + i, this.getY()/Sprite.SCALED_SIZE) == OBJECT_IS_COLLIDED.BRICK.ordinal())
+                    destroyBrick(this.getX()/Sprite.SCALED_SIZE + i, this.getY()/Sprite.SCALED_SIZE);
+                break;
+            }
+            if (i == SIZE) {
+                Flame rightLast = new Flame(this.getX()/Sprite.SCALED_SIZE + SIZE, this.getY()/Sprite.SCALED_SIZE, Sprite.explosion_horizontal_right_last.getFxImage(), Flame.Type.RIGHT_LAST.ordinal());
+                GlobalVariable.stillObjects.add(rightLast);
+            }
+            else {
+                Flame right = new Flame(this.getX() / Sprite.SCALED_SIZE + i, this.getY() / Sprite.SCALED_SIZE, Sprite.explosion_horizontal.getFxImage(), Flame.Type.HORIZONTAL.ordinal());
+                GlobalVariable.stillObjects.add(right);
+            }
         }
-        Flame topLast = new Flame(this.getX()/Sprite.SCALED_SIZE, this.getY()/Sprite.SCALED_SIZE - SIZE, Sprite.explosion_vertical_top_last.getFxImage(), Flame.Type.TOP_LAST.ordinal());
-        Flame downLast = new Flame(this.getX()/Sprite.SCALED_SIZE, this.getY()/Sprite.SCALED_SIZE + SIZE, Sprite.explosion_vertical_down_last.getFxImage(), Flame.Type.DOWN_LAST.ordinal());
-        Flame rightLast = new Flame(this.getX()/Sprite.SCALED_SIZE + SIZE, this.getY()/Sprite.SCALED_SIZE, Sprite.explosion_horizontal_right_last.getFxImage(), Flame.Type.RIGHT_LAST.ordinal());
-        Flame leftLast = new Flame(this.getX()/Sprite.SCALED_SIZE - SIZE, this.getY()/Sprite.SCALED_SIZE, Sprite.explosion_horizontal_left_last.getFxImage(), Flame.Type.LEFT_LAST.ordinal());
 
-        GlobalVariable.stillObjects.add(topLast);
-        GlobalVariable.stillObjects.add(downLast);
-        GlobalVariable.stillObjects.add(rightLast);
-        GlobalVariable.stillObjects.add(leftLast);
+        for (int i = 1; i <= SIZE; i++) {       // check left
+            if (checkExplosionCollision(this.getX()/Sprite.SCALED_SIZE - i, this.getY()/Sprite.SCALED_SIZE) != 0) {
+                if (checkExplosionCollision(this.getX()/Sprite.SCALED_SIZE - i, this.getY()/Sprite.SCALED_SIZE) == OBJECT_IS_COLLIDED.BRICK.ordinal())
+                    destroyBrick(this.getX()/Sprite.SCALED_SIZE - i, this.getY()/Sprite.SCALED_SIZE );
+                break;
+            }
+            if (i == SIZE) {
+                Flame leftLast = new Flame(this.getX()/Sprite.SCALED_SIZE - SIZE, this.getY()/Sprite.SCALED_SIZE, Sprite.explosion_horizontal_left_last.getFxImage(), Flame.Type.LEFT_LAST.ordinal());
+                GlobalVariable.stillObjects.add(leftLast);
+            }
+            else {
+                Flame left = new Flame(this.getX()/Sprite.SCALED_SIZE - i, this.getY()/Sprite.SCALED_SIZE, Sprite.explosion_horizontal.getFxImage(), Flame.Type.HORIZONTAL.ordinal());
+                GlobalVariable.stillObjects.add(left);
+            }
+        }
 
+        for (int i = 1; i <= SIZE; i++) {       // check  top
+            if (checkExplosionCollision(this.getX()/Sprite.SCALED_SIZE, this.getY()/Sprite.SCALED_SIZE - i) != 0) {
+                if (checkExplosionCollision(this.getX()/Sprite.SCALED_SIZE, this.getY()/Sprite.SCALED_SIZE - i) == OBJECT_IS_COLLIDED.BRICK.ordinal())
+                    destroyBrick(this.getX()/Sprite.SCALED_SIZE, this.getY()/Sprite.SCALED_SIZE - i);
+                break;
+            }
+            if (i == SIZE) {
+                Flame topLast = new Flame(this.getX()/Sprite.SCALED_SIZE, this.getY()/Sprite.SCALED_SIZE - SIZE, Sprite.explosion_vertical_top_last.getFxImage(), Flame.Type.TOP_LAST.ordinal());
+                GlobalVariable.stillObjects.add(topLast);
+            }
+            else {
+                Flame top = new Flame(this.getX()/Sprite.SCALED_SIZE, this.getY()/Sprite.SCALED_SIZE - i, Sprite.explosion_vertical.getFxImage(), Flame.Type.VERTICAL.ordinal());
+                GlobalVariable.stillObjects.add(top);
+            }
+        }
 
+        for (int i = 1; i <= SIZE; i++) {       // check down
+            if (checkExplosionCollision(this.getX()/Sprite.SCALED_SIZE, this.getY()/Sprite.SCALED_SIZE + i) != 0) {
+                if (checkExplosionCollision(this.getX()/Sprite.SCALED_SIZE, this.getY()/Sprite.SCALED_SIZE + i) == OBJECT_IS_COLLIDED.BRICK.ordinal())
+                    destroyBrick(this.getX()/Sprite.SCALED_SIZE, this.getY()/Sprite.SCALED_SIZE + i);
+                break;
+            }
+            if (i == SIZE) {
+                Flame downLast = new Flame(this.getX()/Sprite.SCALED_SIZE, this.getY()/Sprite.SCALED_SIZE + SIZE, Sprite.explosion_vertical_down_last.getFxImage(), Flame.Type.DOWN_LAST.ordinal());
+                GlobalVariable.stillObjects.add(downLast);
+            }
+            else {
+                Flame down = new Flame(this.getX()/Sprite.SCALED_SIZE, this.getY()/Sprite.SCALED_SIZE + i, Sprite.explosion_vertical.getFxImage(), Flame.Type.VERTICAL.ordinal());
+                GlobalVariable.stillObjects.add(down);
+            }
+        }
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////
@@ -84,7 +139,6 @@ public class Bomb extends Entity {
             if (GlobalVariable.stillObjects.get(i) instanceof Flame) {
                 Flame f = (Flame) GlobalVariable.stillObjects.get(i);
                 if (f.checkDone()) {
-                    System.out.println(i);
                     GlobalVariable.stillObjects.remove(i);
                     i--;
                     checkRemove = true;
@@ -94,11 +148,35 @@ public class Bomb extends Entity {
         return checkRemove;
     }
 
-//    public boolean checkExplosionColision(int x, int y) {
-//        for (int i = 0; i < GlobalVariable.stillObjects.size(); i++) {
-//            if (GlobalVariable.stillObjects.get(i) instanceof Brick)
-//                return true;
-//        }
-//        return false;
-//    }
+    public int checkExplosionCollision(int x, int y) { // x, y ngược do tọa độ scene với matrix ngược nhau
+        if (Map.map[y][x] == '*') {
+            return OBJECT_IS_COLLIDED.BRICK.ordinal();
+        }
+
+        if (Map.map[y][x] == '#')
+            return OBJECT_IS_COLLIDED.WALL.ordinal();
+        return OBJECT_IS_COLLIDED.NONE.ordinal();
+    }
+
+    public void destroyBrick(int x, int y) {
+        Brick brickIsDestroyed = (Brick) Map.mapObjects[y][x];
+        listBrickIsDestroyed.add(brickIsDestroyed);
+        brickIsDestroyed.setCheckExploded(true);
+    }
+
+    public boolean removeBrick() {
+        boolean checkRemoveBrick = false;
+
+        for (int i = 0; i< listBrickIsDestroyed.size(); i++) {
+            if (listBrickIsDestroyed.get(i).checkDone()) {
+                GlobalVariable.stillObjects.remove(listBrickIsDestroyed.get(i));
+                listBarrier.remove(listBrickIsDestroyed.get(i));
+                listBrickIsDestroyed.remove(i);
+                i--;
+                checkRemoveBrick = true;
+            }
+        }
+
+        return checkRemoveBrick;
+    }
 }

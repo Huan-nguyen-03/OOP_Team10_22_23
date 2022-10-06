@@ -41,7 +41,7 @@ public class Flame extends Entity{
 
     public boolean checkDone() {
         if (ANIMATE > 300000 - TIME) {    // limit 3 frame rendered
-            System.out.println(ANIMATE);
+//            System.out.println(ANIMATE);
             return false;
         }
         return true;
