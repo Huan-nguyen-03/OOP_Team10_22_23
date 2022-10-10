@@ -11,7 +11,7 @@ import java.util.List;
 public class Bomb extends Entity {
     public static int MAX_BOMB_NUMBER = 1;
     public static int SIZE = 1;
-    public static double TIME_EXPLOSION = 3; // second
+    public static double TIME_EXPLOSION = 2; // second
     public static List<Bomb> listBomb = new ArrayList<>();
 
     private double timeBegin;       // the time the bomb was created
@@ -169,9 +169,12 @@ public class Bomb extends Entity {
 
         for (int i = 0; i< listBrickIsDestroyed.size(); i++) {
             if (listBrickIsDestroyed.get(i).checkDone()) {
+                listBrickIsDestroyed.get(i).createItem();
                 GlobalVariable.stillObjects.remove(listBrickIsDestroyed.get(i));
                 listBarrier.remove(listBrickIsDestroyed.get(i));
+                Map.map[listBrickIsDestroyed.get(i).getY()/Sprite.SCALED_SIZE][listBrickIsDestroyed.get(i).getX()/Sprite.SCALED_SIZE] = ' ';
                 listBrickIsDestroyed.remove(i);
+
                 i--;
                 checkRemoveBrick = true;
             }

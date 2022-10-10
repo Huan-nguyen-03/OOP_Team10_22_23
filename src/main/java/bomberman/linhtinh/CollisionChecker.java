@@ -1,6 +1,9 @@
 package bomberman.linhtinh;
 
 import bomberman.entities.*;
+import bomberman.entities.Item.BombItem;
+import bomberman.entities.Item.FlameItem;
+import bomberman.entities.Item.SpeedItem;
 import bomberman.graphics.*;
 
 import java.util.List;
@@ -20,5 +23,25 @@ public class CollisionChecker {
             }
         }
         return false;
+    }
+
+    public Entity checkItemCollision(Entity entity, List<Entity> listItem) {
+        for (int i = 0; i < listItem.size(); i++) {
+            if (entity.getX() < listItem.get(i).getX() + Sprite.SCALED_SIZE
+                    && entity.getX() + MAXWIDTHBOMBER > listItem.get(i).getX()
+                    && entity.getY() < listItem.get(i).getY() + Sprite.SCALED_SIZE
+                    && entity.getY() + MAXHEIGHTBOMBER > listItem.get(i).getY() ) {
+
+//                if (listItem.get(i) instanceof BombItem)
+//                    return 1;
+//                if (listItem.get(i) instanceof FlameItem)
+//                    return 2;
+//                if (listItem.get(i) instanceof SpeedItem)
+//                    return 3;
+//
+                return listItem.get(i);
+            }
+        }
+        return null;
     }
 }

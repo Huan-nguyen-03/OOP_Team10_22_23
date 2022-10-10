@@ -33,6 +33,7 @@ public abstract class Entity {
     protected Image img;
 
     public static List <Entity> listBarrier = new ArrayList<>();
+    public static List <Entity> listItem = new ArrayList<>();
     CollisionChecker collisionChecker = new CollisionChecker();
 
     public static List<Integer> listEvent = new ArrayList<>();
