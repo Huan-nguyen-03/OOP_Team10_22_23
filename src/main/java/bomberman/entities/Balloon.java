@@ -15,13 +15,7 @@ public class Balloon extends Entity {
     public static final int VELOCITY = 1;
     public static final int DIRECTIONS = 4;
 
-    public List<java.lang.Integer> listDirection = new ArrayList<java.lang.Integer>();
 
-    public void addDirection() {
-        for (int i = 0; i < DIRECTIONS; i++) {
-            listDirection.add(i);
-        }
-    }
 
     public boolean isHitWall = false;
     private static final int MAXWIDTHBLOOM = 28;
@@ -30,18 +24,6 @@ public class Balloon extends Entity {
         super(x, y, img);
     }
 
-    public static List get(List numbers, int noOfRandomNumbers) {
-        List list = new ArrayList(numbers);
-        List randomList = new ArrayList();
-
-        Random rd = new Random();
-        for (int i = 0; i < noOfRandomNumbers; i++) {
-            int index = (int) (rd.nextDouble() * list.size());
-            randomList.add(list.get(index));
-            list.remove(index);
-        }
-        return randomList;
-    }
     public void moveRight() {
         x+=VELOCITY;
         if (collisionChecker.checkCollision(this, listBarrier)) {
@@ -60,10 +42,10 @@ public class Balloon extends Entity {
     public void moveLeft() {
         x-=VELOCITY;
         if (collisionChecker.checkCollision(this, listBarrier)) {
-            x-=VELOCITY;
+            x+=VELOCITY;
             isHitWall = true;
             if (isHitWall) {
-                x-=VELOCITY;
+                x+=VELOCITY;
             }
         }
         ANIMATE --;
@@ -112,19 +94,22 @@ public class Balloon extends Entity {
                     img = Sprite.movingSprite(Sprite.balloom_right1, Sprite.balloom_right2, Sprite.balloom_right3, Balloon.ANIMATE, Balloon.TIME).getFxImage();
                     moveRight();
                     if (isHitWall) {
-                        List randomList = get(listDirection, 3);
-                        randomDirection = (int) randomList.get(0);
+                        do {
+                            randomDirection = random.nextInt(DIRECTIONS);
+                        }
+                        while (randomDirection == 0);
                         isHitWall = false;
                     }
-
                 }
 
                 if (randomDirection == 1) {
                     img = Sprite.movingSprite(Sprite.balloom_left1, Sprite.balloom_left2, Sprite.balloom_left3, Balloon.ANIMATE, Balloon.TIME).getFxImage();
                     moveLeft();
                     if (isHitWall) {
-                        List randomList = get(listDirection, 3);
-                        randomDirection = (int) randomList.get(0);
+                        do {
+                            randomDirection = random.nextInt(DIRECTIONS);
+                        }
+                        while (randomDirection == 1);
                         isHitWall = false;
                     }
                 }
@@ -132,8 +117,10 @@ public class Balloon extends Entity {
                     img = Sprite.movingSprite(Sprite.balloom_left1, Sprite.balloom_left2, Sprite.balloom_left3, Balloon.ANIMATE, Balloon.TIME).getFxImage();
                     moveUp();
                     if (isHitWall) {
-                        List randomList = get(listDirection, 3);
-                        randomDirection = (int) randomList.get(0);
+                        do {
+                            randomDirection = random.nextInt(DIRECTIONS);
+                        }
+                        while (randomDirection == 2);
                         isHitWall = false;
                     }
                 }
@@ -141,8 +128,10 @@ public class Balloon extends Entity {
                     img = Sprite.movingSprite(Sprite.balloom_left1, Sprite.balloom_left2, Sprite.balloom_left3, Balloon.ANIMATE, Balloon.TIME).getFxImage();
                     moveDown();
                     if (isHitWall) {
-                        List randomList = get(listDirection, 3);
-                        randomDirection = (int) randomList.get(0);
+                        do {
+                            randomDirection = random.nextInt(DIRECTIONS);
+                        }
+                        while (randomDirection == 3);
                         isHitWall = false;
                     }
                 }
