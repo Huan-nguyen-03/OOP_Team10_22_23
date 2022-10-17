@@ -10,7 +10,7 @@ import java.util.Random;
 import static bomberman.entities.GlobalVariable.entities;
 
 public class Balloon extends Entity {
-    public static int ANIMATE = 30;
+    public static int ANIMATE = 60;
     public static int TIME = 10;
     public static final int VELOCITY = 1;
     public static final int DIRECTIONS = 4;
