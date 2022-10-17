@@ -14,9 +14,6 @@ public class Balloon extends Entity {
     public static int TIME = 10;
     public static final int VELOCITY = 1;
     public static final int DIRECTIONS = 4;
-
-
-
     public boolean isHitWall = false;
     private static final int MAXWIDTHBLOOM = 28;
     private static final int MAXHEIGHTBLOOM = 30;
@@ -26,7 +23,7 @@ public class Balloon extends Entity {
 
     public void moveRight() {
         x+=VELOCITY;
-        if (collisionChecker.checkCollision(this, listBarrier)) {
+        if (collisionChecker.universalCheckCollision(this, listBarrier, MAXWIDTHBLOOM, MAXHEIGHTBLOOM)) {
             x-=VELOCITY;
             isHitWall = true;
             if (isHitWall) {
@@ -41,7 +38,7 @@ public class Balloon extends Entity {
 
     public void moveLeft() {
         x-=VELOCITY;
-        if (collisionChecker.checkCollision(this, listBarrier)) {
+        if (collisionChecker.universalCheckCollision(this, listBarrier, MAXWIDTHBLOOM, MAXHEIGHTBLOOM)) {
             x+=VELOCITY;
             isHitWall = true;
             if (isHitWall) {
@@ -56,7 +53,7 @@ public class Balloon extends Entity {
 
     public void moveUp () {
         y-=VELOCITY;
-        if (collisionChecker.checkCollision(this, listBarrier)) {
+        if (collisionChecker.universalCheckCollision(this, listBarrier, MAXWIDTHBLOOM, MAXHEIGHTBLOOM)) {
             y+=VELOCITY;
             isHitWall = true;
             if (isHitWall) {
@@ -71,7 +68,7 @@ public class Balloon extends Entity {
 
     public void moveDown() {
         y+=VELOCITY;
-        if (collisionChecker.checkCollision(this, listBarrier)) {
+        if (collisionChecker.universalCheckCollision(this, listBarrier, MAXWIDTHBLOOM, MAXHEIGHTBLOOM)) {
             y-=VELOCITY;
             isHitWall = true;
             if (isHitWall) {
