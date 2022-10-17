@@ -47,9 +47,7 @@ public class Bomber extends Entity {
     public void moveRight() {
         x+=VELOCITY;
         if (collisionChecker.checkCollision(this, listBarrier)) {
-            System.out.println("x1 = " + x);
             x-=VELOCITY;
-        System.out.println("x2 = " + x);
         }
         ANIMATE --;
         if (Bomber.ANIMATE < 0) {
