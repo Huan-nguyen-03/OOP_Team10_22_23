@@ -26,6 +26,7 @@ public abstract class Entity {
     public  int TIME = 3;
     public static final int ENTITIES_EFFECT_SPEED = 4;
 
+
     //Tọa độ X tính từ góc trái trên trong Canvas
     protected int x;
     //Tọa độ Y tính từ góc trái trên trong Canvas
@@ -34,6 +35,8 @@ public abstract class Entity {
 
     public static List <Entity> listBarrier = new ArrayList<>();
     CollisionChecker collisionChecker = new CollisionChecker();
+    public void Entity() {}
+
 
     public static List<Integer> listEvent = new ArrayList<>();
     //Khởi tạo đối tượng, chuyển từ tọa độ đơn vị sang tọa độ trong canvas

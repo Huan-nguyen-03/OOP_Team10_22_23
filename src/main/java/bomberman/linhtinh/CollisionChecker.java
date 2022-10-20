@@ -37,47 +37,64 @@ public class CollisionChecker {
         return false;
     }
 
-    public boolean checkHitRight(Entity entity, List<Entity> listBarrier, int width) {
-        for (int i = 0; i < listBarrier.size(); i++) {
-            if (!(listBarrier.get(i) instanceof Grass)) {
-                if (entity.getX() + width > listBarrier.get(i).getX()) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    public boolean checkHitLeft(Entity entity, List<Entity> listBarrier) {
-        for (int i = 0; i < listBarrier.size(); i++) {
-            if (!(listBarrier.get(i) instanceof Grass)) {
-                if (entity.getX() < listBarrier.get(i).getX() + Sprite.SCALED_SIZE) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    public boolean checkHitUp(Entity entity, List<Entity> listBarrier) {
-        for (int i = 0; i < listBarrier.size(); i++) {
-            if (!(listBarrier.get(i) instanceof Grass)) {
-                if (entity.getY() < listBarrier.get(i).getY() + Sprite.SCALED_SIZE) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    public boolean checkHitDown(Entity entity, List<Entity> listBarrier, int height) {
-        for (int i = 0; i < listBarrier.size(); i++) {
-            if (!(listBarrier.get(i) instanceof Grass)) {
-                if (entity.getY() + height > listBarrier.get(i).getY()) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+//    public boolean changeDirection(Entity entity, List<Entity> listBarrier) {
+//        for (int i = 0; i < listBarrier.size(); i++) {
+//            if (!(listBarrier.get(i) instanceof Grass)) {
+//                if ( entity.getX() >= listBarrier.get(i).getX() + Sprite.SCALED_SIZE
+//                        && entity.getY() >=  listBarrier.get(i).getY() + Sprite.SCALED_SIZE
+//                || entity.getY() >= listBarrier.get(i).getY() + Sprite.SCALED_SIZE
+//                        && entity.getX() >= listBarrier.get(i).getX() - Sprite.SCALED_SIZE
+//                || entity.getX() >= listBarrier.get(i).getX() + Sprite.SCALED_SIZE
+//                        && entity.getY() + Sprite.SCALED_SIZE <= listBarrier.get(i).getY()
+//                || entity.getY() >= listBarrier.get(i).getY() + Sprite.SCALED_SIZE
+//                        && entity.getX() >= listBarrier.get(i).getX() + Sprite.SCALED_SIZE ) {
+//                    return true;
+//                    }
+//                }
+//            }
+//        return false;
+//    }
+//    public boolean checkHitRight(Entity entity, List<Entity> listBarrier, int width) {
+//        for (int i = 0; i < listBarrier.size(); i++) {
+//            if (!(listBarrier.get(i) instanceof Grass)) {
+//                if (entity.getX() + width > listBarrier.get(i).getX()) {
+//                    return true;
+//                }
+//            }
+//        }
+//        return false;
+//    }
+//
+//    public boolean checkHitLeft(Entity entity, List<Entity> listBarrier) {
+//        for (int i = 0; i < listBarrier.size(); i++) {
+//            if (!(listBarrier.get(i) instanceof Grass)) {
+//                if (entity.getX() < listBarrier.get(i).getX() + Sprite.SCALED_SIZE) {
+//                    return true;
+//                }
+//            }
+//        }
+//        return false;
+//    }
+//
+//    public boolean checkHitUp(Entity entity, List<Entity> listBarrier) {
+//        for (int i = 0; i < listBarrier.size(); i++) {
+//            if (!(listBarrier.get(i) instanceof Grass)) {
+//                if (entity.getY() < listBarrier.get(i).getY() + Sprite.SCALED_SIZE) {
+//                    return true;
+//                }
+//            }
+//        }
+//        return false;
+//    }
+//
+//    public boolean checkHitDown(Entity entity, List<Entity> listBarrier, int height) {
+//        for (int i = 0; i < listBarrier.size(); i++) {
+//            if (!(listBarrier.get(i) instanceof Grass)) {
+//                if (entity.getY() + height > listBarrier.get(i).getY()) {
+//                    return true;
+//                }
+//            }
+//        }
+//        return false;
+//    }
 }
