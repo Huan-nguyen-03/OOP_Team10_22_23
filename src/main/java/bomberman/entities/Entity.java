@@ -1,6 +1,7 @@
 package bomberman.entities;
 
 import bomberman.Main.BombermanGame;
+import bomberman.Sound.Sound;
 import bomberman.linhtinh.CollisionChecker;
 import bomberman.linhtinh.Timer;
 import javafx.scene.canvas.GraphicsContext;
@@ -34,7 +35,9 @@ public abstract class Entity {
 
     public static List <Entity> listBarrier = new ArrayList<>();
     public static List <Entity> listItem = new ArrayList<>();
-    CollisionChecker collisionChecker = new CollisionChecker();
+    public CollisionChecker collisionChecker = new CollisionChecker();
+
+    public Sound sound = new Sound();
 
     public static List<Integer> listEvent = new ArrayList<>();
     //Khởi tạo đối tượng, chuyển từ tọa độ đơn vị sang tọa độ trong canvas

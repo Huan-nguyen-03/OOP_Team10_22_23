@@ -16,6 +16,7 @@ public class Bomb extends Entity {
 
     private double timeBegin;       // the time the bomb was created
     private boolean checkExplosion;
+    private boolean isSoundPlay;
 
     private List<Brick> listBrickIsDestroyed = null;
     enum OBJECT_IS_COLLIDED {
@@ -30,7 +31,7 @@ public class Bomb extends Entity {
         timeBegin = timer2.switchBackToSecond();
         listBrickIsDestroyed = new ArrayList<>();
         checkExplosion = false;
-
+        isSoundPlay = false;
     }
 
     @Override
@@ -47,6 +48,7 @@ public class Bomb extends Entity {
         }
         if (time() > TIME_EXPLOSION && !checkExplosion) {
             explosion();
+            setSoundPlay();
             checkExplosion = true;
 
         }
@@ -181,5 +183,9 @@ public class Bomb extends Entity {
         }
 
         return checkRemoveBrick;
+    }
+
+    void setSoundPlay() {
+        sound.bom.play();
     }
 }

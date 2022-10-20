@@ -32,13 +32,6 @@ public class CollisionChecker {
                     && entity.getY() < listItem.get(i).getY() + Sprite.SCALED_SIZE
                     && entity.getY() + MAXHEIGHTBOMBER > listItem.get(i).getY() ) {
 
-//                if (listItem.get(i) instanceof BombItem)
-//                    return 1;
-//                if (listItem.get(i) instanceof FlameItem)
-//                    return 2;
-//                if (listItem.get(i) instanceof SpeedItem)
-//                    return 3;
-//
                 return listItem.get(i);
             }
         }

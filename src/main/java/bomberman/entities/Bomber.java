@@ -2,6 +2,7 @@ package bomberman.entities;
 
 import bomberman.entities.Item.BombItem;
 import bomberman.entities.Item.FlameItem;
+import bomberman.entities.Item.Item;
 import bomberman.entities.Item.SpeedItem;
 import bomberman.graphics.Sprite;
 import bomberman.linhtinh.CollisionChecker;
@@ -16,7 +17,8 @@ import java.util.zip.GZIPOutputStream;
 public class Bomber extends Entity {
     public static int ANIMATE = 30;
     public static int TIME = 10;
-    public static int VELOCITY = 3;
+    public static int VELOCITY = 2;
+
 
     public Bomber(int x, int y, Image img) {
         super( x, y, img);
@@ -24,6 +26,7 @@ public class Bomber extends Entity {
 //    Entity bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
     @Override
     public void update() {
+        setPlaySound();
         if(Entity.listEvent.contains(Integer.LEFT)) {
             img = Sprite.movingSprite(Sprite.player_left, Sprite.player_left_1, Sprite.player_left_2, Bomber.ANIMATE, Bomber.TIME).getFxImage();
 //            Bomber bomberman = new Bomber(1, 1, Sprite.movingSprite(Sprite.player_left, Sprite.player_left_1, Sprite.player_left_2, Bomber.ANIMATE, Bomber.TIME).getFxImage());
@@ -49,6 +52,8 @@ public class Bomber extends Entity {
 
         Entity e = collisionChecker.checkItemCollision(this, listItem);
         if (e != null) {
+            Item i = (Item) e;
+            i.setPlaySound();
             if (e instanceof BombItem) {
                 Bomb.MAX_BOMB_NUMBER++;
                 listItem.remove(e);
@@ -75,7 +80,7 @@ public class Bomber extends Entity {
             }
         }
     }
-
+    // listEv LEFT
     public void moveRight() {
         x+=VELOCITY;
         if (collisionChecker.checkCollision(this, listBarrier))
@@ -113,5 +118,15 @@ public class Bomber extends Entity {
         if (Bomber.ANIMATE < 0) {
             Bomber.ANIMATE = 30;
         }
+    }
+
+    public void setPlaySound() {
+        if (Entity.listEvent.size() != 0 && !sound.click.isRunning()) {
+            sound.click.play();
+        }
+    }
+
+    public void setStopSound() {
+
     }
 }

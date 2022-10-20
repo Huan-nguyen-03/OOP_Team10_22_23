@@ -1,5 +1,6 @@
 package bomberman.Main;
 
+import bomberman.Sound.Sound;
 import bomberman.entities.*;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -26,9 +27,9 @@ public class BombermanGame extends Application {
 
     private GraphicsContext gc;
     private Canvas canvas;
-//    private List<Entity> entities = new ArrayList<>();
-//    private List<Entity> stillObjects = new ArrayList<>();
 
+    Sound sound = new Sound();
+        private boolean playSound = false;
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
@@ -47,6 +48,13 @@ public class BombermanGame extends Application {
         Map map = new Map();
         map.loadMap();
         Bomber bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
+
+
+        if (!playSound) {
+            sound.stageTheme.play();
+            sound.stageTheme.loop();
+        }
+
 
 
 //        Bomber bomberman = new Bomber(1, 1, Sprite.movingSprite(Sprite.player_right, Sprite.player_right_1, Sprite.player_right_2, Bomber.ANIMATE, Bomber.TIME).getFxImage());

@@ -3,8 +3,8 @@ package bomberman.entities;
 import java.io.*;
 
 public class Map {
-    public static char map[][] = null;
-    public static Entity mapObjects[][] = null;
+    public static char map[][] = null;  // * #
+    public static Entity mapObjects[][] = null;  // Obj
     public static int level;
     public static int row;
     public static int column;
