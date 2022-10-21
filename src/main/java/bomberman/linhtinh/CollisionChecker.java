@@ -25,6 +25,20 @@ public class CollisionChecker {
         return false;
     }
 
+    public boolean universalCheckCollision(Entity entity, List<Entity> listBarrier, int width, int height) {
+        for (int i = 0; i < listBarrier.size(); i++) {
+            if (!(listBarrier.get(i) instanceof Grass)) {
+                if (entity.getX() < listBarrier.get(i).getX() + Sprite.SCALED_SIZE
+                        && entity.getX() + width > listBarrier.get(i).getX()
+                        && entity.getY() < listBarrier.get(i).getY() + Sprite.SCALED_SIZE
+                        && entity.getY() + height > listBarrier.get(i).getY() ) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public Entity checkItemCollision(Entity entity, List<Entity> listItem) {
         for (int i = 0; i < listItem.size(); i++) {
             if (entity.getX() < listItem.get(i).getX() + Sprite.SCALED_SIZE
