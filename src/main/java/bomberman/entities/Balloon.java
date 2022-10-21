@@ -54,7 +54,68 @@ public class Balloon extends Entity {
         if (Balloon.ANIMATE < 0) {
             Balloon.ANIMATE = 30;
         }
+<<<<<<< Updated upstream
+=======
     }
+
+    public void moveLeft() {
+        x-=VELOCITY;
+        if (collisionChecker.universalCheckCollision(this, listBarrier, MAXWIDTHBLOOM, MAXHEIGHTBLOOM)) {
+            x+=VELOCITY;
+            isHitWall = true;
+            isValidDir = false;
+            if (isHitWall && !isValidDir) {
+                x+=VELOCITY;
+            }
+        } else {
+            isValidDir = true;
+        }
+        ANIMATE --;
+        if (Balloon.ANIMATE < 0) {
+            Balloon.ANIMATE = 30;
+        }
+    }
+
+    public void moveUp() {
+        y-=VELOCITY;
+        if (collisionChecker.universalCheckCollision(this, listBarrier, MAXWIDTHBLOOM, MAXHEIGHTBLOOM)) {
+            y+=VELOCITY;
+            isHitWall = true;
+            isValidDir = false;
+            if (isHitWall && !isValidDir) {
+                y+=VELOCITY;
+            }
+        } else {
+            isValidDir = true;
+        }
+        ANIMATE --;
+        if (Bomber.ANIMATE < 0) {
+            Bomber.ANIMATE = 30;
+        }
+    }
+
+    public void moveDown() {
+        y+=VELOCITY;
+        if (collisionChecker.universalCheckCollision(this, listBarrier, MAXWIDTHBLOOM, MAXHEIGHTBLOOM)) {
+            y-=VELOCITY;
+            isHitWall = true;
+            isValidDir = false;
+            if (isHitWall && !isValidDir) {
+                y-=VELOCITY;
+            }
+        } else {
+            isValidDir = true;
+        }
+        ANIMATE --;
+        if (Bomber.ANIMATE < 0) {
+            Bomber.ANIMATE = 30;
+        }
+>>>>>>> Stashed changes
+    }
+    Random random = new Random();
+    int randomDirection = random.nextInt(4);
+
+
 
     public void moveLeft() {
         x-=VELOCITY;
@@ -128,7 +189,11 @@ public class Balloon extends Entity {
                         if (time() > 3) {
                             System.out.println("greater than 2");
 
+<<<<<<< Updated upstream
                                 randomDirection = random.nextInt((DIRECTIONS - 2)) + 2;
+=======
+                            randomDirection = random.nextInt((DIRECTIONS - 2)) + 2;
+>>>>>>> Stashed changes
 
 //                            count = 0;
                             resetTime();
@@ -154,7 +219,11 @@ public class Balloon extends Entity {
                         if (time() > 3) {
                             System.out.println("greater than 2");
 
+<<<<<<< Updated upstream
                                 randomDirection = random.nextInt((DIRECTIONS - 2)) + 2;
+=======
+                            randomDirection = random.nextInt((DIRECTIONS - 2)) + 2;
+>>>>>>> Stashed changes
 
 //                            count = 0;
                             resetTime();
@@ -178,7 +247,11 @@ public class Balloon extends Entity {
                         if (time() > 3) {
                             System.out.println("greater than 2");
 
+<<<<<<< Updated upstream
                                 randomDirection = random.nextInt(DIRECTIONS - 2);
+=======
+                            randomDirection = random.nextInt(DIRECTIONS - 2);
+>>>>>>> Stashed changes
 
 //                            count = 0;
                             resetTime();
@@ -202,7 +275,11 @@ public class Balloon extends Entity {
                         if (time() > 3) {
                             System.out.println("greater than 2");
 
+<<<<<<< Updated upstream
                                 randomDirection = random.nextInt(DIRECTIONS - 2);
+=======
+                            randomDirection = random.nextInt(DIRECTIONS - 2);
+>>>>>>> Stashed changes
 
                             while (randomDirection == 3);
 //                            count = 0;
@@ -218,10 +295,14 @@ public class Balloon extends Entity {
                     }
                 }
             }
+<<<<<<< Updated upstream
 
         }
 
 
+=======
+>>>>>>> Stashed changes
 
+        }
     }
 }
