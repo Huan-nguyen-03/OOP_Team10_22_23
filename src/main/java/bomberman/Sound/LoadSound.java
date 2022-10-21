@@ -8,9 +8,7 @@ public class LoadSound {
     Clip clip;
     URL soundURL;
     public LoadSound(String path) {
-        System.out.println(path);
         soundURL = getClass().getResource(path);
-        System.out.println(soundURL);
     }
     public void play() {
         try{

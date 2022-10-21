@@ -157,107 +157,56 @@ public class BombermanGame extends Application {
     }
 
     public void createMap() throws IOException {
-//        for (int i = 0; i < WIDTH; i++) {
-//            for (int j = 0; j < HEIGHT; j++) {
-//                Entity object;
-//                if (j == 0 || j == HEIGHT - 1 || i == 0 || i == WIDTH - 1) {
-//                    object = new Wall(i, j, Sprite.wall.getFxImage());
-//                }
-//                else {
-//                    object = new Grass(i, j, Sprite.grass.getFxImage());
-//                }
-//                stillObjects.add(object);
-//            }
-//        }
         createMapFromFile();
     }
 
     public void createMapFromFile () throws IOException {
-//        BufferedReader bufferedReader = null;
-//
-//        try {
-//            Reader reader = new FileReader("res/levels/Level1.txt");
-//
-//            bufferedReader = new BufferedReader(reader);
-//
-//
-//            String firstLine = bufferedReader.readLine();
-//            System.out.println(firstLine);
-//
-//            int level = 0;
-//            int row = 0;
-//            int column = 0;
-//
-//            String[] tokens = firstLine.split(" ");
-//            level = Integer.parseInt(tokens[0]);
-//            row = Integer.parseInt(tokens[1]);
-//            column = Integer.parseInt(tokens[2]);
-//
-//            GlobalVariable.map = new char[row][column];
-//
-//            for (int i = 0; i<row; i++) {
-//                String line = bufferedReader.readLine();
-//                for (int j = 0; j<column; j++) {
-//                    char character = line.charAt(j);
-//                    GlobalVariable.map[i][j] = character;
-//                }
-//            }
+        for (int i = 0; i<Map.row; i++) {
+            for (int j = 0; j<Map.column; j++) {
+                char character = Map.map[i][j];
+                switch (character) {
+                    case '#' : {
+                        Entity object = new Wall(j, i, Sprite.wall.getFxImage());
+                        GlobalVariable.stillObjects.add(object);
+                        Entity.listBarrier.add(object);
+                        Map.mapObjects[i][j] = object;  // để ý lỗi chỗ này
+                        break;
+                    }
+                    case '*' : {
+                        Entity object1 = new Grass(j, i, Sprite.grass.getFxImage());
+                        GlobalVariable.stillObjects.add(object1);
+                        Entity object = new Brick(j, i, Sprite.brick.getFxImage());
+                        GlobalVariable.stillObjects.add(object);
+                        Entity.listBarrier.add(object);
+                        Map.mapObjects[i][j] = object;
+                        break;
+                    }
+                    case '1' : {
+                        Entity object1 = new Grass(j, i, Sprite.grass.getFxImage());
+                        GlobalVariable.stillObjects.add(object1);
+                        Entity object = new Balloon(j, i, Sprite.balloom_left1.getFxImage());
+                        GlobalVariable.entities.add(object);
+                        Map.mapObjects[i][j] = object;
+                        break;
+                    }
+                    case '2' : {
+                        Entity object1 = new Grass(j, i, Sprite.grass.getFxImage());
+                        GlobalVariable.stillObjects.add(object1);
+                        Entity object = new Oneal(j, i, Sprite.oneal_left1.getFxImage());
+                        GlobalVariable.entities.add(object);
+                        Map.mapObjects[i][j] = object;
+                        break;
+                    }
 
-            for (int i = 0; i<Map.row; i++) {
-                for (int j = 0; j<Map.column; j++) {
-                    char character = Map.map[i][j];
-                    switch (character) {
-                        case '#' : {
-                            Entity object = new Wall(j, i, Sprite.wall.getFxImage());
-                            GlobalVariable.stillObjects.add(object);
-                            Entity.listBarrier.add(object);
-                            Map.mapObjects[i][j] = object;  // để ý lỗi chỗ này
-                            break;
-                        }
-                        case '*' : {
-                            Entity object1 = new Grass(j, i, Sprite.grass.getFxImage());
-                            GlobalVariable.stillObjects.add(object1);
-                            Entity object = new Brick(j, i, Sprite.brick.getFxImage());
-                            GlobalVariable.stillObjects.add(object);
-                            Entity.listBarrier.add(object);
-                            Map.mapObjects[i][j] = object;
-                            break;
-                        }
-                        case '1' : {
-                            Entity object1 = new Grass(j, i, Sprite.grass.getFxImage());
-                            GlobalVariable.stillObjects.add(object1);
-                            Entity object = new Balloon(j, i, Sprite.balloom_left1.getFxImage());
-                            GlobalVariable.entities.add(object);
-                            Map.mapObjects[i][j] = object;
-                            break;
-                        }
-                        case '2' : {
-                            Entity object1 = new Grass(j, i, Sprite.grass.getFxImage());
-                            GlobalVariable.stillObjects.add(object1);
-                            Entity object = new Oneal(j, i, Sprite.oneal_left1.getFxImage());
-                            GlobalVariable.entities.add(object);
-                            Map.mapObjects[i][j] = object;
-                        }
-
-                        default: {
-                            Entity object = new Grass(j, i, Sprite.grass.getFxImage());
-                            GlobalVariable.stillObjects.add(object);
-                            Map.mapObjects[i][j] = object;
-                            break;
-                        }
+                    default: {
+                        Entity object = new Grass(j, i, Sprite.grass.getFxImage());
+                        GlobalVariable.stillObjects.add(object);
+                        Map.mapObjects[i][j] = object;
+                        break;
                     }
                 }
             }
-
-//        } catch (FileNotFoundException e) {
-//            throw new RuntimeException(e);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        } finally {
-//            if (bufferedReader != null) {
-//                bufferedReader.close();
-//            }
-//        }
+        }
     }
     public void update() {
         GlobalVariable.entities.forEach(Entity::update);

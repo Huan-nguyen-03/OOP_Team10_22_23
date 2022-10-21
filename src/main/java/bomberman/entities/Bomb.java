@@ -19,6 +19,7 @@ public class Bomb extends Entity {
     private boolean isSoundPlay;
 
     private List<Brick> listBrickIsDestroyed = null;
+    private List<Entity> listEnemyIsDestroyed = null;
     enum OBJECT_IS_COLLIDED {
         NONE,
         BRICK,
@@ -30,6 +31,7 @@ public class Bomb extends Entity {
         timer2.setTime(LocalTime.now());
         timeBegin = timer2.switchBackToSecond();
         listBrickIsDestroyed = new ArrayList<>();
+        listEnemyIsDestroyed = new ArrayList<>();
         checkExplosion = false;
         isSoundPlay = false;
     }
@@ -44,6 +46,7 @@ public class Bomb extends Entity {
 
         if(checkExplosion && listBrickIsDestroyed.size() != 0) {
             removeBrick();
+            removeBrick();
 
         }
         if (time() > TIME_EXPLOSION && !checkExplosion) {
@@ -55,6 +58,7 @@ public class Bomb extends Entity {
         if(removeFlame()) {
             GlobalVariable.stillObjects.remove(listBomb.get(0));
             listBomb.remove(0);
+            removeEnemy();
         }
 
     }
@@ -151,6 +155,7 @@ public class Bomb extends Entity {
     }
 
     public int checkExplosionCollision(int x, int y) { // x, y ngược do tọa độ scene với matrix ngược nhau
+        destroyEnemy(x, y);
         if (Map.map[y][x] == '*') {
             return OBJECT_IS_COLLIDED.BRICK.ordinal();
         }
@@ -185,6 +190,34 @@ public class Bomb extends Entity {
         return checkRemoveBrick;
     }
 
+    public void destroyEnemy(int x, int y) {
+        if (Map.map[y][x] == '1') {
+            Balloon balloon = (Balloon) Map.mapObjects[y][x];
+            balloon.setDeath(true);
+            Map.map[y][x] = ' ';
+            Grass grass = new Grass(x, y, Sprite.grass.getFxImage());
+            Map.mapObjects[y][x] = grass;
+            listEnemyIsDestroyed.add(balloon);
+        }
+
+        if (Map.map[y][x] == '2') {
+            Oneal oneal = (Oneal) Map.mapObjects[y][x];
+            oneal.setDeath(true);
+            Map.map[y][x] = ' ';
+            Grass grass = new Grass(x, y, Sprite.grass.getFxImage());
+            Map.mapObjects[y][x] = grass;
+            listEnemyIsDestroyed.add(oneal);
+        }
+
+    }
+
+    public void removeEnemy() {
+        for (int i = 0; i < listEnemyIsDestroyed.size(); i++) {
+            GlobalVariable.entities.remove(listEnemyIsDestroyed.get(i));
+            listEnemyIsDestroyed.remove(i);
+            i--;
+        }
+    }
     void setSoundPlay() {
         sound.bom.play();
     }
