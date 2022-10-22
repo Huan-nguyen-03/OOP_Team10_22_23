@@ -22,6 +22,7 @@ public class Balloon extends Entity {
     public List<Integer> listDirections = new ArrayList<>();
 
     private int currentDirection;
+    private int animationDirection;
     private int oppositeDirection;
 
     public Balloon(int x, int y, Image img) {
@@ -31,6 +32,7 @@ public class Balloon extends Entity {
         yDouble = y * Sprite.SCALED_SIZE;
 
         currentDirection = Integer.LEFT.ordinal();
+        animationDirection = Integer.LEFT.ordinal();
         oppositeDirection = Integer.RIGHT.ordinal();
 
         x_map = y;
@@ -43,6 +45,7 @@ public class Balloon extends Entity {
             xDouble -= VELOCITY;
             x = (int) xDouble;
         }
+        animationDirection = Integer.RIGHT.ordinal();
     }
 
     public void moveLeft() {
@@ -52,7 +55,7 @@ public class Balloon extends Entity {
             xDouble += VELOCITY;
             x = (int) xDouble;
         }
-
+        animationDirection = Integer.LEFT.ordinal();
     }
 
     public void moveUp() {
@@ -79,23 +82,28 @@ public class Balloon extends Entity {
     public void update() {
         if (death) {
             img = Sprite.balloom_dead.getFxImage();
-        }
-        lookUp();
-        moveAlgorithm();
-        if (currentDirection == Integer.LEFT.ordinal()) {
-            moveLeft();
-        }
-        if (currentDirection == Integer.RIGHT.ordinal()) {
-            moveRight();
-        }
-        if (currentDirection == Integer.UP.ordinal()) {
-            moveUp();
-        }
-        if (currentDirection == Integer.DOWN.ordinal()) {
-            moveDown();
-        }
-        updateMap();
+        } else {
+            lookUp();
+            moveAlgorithm();
+            if (currentDirection == Integer.LEFT.ordinal()) {
+                moveLeft();
+            }
+            if (currentDirection == Integer.RIGHT.ordinal()) {
+                moveRight();
+            }
+            if (currentDirection == Integer.UP.ordinal()) {
+                moveUp();
+            }
+            if (currentDirection == Integer.DOWN.ordinal()) {
+                moveDown();
+            }
 
+            if (animationDirection == Integer.LEFT.ordinal())
+                img = Sprite.movingSprite(Sprite.balloom_left1, Sprite.balloom_left2, Sprite.balloom_left3, ANIMATE, TIME).getFxImage();
+            if (animationDirection == Integer.RIGHT.ordinal())
+                img = Sprite.movingSprite(Sprite.balloom_right1, Sprite.balloom_right2, Sprite.balloom_right3, ANIMATE, TIME).getFxImage();
+            updateMap();
+        }
     }
     public void lookUp() {
         listDirections.clear();

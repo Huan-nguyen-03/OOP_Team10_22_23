@@ -65,6 +65,7 @@ public class Bomb extends Entity {
 
     public void explosion() {
         Flame center = new Flame(this.getX()/Sprite.SCALED_SIZE, this.getY()/Sprite.SCALED_SIZE, Sprite.bomb_exploded.getFxImage(), Flame.Type.CENTER.ordinal());
+        checkExplosionCollision(this.getX()/Sprite.SCALED_SIZE, this.getY()/Sprite.SCALED_SIZE);
         GlobalVariable.stillObjects.add(center);
 
         for (int i = 1; i <= SIZE; i++) {       // check right
