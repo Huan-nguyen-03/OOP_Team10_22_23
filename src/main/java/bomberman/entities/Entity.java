@@ -1,6 +1,10 @@
 package bomberman.entities;
 
+<<<<<<< Updated upstream
 import bomberman.Main.BombermanGame;
+=======
+import bomberman.Sound.Sound;
+>>>>>>> Stashed changes
 import bomberman.linhtinh.CollisionChecker;
 import bomberman.linhtinh.Timer;
 import javafx.scene.canvas.GraphicsContext;
