@@ -167,8 +167,8 @@ public class Balloon extends Entity {
     }
 
     public void updateMap() {
-        int x_val = this.getX() / Sprite.SCALED_SIZE;
-        int y_val = this.getY() / Sprite.SCALED_SIZE;
+        int x_val = (int) Math.ceil(this.getX() / Sprite.SCALED_SIZE);
+        int y_val = (int) Math.ceil(this.getY() / Sprite.SCALED_SIZE);
 
         if (x_val != y_map || y_val != x_map) {
             Grass grass = new Grass(y_map, x_map, Sprite.grass.getFxImage());

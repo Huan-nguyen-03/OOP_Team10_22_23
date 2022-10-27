@@ -51,4 +51,14 @@ public class CollisionChecker {
         }
         return null;
     }
+
+    public boolean checkCollisionWithBomb(Bomber bomber, Bomb bomb) {
+        if (bomber.getX() < bomb.getX() + Sprite.SCALED_SIZE
+                && bomber.getX() + MAXWIDTHBOMBER > bomb.getX()
+                && bomber.getY() < bomb.getY() + Sprite.SCALED_SIZE
+                && bomber.getY() + MAXHEIGHTBOMBER > bomb.getY()) {
+            return true;
+        }
+        return false;
+    }
 }

@@ -57,6 +57,7 @@ public class Bomb extends Entity {
         }
         if(removeFlame()) {
             GlobalVariable.stillObjects.remove(listBomb.get(0));
+            listBarrier.remove(listBomb.get(0));
             listBomb.remove(0);
             removeEnemy();
         }
@@ -182,7 +183,7 @@ public class Bomb extends Entity {
                 listBarrier.remove(listBrickIsDestroyed.get(i));
                 Map.map[listBrickIsDestroyed.get(i).getY()/Sprite.SCALED_SIZE][listBrickIsDestroyed.get(i).getX()/Sprite.SCALED_SIZE] = ' ';
                 listBrickIsDestroyed.remove(i);
-
+                Brick.numberOfBrick--;
                 i--;
                 checkRemoveBrick = true;
             }
@@ -222,4 +223,6 @@ public class Bomb extends Entity {
     void setSoundPlay() {
         sound.bom.play();
     }
+
+
 }

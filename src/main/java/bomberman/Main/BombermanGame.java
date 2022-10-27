@@ -48,17 +48,13 @@ public class BombermanGame extends Application {
         Map map = new Map();
         map.loadMap();
         Bomber bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
-
+        Map.map[1][1] = '0';
 
         if (!playSound) {
             sound.stageTheme.play();
             sound.stageTheme.loop();
         }
 
-
-
-//        Bomber bomberman = new Bomber(1, 1, Sprite.movingSprite(Sprite.player_right, Sprite.player_right_1, Sprite.player_right_2, Bomber.ANIMATE, Bomber.TIME).getFxImage());
-//        entities.add(bomberman);
 
         // Tao scene
         Scene scene = new Scene(root);
@@ -92,8 +88,6 @@ public class BombermanGame extends Application {
                         if (!Entity.listEvent.contains(Entity.Integer.SPACE))
                             Entity.listEvent.add(Entity.Integer.SPACE);
                         Bomb bomb = new Bomb(bomberman.getX()/Sprite.SCALED_SIZE, bomberman.getY()/Sprite.SCALED_SIZE, Sprite.bomb.getFxImage());
-//                        Flame f =  new Flame(bomb.getX()/Sprite.SCALED_SIZE, bomb.getY()/Sprite.SCALED_SIZE, Sprite.bomb_exploded.getFxImage(), 0);
-//                        GlobalVariable.stillObjects.add(f);
                         GlobalVariable.stillObjects.add(bomb);
                         Bomb.listBomb.add(bomb);
                         break;
@@ -179,6 +173,7 @@ public class BombermanGame extends Application {
                         GlobalVariable.stillObjects.add(object);
                         Entity.listBarrier.add(object);
                         Map.mapObjects[i][j] = object;
+                        Brick.numberOfBrick ++;
                         break;
                     }
                     case '1' : {
