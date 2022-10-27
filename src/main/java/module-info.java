@@ -1,8 +1,9 @@
-module bomberman.Main {
+module bomberman{
     requires javafx.controls;
     requires javafx.fxml;
     requires java.desktop;
 
-    opens bomberman.Main to javafx.fxml;
-    exports bomberman.Main;
+    opens bomberman to javafx.fxml;
+    exports bomberman;
+
 }

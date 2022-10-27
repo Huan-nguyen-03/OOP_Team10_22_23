@@ -1,6 +1,5 @@
 package bomberman.entities;
 
-import bomberman.Main.BombermanGame;
 import bomberman.Sound.Sound;
 import bomberman.linhtinh.CollisionChecker;
 import bomberman.linhtinh.Timer;
