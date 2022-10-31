@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bomberman.BombermanGame">
+<AnchorPane centerShape="false" prefHeight="376.0" prefWidth="679.0" style="-fx-background-image: url('https://shiverstuff.files.wordpress.com/2009/12/bombawallpaper.png'); -fx-background-size: 100% 100%; -fx-background-repeat: no-repeat; -fx-background-position: center center;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bomberman.BombermanGame">
    <children>
-      <Button onAction="#startGame" fx:id="button1" layoutX="213.0" layoutY="171.0" mnemonicParsing="false" prefHeight="59.0" prefWidth="174.0" text="Button" />
+      <ImageView fx:id="playBtn" fitHeight="47.0" fitWidth="136.0" layoutX="14.0" layoutY="14.0" onMouseClicked="#startGame">
+         <Image url="@menu/start_game.png" />
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fx:id="howToPlayBtn" fitHeight="47.0" fitWidth="136.0" layoutX="14.0" layoutY="67.0" onMouseClicked="#showHowToPlay">
+         <Image url="@menu/HowToPlay.png" />
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
    </children>
 </AnchorPane>

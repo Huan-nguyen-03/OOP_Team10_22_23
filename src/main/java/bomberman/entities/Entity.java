@@ -17,7 +17,8 @@ public abstract class Entity {
         RIGHT,
         UP,
         DOWN,
-        SPACE
+        SPACE,
+        ESC,
     }
     public Timer timer1 = new Timer(); // begin
     public Timer timer2 = new Timer(); // run
