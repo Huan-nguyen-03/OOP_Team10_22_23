@@ -88,6 +88,9 @@ public class Bomber extends Entity {
                 Grass g = new Grass(e.getX()/Sprite.SCALED_SIZE, e.getY()/Sprite.SCALED_SIZE, Sprite.grass.getFxImage());
                 Map.mapObjects[e.getY()/Sprite.SCALED_SIZE][e.getX()/Sprite.SCALED_SIZE] = g;
             }
+            if (e instanceof Portal) {
+                BombermanGame.isWinGame = true;
+            }
         }
 
 

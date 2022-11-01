@@ -15,11 +15,6 @@ import javafx.stage.Stage;
 import bomberman.graphics.Sprite;
 import java.io.*;
 
-
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class BombermanGame extends Application {
     
     public static final int WIDTH = 31;
@@ -30,6 +25,7 @@ public class BombermanGame extends Application {
 
     Sound sound = new Sound();
         private boolean playSound = false;
+        private int level = 1;
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
@@ -46,7 +42,7 @@ public class BombermanGame extends Application {
         root.getChildren().add(canvas);
 
         Map map = new Map();
-        map.loadMap();
+        map.loadMap(level);
         Bomber bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
         Map.map[1][1] = '0';
 

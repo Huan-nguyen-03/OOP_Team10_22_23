@@ -9,11 +9,11 @@ public class Map {
     public static int row;
     public static int column;
 
-    public void loadMap() throws IOException {
+    public void loadMap(int level) throws IOException {
         BufferedReader bufferedReader = null;
 
         try {
-            Reader reader = new FileReader("res/levels/Level1.txt");
+            Reader reader = new FileReader("res/levels/Level" + String.valueOf(level) + ".txt");
 
             bufferedReader = new BufferedReader(reader);
 

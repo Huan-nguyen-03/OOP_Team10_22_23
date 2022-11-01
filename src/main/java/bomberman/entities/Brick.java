@@ -56,23 +56,22 @@ public class Brick extends Entity {
     }
 
     public int itemAppear() {
-        int number = rand.nextInt(10);
-        if (number == 6 && !hasBombPassItem) {
-            hasBombPassItem = true;
-            return Type_Item.BOMB_PASS_ITEM.ordinal();
-        }
-        else if (number == 7)
-            return Type_Item.BOMB_ITEM.ordinal();
-        else if (number == 8)
-            return Type_Item.FLAME_ITEM.ordinal();
-        else if (number == 9)
-            return Type_Item.SPEED_ITEM.ordinal();
-        else if (!hasPortal){
-            int r = rand.nextInt(numberOfBrick);
-            if (r == 0) {
+//        int number = rand.nextInt(10);
+//        if (number == 6 && !hasBombPassItem) {
+//            hasBombPassItem = true;
+//            return Type_Item.BOMB_PASS_ITEM.ordinal();
+//        }
+//        else if (number == 7)
+//            return Type_Item.BOMB_ITEM.ordinal();
+//        else if (number == 8)
+//            return Type_Item.FLAME_ITEM.ordinal();
+//        else if (number == 9)
+//            return Type_Item.SPEED_ITEM.ordinal();
+        if (true){
+//            int r = rand.nextInt(numberOfBrick);
                 hasPortal = true;
                 return Type_Item.PORTAL.ordinal();
-            }
+
         }
         return Type_Item.NONE.ordinal();
     }

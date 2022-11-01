@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-image: url('https://qvc.vn/media/news/2904_du-an-phong-gamequoc-viet-1.jpg'); -fx-background-size: 100% 100%; -fx-background-repeat: no-repeat; -fx-background-position: center center;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bomberman.BombermanGame">
+    <children>
+        <ImageView fx:id="backBtn" fitHeight="34.0" fitWidth="117.0" layoutY="14.0" onMouseClicked="#backToMenu" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@menu/back.png" />
+            </image>
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
+        </ImageView>
+    </children>
+</AnchorPane>
+
+
+

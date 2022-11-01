@@ -54,6 +54,12 @@ public class BombermanGame extends Application {
     Sound sound = new Sound();
     private boolean playSound = false;
 
+    public static int level = 1;
+
+    public final int maxLevel = 2;
+
+    public static boolean isWinGame = false;
+
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
     }
@@ -96,6 +102,18 @@ public class BombermanGame extends Application {
 
     }
 
+    public void winGame(Stage stage) throws IOException {
+        FXMLLoader loaders = new FXMLLoader(new File("D:\\Hoang\\LTHDT\\bomberman\\src\\main\\java\\bomberman\\winGame.fxml").toURI().toURL());
+        Parent root = loaders.load();
+
+        stage.setTitle("Bomberman");
+        stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
+        stage.show();
+
+    }
+
+
+
 
 
     public void backToMenu(MouseEvent event) throws IOException {
@@ -118,7 +136,7 @@ public class BombermanGame extends Application {
         root.getChildren().add(canvas);
 
         Map map = new Map();
-        map.loadMap();
+        map.loadMap(level);
         bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
         Map.map[1][1] = '0';
 
@@ -219,17 +237,60 @@ public class BombermanGame extends Application {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
+                if (isWinGame) {
+                    isWinGame = false;
+
+                    GlobalVariable.entities = new ArrayList<>();
+                    GlobalVariable.stillObjects = new ArrayList<>();
+                    Bomb.listBomb = new ArrayList<>();
+                    Entity.listBarrier = new ArrayList<>();
+                    Entity.listEvent =  new ArrayList<>();;
+                    level++;
+                    if (level > maxLevel) {
+
+                        stop();
+                        level = 1;
+                        GlobalVariable.entities = new ArrayList<>();
+                        GlobalVariable.stillObjects = new ArrayList<>();
+                        Bomb.listBomb = new ArrayList<>();
+                        Entity.listBarrier = new ArrayList<>();
+                        Entity.listEvent =  new ArrayList<>();;
+                        try {
+                            gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+                            gameState = false;
+                            winGame(stage);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                    gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+                    try {
+                        map.loadMap(level);
+                        bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
+                        Map.map[1][1] = '0';
+                        GlobalVariable.entities.add(bomberman);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    try {
+                        createMap();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
                 if(!gameState) {
                     render();
                     update();}
                 else {
                     stop();
+                    level = 1;
                     GlobalVariable.entities = new ArrayList<>();
                     GlobalVariable.stillObjects = new ArrayList<>();
                     Bomb.listBomb = new ArrayList<>();
                     Entity.listBarrier = new ArrayList<>();
                     Entity.listEvent =  new ArrayList<>();;
                     try {
+                        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
                         gameState = false;
                         endGame(stage);
                     } catch (IOException e) {
