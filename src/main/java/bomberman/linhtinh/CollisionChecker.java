@@ -61,4 +61,24 @@ public class CollisionChecker {
         }
         return false;
     }
+
+    public static boolean checkEntitiesCollision(Bomber bomber)
+    {
+        int x = bomber.getX()/Sprite.SCALED_SIZE;
+        int y = bomber.getY()/Sprite.SCALED_SIZE;
+        if (Map.map[y][x] == '1') {
+            return true;
+        }
+
+        if (Map.map[y][x] == '2') {
+            return true;
+        }
+        return false;
+    }
 }
+
+
+
+
+
+

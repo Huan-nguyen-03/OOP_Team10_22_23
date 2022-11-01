@@ -2,6 +2,7 @@ package bomberman;
 
 import bomberman.Sound.Sound;
 import bomberman.entities.*;
+import bomberman.linhtinh.CollisionChecker;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -25,9 +26,12 @@ import bomberman.graphics.Sprite;
 import java.io.*;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class BombermanGame extends Application {
+    public static Bomber bomberman;
     private static Scene scene;
     private static Stage stage;
     @FXML
@@ -38,15 +42,17 @@ public class BombermanGame extends Application {
 
     @FXML
     private ImageView backBtn;
-    
+
     public static final int WIDTH = 31;
     public static final int HEIGHT = 13;
 
     private GraphicsContext gc;
     private Canvas canvas;
 
+    public static boolean gameState = false;
+
     Sound sound = new Sound();
-        private boolean playSound = false;
+    private boolean playSound = false;
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
@@ -55,7 +61,7 @@ public class BombermanGame extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         try {
-            FXMLLoader loader = new FXMLLoader(new File("E:\\OOP\\OOP_Team10_22_23 - Copy\\src\\main\\java\\bomberman\\Menu.fxml").toURI().toURL());
+            FXMLLoader loader = new FXMLLoader(new File("D:\\Hoang\\LTHDT\\bomberman\\src\\main\\java\\bomberman\\Menu.fxml").toURI().toURL());
             Parent root = loader.load();
             stage.setTitle("Bomberman");
             stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
@@ -72,22 +78,35 @@ public class BombermanGame extends Application {
     }
 
     public void showHowToPlay(MouseEvent event) throws IOException {
-            FXMLLoader loader = new FXMLLoader(new File("E:\\OOP\\OOP_Team10_22_23 - Copy\\src\\main\\java\\bomberman\\HowToPlay.fxml").toURI().toURL());
-            Parent root = loader.load();
-            stage = (Stage)((Node)event.getSource()).getScene().getWindow();;
-            stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
-            stage.show();
-
-    }
-
-    public void backToMenu(MouseEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(new File("E:\\OOP\\OOP_Team10_22_23 - Copy\\src\\main\\java\\bomberman\\Menu.fxml").toURI().toURL());
+        FXMLLoader loader = new FXMLLoader(new File("D:\\Hoang\\LTHDT\\bomberman\\src\\main\\java\\bomberman\\HowToPlay.fxml").toURI().toURL());
         Parent root = loader.load();
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();;
         stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
         stage.show();
 
     }
+
+    public void endGame(Stage stage) throws IOException {
+        FXMLLoader loaders = new FXMLLoader(new File("D:\\Hoang\\LTHDT\\bomberman\\src\\main\\java\\bomberman\\End.fxml").toURI().toURL());
+        Parent root = loaders.load();
+
+        stage.setTitle("Bomberman");
+        stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
+        stage.show();
+
+    }
+
+
+
+    public void backToMenu(MouseEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(new File("D:\\Hoang\\LTHDT\\bomberman\\src\\main\\java\\bomberman\\Menu.fxml").toURI().toURL());
+        Parent root = loader.load();
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();;
+        stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
+        stage.show();
+
+    }
+
 
     public void startGame(MouseEvent event) throws IOException {
         // Tao Canvas
@@ -100,7 +119,7 @@ public class BombermanGame extends Application {
 
         Map map = new Map();
         map.loadMap();
-        Bomber bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
+        bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
         Map.map[1][1] = '0';
 
         if (!playSound) {
@@ -155,24 +174,32 @@ public class BombermanGame extends Application {
                 KeyCode code = keyEvent.getCode();
                 switch (code) {
                     case RIGHT: {
-                        if (Entity.listEvent.contains(Entity.Integer.RIGHT))
+                        if (Entity.listEvent.contains(Entity.Integer.RIGHT)) {
                             Entity.listEvent.remove(Entity.Integer.RIGHT);
+                            bomberman.setImg(Sprite.player_right.getFxImage());
+                        }
                         break;
                     }
                     case LEFT: {
-                        if (Entity.listEvent.contains(Entity.Integer.LEFT))
+                        if (Entity.listEvent.contains(Entity.Integer.LEFT)) {
                             Entity.listEvent.remove(Entity.Integer.LEFT);
+                            bomberman.setImg(Sprite.player_left.getFxImage());
+                        }
                         break;
                     }
                     case UP: {
-                        if (Entity.listEvent.contains(Entity.Integer.UP))
+                        if (Entity.listEvent.contains(Entity.Integer.UP)) {
                             Entity.listEvent.remove(Entity.Integer.UP);
+                            bomberman.setImg(Sprite.player_up.getFxImage());
+                        }
                         break;
 
                     }
                     case DOWN: {
-                        if (Entity.listEvent.contains(Entity.Integer.DOWN))
+                        if (Entity.listEvent.contains(Entity.Integer.DOWN)) {
                             Entity.listEvent.remove(Entity.Integer.DOWN);
+                            bomberman.setImg(Sprite.player_down.getFxImage());
+                        }
                         break;
                     }
                     case SPACE: {
@@ -192,8 +219,25 @@ public class BombermanGame extends Application {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                render();
-                update();
+                if(!gameState) {
+                    render();
+                    update();}
+                else {
+                    stop();
+                    GlobalVariable.entities = new ArrayList<>();
+                    GlobalVariable.stillObjects = new ArrayList<>();
+                    Bomb.listBomb = new ArrayList<>();
+                    Entity.listBarrier = new ArrayList<>();
+                    Entity.listEvent =  new ArrayList<>();;
+                    try {
+                        gameState = false;
+                        endGame(stage);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+
+
             }
         };
         timer.start();
@@ -262,11 +306,14 @@ public class BombermanGame extends Application {
         for (int i = 0; i < GlobalVariable.stillObjects.size(); i++) {
             GlobalVariable.stillObjects.get(i).update();
         }
+
     }
 
     public void render() {
+
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         GlobalVariable.stillObjects.forEach(g -> g.render(gc));
         GlobalVariable.entities.forEach(g -> g.render(gc));
+
     }
 }

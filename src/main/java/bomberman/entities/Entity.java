@@ -1,5 +1,6 @@
 package bomberman.entities;
 
+import bomberman.Main.BombermanGame;
 import bomberman.Sound.Sound;
 import bomberman.linhtinh.CollisionChecker;
 import bomberman.linhtinh.Timer;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Entity {
+    public boolean death = false;
     public static enum Integer {
         LEFT,
         RIGHT,
@@ -59,7 +61,7 @@ public abstract class Entity {
         gc.drawImage(img, x, y);
     }
     public abstract void update();
-//    public abstract void update(List<Entity> stillObjects);
+    //    public abstract void update(List<Entity> stillObjects);
     public int getX() {
         return x;
     }
@@ -82,5 +84,9 @@ public abstract class Entity {
 
     public void setImg(Image img) {
         this.img = img;
+    }
+
+    public void setDeath(boolean death) {
+        this.death = death;
     }
 }

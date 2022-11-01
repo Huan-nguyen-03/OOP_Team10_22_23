@@ -1,8 +1,12 @@
 package bomberman.entities;
 
+import bomberman.BombermanGame;
 import bomberman.entities.Item.*;
 import bomberman.graphics.Sprite;
+import bomberman.linhtinh.CollisionChecker;
 import javafx.scene.image.Image;
+
+import java.time.LocalTime;
 
 
 public class Bomber extends Entity {
@@ -10,9 +14,12 @@ public class Bomber extends Entity {
     public static int TIME = 10;
     public static int VELOCITY = 2;
 
+    public static double dieTime = -100000;
+
     private int x_map;  // coordinates are saved in map
     private int y_map;  // coordinates are saved in map
     public static boolean checkBombPass = false;
+
 
     public Bomber(int x, int y, Image img) {
         super( x, y, img);
@@ -43,6 +50,7 @@ public class Bomber extends Entity {
             img = Sprite.movingSprite(Sprite.player_down, Sprite.player_down_1, Sprite.player_down_2, Bomber.ANIMATE, Bomber.TIME).getFxImage();
             moveDown();
         }
+
 
         Entity e = collisionChecker.checkItemCollision(this, listItem);
         if (e != null) {
@@ -81,6 +89,20 @@ public class Bomber extends Entity {
                 Map.mapObjects[e.getY()/Sprite.SCALED_SIZE][e.getX()/Sprite.SCALED_SIZE] = g;
             }
         }
+
+
+        if(CollisionChecker.checkEntitiesCollision(this) || dieTime > 0) {
+            die();
+        }
+
+
+        if (death && this.time() > 0.5) {
+            ANIMATE = 30;
+            TIME = 10;
+            dieTime = -100000;
+            BombermanGame.gameState = true;
+        }
+
     }
     // listEv LEFT
     public void moveRight() {
@@ -111,6 +133,8 @@ public class Bomber extends Entity {
         if (Bomber.ANIMATE < 0) {
             Bomber.ANIMATE = 30;
         }
+
+
     }
     public void moveDown() {
         y+=VELOCITY;
@@ -122,6 +146,31 @@ public class Bomber extends Entity {
         }
     }
 
+    public void die() {
+
+        if (!death) {
+            timer2.setTime(LocalTime.now());
+            this.dieTime = timer2.switchBackToSecond();
+            death = true;
+            ANIMATE = 0;
+            TIME = 60;
+        }
+        img = Sprite.movingSprite(Sprite.player_dead1, Sprite.player_dead2, Sprite.player_dead3, Bomber.ANIMATE, Bomber.TIME).getFxImage();
+        ANIMATE ++;
+
+
+
+
+
+        if (Bomber.ANIMATE >= 60) {
+            Bomber.ANIMATE = 0;
+        }
+
+
+
+
+
+    }
     void addBombToListBarrier() {
         if (!checkBombPass) {
             for (int i = 0; i < Bomb.listBomb.size(); i++) {
@@ -159,4 +208,11 @@ public class Bomber extends Entity {
     public void setStopSound() {
 
     }
+
+    public double time() {
+        timer2.setTime(LocalTime.now());
+        double currentTime = timer2.switchBackToSecond();
+        return currentTime - this.dieTime;
+    }
 }
+

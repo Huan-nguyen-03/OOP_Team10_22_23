@@ -1,5 +1,6 @@
 package bomberman.entities;
 
+import bomberman.BombermanGame;
 import bomberman.graphics.Sprite;
 import javafx.scene.image.Image;
 
@@ -211,6 +212,11 @@ public class Bomb extends Entity {
             listEnemyIsDestroyed.add(oneal);
         }
 
+        if(BombermanGame.bomberman.getX()/Sprite.SCALED_SIZE == x && BombermanGame.bomberman.getY()/Sprite.SCALED_SIZE == y) {
+            BombermanGame.bomberman.death = true;
+            timer2.setTime(LocalTime.now());
+            Bomber.dieTime = timer2.switchBackToSecond();
+        }
     }
 
     public void removeEnemy() {
@@ -226,3 +232,11 @@ public class Bomb extends Entity {
 
 
 }
+
+
+
+
+
+
+
+
