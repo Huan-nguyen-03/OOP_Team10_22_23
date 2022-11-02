@@ -322,7 +322,7 @@ public class BombermanGame extends Application {
                         }
 
 
-                    username = "";
+
                     score = 0;
                     level = 1;
                     GlobalVariable.entities = new ArrayList<>();
