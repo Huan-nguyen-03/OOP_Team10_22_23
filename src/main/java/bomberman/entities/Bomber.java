@@ -116,8 +116,19 @@ public class Bomber extends Entity {
     // listEv LEFT
     public void moveRight() {
         x+=VELOCITY;
-        if (collisionChecker.checkCollision(this, listBarrier))
-            x-=VELOCITY;
+        if (collisionChecker.checkCollision(this, listBarrier)) {
+            x -= VELOCITY;
+            if (collisionChecker.checkRoundBomberHorizontally(this) == 1) {
+                y++;
+                if (collisionChecker.checkCollision(this, listBarrier))
+                    y --;
+            }
+            if (collisionChecker.checkRoundBomberHorizontally(this) == 2) {
+                y--;
+                if (collisionChecker.checkCollision(this, listBarrier))
+                    y ++;
+            }
+        }
         ANIMATE --;
         if (Bomber.ANIMATE < 0) {
             Bomber.ANIMATE = 30;
@@ -126,8 +137,19 @@ public class Bomber extends Entity {
 
     public void moveLeft() {
         x-=VELOCITY;
-        if (collisionChecker.checkCollision(this, listBarrier))
-            x+=VELOCITY;
+        if (collisionChecker.checkCollision(this, listBarrier)) {
+            x += VELOCITY;
+            if (collisionChecker.checkRoundBomberHorizontally(this) == 1) {
+                y++;
+                if (collisionChecker.checkCollision(this, listBarrier))
+                    y --;
+            }
+            if (collisionChecker.checkRoundBomberHorizontally(this) == 2) {
+                y--;
+                if (collisionChecker.checkCollision(this, listBarrier))
+                    y ++;
+            }
+        }
         ANIMATE --;
         if (Bomber.ANIMATE < 0) {
             Bomber.ANIMATE = 30;
@@ -136,8 +158,19 @@ public class Bomber extends Entity {
 
     public void moveUp () {
         y-=VELOCITY;
-        if (collisionChecker.checkCollision(this, listBarrier))
-            y+=VELOCITY;
+        if (collisionChecker.checkCollision(this, listBarrier)) {
+            y += VELOCITY;
+            if (collisionChecker.checkRoundBomberVertically(this) == 1) {
+                x++;
+                if (collisionChecker.checkCollision(this, listBarrier))
+                    x --;
+            }
+            if (collisionChecker.checkRoundBomberVertically(this) == 2) {
+                x--;
+                if (collisionChecker.checkCollision(this, listBarrier))
+                    x ++;
+            }
+        }
         ANIMATE --;
         if (Bomber.ANIMATE < 0) {
             Bomber.ANIMATE = 30;
@@ -147,8 +180,19 @@ public class Bomber extends Entity {
     }
     public void moveDown() {
         y+=VELOCITY;
-        if (collisionChecker.checkCollision(this, listBarrier))
-            y-=VELOCITY;
+        if (collisionChecker.checkCollision(this, listBarrier)) {
+            y -= VELOCITY;
+            if (collisionChecker.checkRoundBomberVertically(this) == 1) {
+                x++;
+                if (collisionChecker.checkCollision(this, listBarrier))
+                    x -= VELOCITY;
+            }
+            if (collisionChecker.checkRoundBomberVertically(this) == 2) {
+                x--;
+                if (collisionChecker.checkCollision(this, listBarrier))
+                    x += VELOCITY;
+            }
+        }
         ANIMATE --;
         if (Bomber.ANIMATE < 0) {
             Bomber.ANIMATE = 30;
@@ -167,18 +211,9 @@ public class Bomber extends Entity {
         img = Sprite.movingSprite(Sprite.player_dead1, Sprite.player_dead2, Sprite.player_dead3, Bomber.ANIMATE, Bomber.TIME).getFxImage();
         ANIMATE ++;
 
-
-
-
-
         if (Bomber.ANIMATE >= 60) {
             Bomber.ANIMATE = 0;
         }
-
-
-
-
-
     }
     void addBombToListBarrier() {
         if (!checkBombPass) {

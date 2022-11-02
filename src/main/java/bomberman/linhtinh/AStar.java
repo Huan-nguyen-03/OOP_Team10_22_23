@@ -235,7 +235,7 @@ public class AStar {
         }
 
 //        System.out.println("null");
-        System.out.println("");
+//        System.out.println("");
         return null;
     }
     private boolean isValid(int r, int c, int ROW, int COL)
