@@ -86,7 +86,7 @@ public class AStar {
                 if (isDestination(xCurrent - 1, yCurrent, xDest, yDest)) {
                     points[xCurrent - 1][yCurrent].xParent = xCurrent;
                     points[xCurrent - 1][yCurrent].yParent = yCurrent;
-                    System.out.println("The destination cell is found");
+//                    System.out.println("The destination cell is found");
                     foundDest = true;
                     return tracePath(points, xDest, yDest);
                 }
@@ -124,7 +124,7 @@ public class AStar {
                 if (isDestination(xCurrent + 1, yCurrent, xDest, yDest)) {
                     points[xCurrent + 1][yCurrent].xParent = xCurrent;
                     points[xCurrent + 1][yCurrent].yParent = yCurrent;
-                    System.out.println("The destination cell is found");
+//                    System.out.println("The destination cell is found");
                     foundDest = true;
                     return tracePath(points, xDest, yDest);
                 }
@@ -162,7 +162,7 @@ public class AStar {
                 if (isDestination(xCurrent, yCurrent - 1, xDest, yDest)) {
                     points[xCurrent][yCurrent - 1].xParent = xCurrent;
                     points[xCurrent][yCurrent - 1].yParent = yCurrent;
-                    System.out.println("The destination cell is found");
+//                    System.out.println("The destination cell is found");
                     foundDest = true;
                     return tracePath(points, xDest, yDest);
                 }
@@ -200,7 +200,7 @@ public class AStar {
                 if (isDestination(xCurrent, yCurrent + 1, xDest, yDest)) {
                     points[xCurrent][yCurrent + 1].xParent = xCurrent;
                     points[xCurrent][yCurrent + 1].yParent = yCurrent;
-                    System.out.println("The destination cell is found");
+//                    System.out.println("The destination cell is found");
                     foundDest = true;
                     return tracePath(points, xDest, yDest);
                 }
@@ -234,7 +234,7 @@ public class AStar {
             }
         }
 
-        System.out.println("null");
+//        System.out.println("null");
         System.out.println("");
         return null;
     }
@@ -279,8 +279,8 @@ public class AStar {
             Pair<Integer, Integer> p = new Pair<>(point.x, point.y);
             tempList.add(p);
         }
-        System.out.println(tempList);
-        System.out.println("");
+//        System.out.println(tempList);
+//        System.out.println("");
         return tempList;
     }
 }

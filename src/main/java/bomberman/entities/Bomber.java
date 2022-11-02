@@ -13,6 +13,7 @@ public class Bomber extends Entity {
     public static int ANIMATE = 30;
     public static int TIME = 10;
     public static int VELOCITY = 2;
+    public static int VELOCITY_MAX = 5;
 
     public static double dieTime = -100000;
 
@@ -77,7 +78,8 @@ public class Bomber extends Entity {
                 Map.mapObjects[e.getY()/Sprite.SCALED_SIZE][e.getX()/Sprite.SCALED_SIZE] = g;
             }
             else if (e instanceof SpeedItem) {
-                VELOCITY ++;
+                if (VELOCITY < VELOCITY_MAX)
+                    VELOCITY ++;
                 listItem.remove(e);
                 GlobalVariable.stillObjects.remove(e);
                 Map.map[e.getY()/Sprite.SCALED_SIZE][e.getX()/Sprite.SCALED_SIZE] = ' ';

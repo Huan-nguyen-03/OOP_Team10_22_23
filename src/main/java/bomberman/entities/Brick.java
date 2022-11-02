@@ -56,28 +56,32 @@ public class Brick extends Entity {
     }
 
     public int itemAppear() {
-//        int number = rand.nextInt(10);
-//        if (number == 6 && !hasBombPassItem) {
-//            hasBombPassItem = true;
-//            return Type_Item.BOMB_PASS_ITEM.ordinal();
-//        }
-//        else if (number == 7)
-//            return Type_Item.BOMB_ITEM.ordinal();
-//        else if (number == 8)
-//            return Type_Item.FLAME_ITEM.ordinal();
-//        else if (number == 9)
-//            return Type_Item.SPEED_ITEM.ordinal();
-        if (true){
-//            int r = rand.nextInt(numberOfBrick);
+        int number = rand.nextInt(10);
+        System.out.println(hasPortal);
+        if (!hasPortal){
+            int r = rand.nextInt(numberOfBrick / 3);
+            if (r == 0) {
                 hasPortal = true;
                 return Type_Item.PORTAL.ordinal();
-
+            }
         }
+        if (number == 6 && !hasBombPassItem) {
+            hasBombPassItem = true;
+            return Type_Item.BOMB_PASS_ITEM.ordinal();
+        }
+        else if (number == 7)
+            return Type_Item.BOMB_ITEM.ordinal();
+        else if (number == 8)
+            return Type_Item.FLAME_ITEM.ordinal();
+        else if (number == 9 && Bomber.VELOCITY < Bomber.VELOCITY_MAX)
+            return Type_Item.SPEED_ITEM.ordinal();
+
         return Type_Item.NONE.ordinal();
     }
 
     public void createItem() {
-        if (itemAppear() == Type_Item.BOMB_ITEM.ordinal()) {
+        int itemNumber = itemAppear();
+        if (itemNumber == Type_Item.BOMB_ITEM.ordinal()) {
             BombItem item = new BombItem(getX()/Sprite.SCALED_SIZE, getY()/Sprite.SCALED_SIZE, Sprite.powerup_bombs.getFxImage());
             GlobalVariable.stillObjects.add(item);
             Map.map[getY()/Sprite.SCALED_SIZE][getX()/Sprite.SCALED_SIZE] = 'b';
@@ -85,7 +89,7 @@ public class Brick extends Entity {
             listItem.add(item);
         }
 
-        if (itemAppear() == Type_Item.FLAME_ITEM.ordinal()) {
+        if (itemNumber == Type_Item.FLAME_ITEM.ordinal()) {
             FlameItem item = new FlameItem(getX()/Sprite.SCALED_SIZE, getY()/Sprite.SCALED_SIZE, Sprite.powerup_flames.getFxImage());
             GlobalVariable.stillObjects.add(item);
             Map.map[getY()/Sprite.SCALED_SIZE][getX()/Sprite.SCALED_SIZE] = 'f';
@@ -93,7 +97,7 @@ public class Brick extends Entity {
             listItem.add(item);
         }
 
-        if (itemAppear() == Type_Item.SPEED_ITEM.ordinal()) {
+        if (itemNumber == Type_Item.SPEED_ITEM.ordinal()) {
             SpeedItem item = new SpeedItem(getX()/Sprite.SCALED_SIZE, getY()/Sprite.SCALED_SIZE, Sprite.powerup_speed.getFxImage());
             GlobalVariable.stillObjects.add(item);
             Map.map[getY()/Sprite.SCALED_SIZE][getX()/Sprite.SCALED_SIZE] = 's';
@@ -101,7 +105,7 @@ public class Brick extends Entity {
             listItem.add(item);
         }
 
-        if (itemAppear() == Type_Item.PORTAL.ordinal()) {
+        if (itemNumber == Type_Item.PORTAL.ordinal()) {
             Portal portal = new Portal(getX()/Sprite.SCALED_SIZE, getY()/Sprite.SCALED_SIZE, Sprite.portal.getFxImage());
             GlobalVariable.stillObjects.add(portal);
             Map.map[getY()/Sprite.SCALED_SIZE][getX()/Sprite.SCALED_SIZE] = 'p';
@@ -109,7 +113,7 @@ public class Brick extends Entity {
             listItem.add(portal);
         }
 
-        if (itemAppear() == Type_Item.BOMB_PASS_ITEM.ordinal()) {
+        if (itemNumber == Type_Item.BOMB_PASS_ITEM.ordinal()) {
             BombPassItem bombPass = new BombPassItem(getX()/Sprite.SCALED_SIZE, getY()/Sprite.SCALED_SIZE, Sprite.powerup_bombpass.getFxImage());
             GlobalVariable.stillObjects.add(bombPass);
             Map.map[getY()/Sprite.SCALED_SIZE][getX()/Sprite.SCALED_SIZE] = '_';

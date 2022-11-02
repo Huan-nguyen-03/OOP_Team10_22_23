@@ -52,7 +52,7 @@ public class Login implements Initializable {
         if (actionEvent.getSource() == btnok) {
             if(logIn().equals("Success")) {
                 try {
-                    FXMLLoader loader = new FXMLLoader(new File("D:\\Hoang\\LTHDT\\bomberman\\src\\main\\java\\bomberman\\Menu.fxml").toURI().toURL());
+                    FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\Menu.fxml").toURI().toURL());
                     Parent root = loader.load();
                     BombermanGame.stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();;
                     BombermanGame.stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));

@@ -196,6 +196,7 @@ public class Bomb extends Entity {
     public void destroyEnemy(int x, int y) {
         if (Map.map[y][x] == '1') {
             Balloon balloon = (Balloon) Map.mapObjects[y][x];
+            BombermanGame.score += 100;
             balloon.setDeath(true);
             Map.map[y][x] = ' ';
             Grass grass = new Grass(x, y, Sprite.grass.getFxImage());

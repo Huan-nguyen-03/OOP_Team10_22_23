@@ -62,6 +62,8 @@ public class BombermanGame extends Application {
 
     public static boolean loginSuccess = false;
 
+    public static int score = 0;
+
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
     }
@@ -69,11 +71,11 @@ public class BombermanGame extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         try {
-            FXMLLoader loader = new FXMLLoader(new File("D:\\Hoang\\LTHDT\\bomberman\\src\\main\\java\\bomberman\\Login.fxml").toURI().toURL());
+            FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\Menu.fxml").toURI().toURL());
             Parent root = loader.load();
             stage.setTitle("Bomberman");
-//            stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
-            stage.setScene(new Scene(root, 600, 370));
+            stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
+//            stage.setScene(new Scene(root, 600, 370));
             stage.show();
             if (!playSound) {
                 sound.titleScreen.play();
@@ -88,7 +90,7 @@ public class BombermanGame extends Application {
 
 
     public void showHowToPlay(MouseEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(new File("D:\\Hoang\\LTHDT\\bomberman\\src\\main\\java\\bomberman\\HowToPlay.fxml").toURI().toURL());
+        FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\HowToPlay.fxml").toURI().toURL());
         Parent root = loader.load();
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();;
         stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
@@ -97,7 +99,7 @@ public class BombermanGame extends Application {
     }
 
     public void endGame(Stage stage) throws IOException {
-        FXMLLoader loaders = new FXMLLoader(new File("D:\\Hoang\\LTHDT\\bomberman\\src\\main\\java\\bomberman\\End.fxml").toURI().toURL());
+        FXMLLoader loaders = new FXMLLoader(new File("src\\main\\java\\bomberman\\End.fxml").toURI().toURL());
         Parent root = loaders.load();
 
         stage.setTitle("Bomberman");
@@ -107,7 +109,7 @@ public class BombermanGame extends Application {
     }
 
     public void winGame(Stage stage) throws IOException {
-        FXMLLoader loaders = new FXMLLoader(new File("D:\\Hoang\\LTHDT\\bomberman\\src\\main\\java\\bomberman\\winGame.fxml").toURI().toURL());
+        FXMLLoader loaders = new FXMLLoader(new File("src\\main\\java\\bomberman\\winGame.fxml").toURI().toURL());
         Parent root = loaders.load();
 
         stage.setTitle("Bomberman");
@@ -121,7 +123,7 @@ public class BombermanGame extends Application {
 
 
     public void backToMenu(MouseEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(new File("D:\\Hoang\\LTHDT\\bomberman\\src\\main\\java\\bomberman\\Menu.fxml").toURI().toURL());
+        FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\Menu.fxml").toURI().toURL());
         Parent root = loader.load();
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();;
         stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
@@ -249,6 +251,8 @@ public class BombermanGame extends Application {
                     Bomb.listBomb = new ArrayList<>();
                     Entity.listBarrier = new ArrayList<>();
                     Entity.listEvent =  new ArrayList<>();;
+                    Brick.hasPortal = false;
+                    Entity.listItem = new ArrayList<>();
                     level++;
                     if (level > maxLevel) {
 
@@ -258,7 +262,8 @@ public class BombermanGame extends Application {
                         GlobalVariable.stillObjects = new ArrayList<>();
                         Bomb.listBomb = new ArrayList<>();
                         Entity.listBarrier = new ArrayList<>();
-                        Entity.listEvent =  new ArrayList<>();;
+                        Entity.listEvent =  new ArrayList<>();
+                        Entity.listItem = new ArrayList<>();
                         try {
                             gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
                             gameState = false;
@@ -293,6 +298,7 @@ public class BombermanGame extends Application {
                     Bomb.listBomb = new ArrayList<>();
                     Entity.listBarrier = new ArrayList<>();
                     Entity.listEvent =  new ArrayList<>();;
+                    Entity.listItem = new ArrayList<>();
                     try {
                         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
                         gameState = false;
