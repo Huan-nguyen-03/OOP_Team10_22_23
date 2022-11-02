@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class BombermanGame extends Application {
+    public final List<Sound> sounds = new ArrayList<>();
     public static Bomber bomberman;
     private static Scene scene;
     public static Stage stage;
@@ -75,7 +76,6 @@ public class BombermanGame extends Application {
             Parent root = loader.load();
             stage.setTitle("Bomberman");
             stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
-//            stage.setScene(new Scene(root, 600, 370));
             stage.show();
             if (!playSound) {
                 sound.titleScreen.play();
@@ -181,11 +181,13 @@ public class BombermanGame extends Application {
                         break;
                     }
                     case SPACE: {
-                        if (!Entity.listEvent.contains(Entity.Integer.SPACE))
-                            Entity.listEvent.add(Entity.Integer.SPACE);
-                        Bomb bomb = new Bomb(bomberman.getX()/Sprite.SCALED_SIZE, bomberman.getY()/Sprite.SCALED_SIZE, Sprite.bomb.getFxImage());
-                        GlobalVariable.stillObjects.add(bomb);
-                        Bomb.listBomb.add(bomb);
+                        if (Bomb.listBomb.size() < Bomb.MAX_BOMB_NUMBER) {
+                            if (!Entity.listEvent.contains(Entity.Integer.SPACE))
+                                Entity.listEvent.add(Entity.Integer.SPACE);
+                            Bomb bomb = new Bomb(bomberman.getX() / Sprite.SCALED_SIZE, bomberman.getY() / Sprite.SCALED_SIZE, Sprite.bomb.getFxImage());
+                            GlobalVariable.stillObjects.add(bomb);
+                            Bomb.listBomb.add(bomb);
+                        }
                         break;
                     }
                 }
