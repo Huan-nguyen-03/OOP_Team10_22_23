@@ -301,6 +301,9 @@ public class BombermanGame extends Application {
                     Entity.listBarrier = new ArrayList<>();
                     Entity.listEvent =  new ArrayList<>();;
                     Entity.listItem = new ArrayList<>();
+                    Bomb.MAX_BOMB_NUMBER = 1;
+                    Bomb.SIZE = 1;
+                    Bomber.checkBombPass = false;
                     try {
                         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
                         gameState = false;
