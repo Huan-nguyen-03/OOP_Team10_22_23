@@ -33,7 +33,7 @@ import java.util.Objects;
 public class BombermanGame extends Application {
     public static Bomber bomberman;
     private static Scene scene;
-    private static Stage stage;
+    public static Stage stage;
     @FXML
     private ImageView playBtn;
 
@@ -60,6 +60,8 @@ public class BombermanGame extends Application {
 
     public static boolean isWinGame = false;
 
+    public static boolean loginSuccess = false;
+
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
     }
@@ -67,10 +69,11 @@ public class BombermanGame extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         try {
-            FXMLLoader loader = new FXMLLoader(new File("D:\\Hoang\\LTHDT\\bomberman\\src\\main\\java\\bomberman\\Menu.fxml").toURI().toURL());
+            FXMLLoader loader = new FXMLLoader(new File("D:\\Hoang\\LTHDT\\bomberman\\src\\main\\java\\bomberman\\Login.fxml").toURI().toURL());
             Parent root = loader.load();
             stage.setTitle("Bomberman");
-            stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
+//            stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
+            stage.setScene(new Scene(root, 600, 370));
             stage.show();
             if (!playSound) {
                 sound.titleScreen.play();
@@ -82,6 +85,7 @@ public class BombermanGame extends Application {
         }
 
     }
+
 
     public void showHowToPlay(MouseEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(new File("D:\\Hoang\\LTHDT\\bomberman\\src\\main\\java\\bomberman\\HowToPlay.fxml").toURI().toURL());

@@ -34,20 +34,24 @@ public class Bomber extends Entity {
         addBombToListBarrier();
         if(Entity.listEvent.contains(Integer.LEFT)) {
             img = Sprite.movingSprite(Sprite.player_left, Sprite.player_left_1, Sprite.player_left_2, Bomber.ANIMATE, Bomber.TIME).getFxImage();
+            if(!death)
             moveLeft();
         }
         if(Entity.listEvent.contains(Integer.RIGHT)) {
             img = Sprite.movingSprite(Sprite.player_right, Sprite.player_right_1, Sprite.player_right_2, Bomber.ANIMATE, Bomber.TIME).getFxImage();
+            if(!death)
             moveRight();
 
         }
         if(Entity.listEvent.contains(Integer.UP)) {
             img = Sprite.movingSprite(Sprite.player_up, Sprite.player_up_1, Sprite.player_up_2, Bomber.ANIMATE, Bomber.TIME).getFxImage();
+            if(!death)
             moveUp();
 
         }
         if(Entity.listEvent.contains(Integer.DOWN)) {
             img = Sprite.movingSprite(Sprite.player_down, Sprite.player_down_1, Sprite.player_down_2, Bomber.ANIMATE, Bomber.TIME).getFxImage();
+            if(!death)
             moveDown();
         }
 
