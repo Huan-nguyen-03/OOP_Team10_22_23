@@ -13,7 +13,7 @@ public class Bomber extends Entity {
     public static int ANIMATE = 30;
     public static int TIME = 10;
     public static int VELOCITY = 2;
-    public static int VELOCITY_MAX = 5;
+    public static int VELOCITY_MAX = 4;
 
     public static double dieTime = -100000;
 
@@ -95,7 +95,9 @@ public class Bomber extends Entity {
                 Map.mapObjects[e.getY()/Sprite.SCALED_SIZE][e.getX()/Sprite.SCALED_SIZE] = g;
             }
             if (e instanceof Portal) {
-                BombermanGame.isWinGame = true;
+                if (GlobalVariable.entities.size() == 1) {
+                    BombermanGame.isWinGame = true;
+                }
             }
         }
 

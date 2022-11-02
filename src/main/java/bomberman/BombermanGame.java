@@ -26,6 +26,7 @@ import bomberman.graphics.Sprite;
 import java.io.*;
 
 
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -37,6 +38,8 @@ public class BombermanGame extends Application {
     public static Stage stage;
     @FXML
     private ImageView playBtn;
+
+    public static String username = "";
 
     @FXML
     private ImageView howToPlayBtn;
@@ -72,10 +75,12 @@ public class BombermanGame extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         try {
-            FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\Menu.fxml").toURI().toURL());
+            FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\Login.fxml").toURI().toURL());
             Parent root = loader.load();
             stage.setTitle("Bomberman");
-            stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
+//            stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
+//            stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
+            stage.setScene(new Scene(root, 600, 370));
             stage.show();
             if (!playSound) {
                 sound.titleScreen.play();
@@ -245,6 +250,7 @@ public class BombermanGame extends Application {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
+
                 if (isWinGame) {
                     isWinGame = false;
 
@@ -294,6 +300,30 @@ public class BombermanGame extends Application {
                     update();}
                 else {
                     stop();
+                    Connection con;
+                    PreparedStatement pst;
+                    ResultSet rs;
+                    String query = "UPDATE adminn SET highestScore = ? where adminAcc = ?";
+
+                        try {
+                            Class.forName("com.mysql.cj.jdbc.Driver");
+
+                        } catch (ClassNotFoundException e) {
+                            throw new RuntimeException(e);
+                        }
+                        try {
+                            con = DriverManager.getConnection("jdbc:mysql://localhost/qrabiloo", "root", "");
+                            pst = con.prepareStatement(query);
+                            pst.setInt(1,score);
+                            pst.setString(2,username);
+                            pst.executeUpdate();
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+
+
+
+                    score = 0;
                     level = 1;
                     GlobalVariable.entities = new ArrayList<>();
                     GlobalVariable.stillObjects = new ArrayList<>();
