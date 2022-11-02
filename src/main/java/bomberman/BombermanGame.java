@@ -16,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -47,6 +48,9 @@ public class BombermanGame extends Application {
     @FXML
     private ImageView backBtn;
 
+    @FXML
+    private ImageView leaderboardBtn;
+
     public static final int WIDTH = 31;
     public static final int HEIGHT = 13;
 
@@ -68,6 +72,8 @@ public class BombermanGame extends Application {
 
     public static int score = 0;
 
+
+
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
     }
@@ -80,6 +86,7 @@ public class BombermanGame extends Application {
             stage.setTitle("Bomberman");
 //            stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
 //            stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
+//            stage.setScene(new Scene(root, 800, 500));
             stage.setScene(new Scene(root, 600, 370));
             stage.show();
             if (!playSound) {
@@ -134,6 +141,16 @@ public class BombermanGame extends Application {
         stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
         stage.show();
 
+    }
+
+    @FXML
+    void showLeaderBoard(MouseEvent event) throws IOException {
+
+        FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\leaderboard.fxml").toURI().toURL());
+        Parent root = loader.load();
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();;
+        stage.setScene(new Scene(root, 800,500));
+        stage.show();
     }
 
 
@@ -265,6 +282,30 @@ public class BombermanGame extends Application {
                     if (level > maxLevel) {
 
                         stop();
+                        Connection con;
+                        PreparedStatement pst;
+                        ResultSet rs;
+                        String query = "UPDATE adminn SET highestScore = ? where adminAcc = ?";
+
+                        try {
+                            Class.forName("com.mysql.cj.jdbc.Driver");
+
+                        } catch (ClassNotFoundException e) {
+                            throw new RuntimeException(e);
+                        }
+                        try {
+                            con = DriverManager.getConnection("jdbc:mysql://localhost/qrabiloo", "root", "");
+                            pst = con.prepareStatement(query);
+                            pst.setInt(1,score);
+                            pst.setString(2,username);
+                            pst.executeUpdate();
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+
+
+
+                        score = 0;
                         level = 1;
                         GlobalVariable.entities = new ArrayList<>();
                         GlobalVariable.stillObjects = new ArrayList<>();

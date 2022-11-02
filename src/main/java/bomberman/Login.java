@@ -105,7 +105,7 @@ public class Login implements Initializable {
                     BombermanGame.loginSuccess = true;
                     return "Success";
                 } else {
-                    error.setText("Wrong Move");
+                    error.setText("Invalid username or password");
                     txtuname.setText("");
                     txtpass.setText("");
                     txtuname.requestFocus();

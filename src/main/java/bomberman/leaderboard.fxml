@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bomberman.LeaderBoard">
+   <children>
+<!--      <ImageView fx:id="backBtn" fitHeight="34.0" fitWidth="117.0" layoutY="14.0" onMouseClicked="#backToMenu" pickOnBounds="true" preserveRatio="true">-->
+<!--         <image>-->
+<!--            <Image url="@menu/back.png" />-->
+<!--         </image>-->
+<!--         <cursor>-->
+<!--            <Cursor fx:constant="HAND" />-->
+<!--         </cursor>-->
+<!--      </ImageView>-->
+      <VBox layoutX="334.0" layoutY="212.0" prefHeight="120.0" prefWidth="186.0" style="-fx-background-color: red;">
+         <children>
+            <Label fx:id="top1Score" alignment="CENTER" contentDisplay="CENTER" prefHeight="121.0" prefWidth="189.0" textFill="WHITE">
+               <font>
+                  <Font name="Times New Roman Bold" size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+      <VBox layoutX="154.0" layoutY="250.0" prefHeight="80.0" prefWidth="180.0" style="-fx-background-color: yellow;">
+         <children>
+            <Label fx:id="top2Score" alignment="CENTER" contentDisplay="CENTER" prefHeight="86.0" prefWidth="186.0" textFill="WHITE">
+               <font>
+                  <Font name="Times New Roman Bold" size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+      <VBox layoutX="521.0" layoutY="281.0" prefHeight="50.0" prefWidth="180.0" style="-fx-background-color: blue;">
+         <children>
+            <Label fx:id="top3Score" alignment="CENTER" prefHeight="50.0" prefWidth="185.0" textFill="WHITE">
+               <font>
+                  <Font name="Times New Roman Bold" size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+      <Label fx:id="top1" alignment="CENTER" contentDisplay="CENTER" layoutX="334.0" layoutY="173.0" prefHeight="38.0" prefWidth="186.0" textFill="#d42020">
+         <font>
+            <Font name="Times New Roman Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="top3" alignment="CENTER" contentDisplay="CENTER" layoutX="521.0" layoutY="242.0" prefHeight="38.0" prefWidth="180.0" textFill="#d42020">
+         <font>
+            <Font name="Times New Roman Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="top2" alignment="CENTER" layoutX="154.0" layoutY="212.0" prefHeight="38.0" prefWidth="180.0" textFill="#d42020">
+         <font>
+            <Font name="Times New Roman Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="100.0" layoutY="351.0" prefHeight="58.0" prefWidth="387.0" text="YOUR HIGHEST SCORE:" textFill="#ea1212">
+         <font>
+            <Font name="Times New Roman Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="highestscore" alignment="CENTER" layoutX="487.0" layoutY="351.0" prefHeight="58.0" prefWidth="247.0" textFill="#ea1212">
+         <font>
+            <Font name="Times New Roman Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="211.0" layoutY="435.0" />
+      <Label alignment="CENTER" layoutX="301.0" layoutY="414.0" prefHeight="58.0" prefWidth="186.0" text="RANK:" textFill="#ea1212">
+         <font>
+            <Font name="Times New Roman Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="rank" alignment="CENTER" layoutX="487.0" layoutY="414.0" prefHeight="58.0" prefWidth="247.0" textFill="#ea1212">
+         <font>
+            <Font name="Times New Roman Bold" size="24.0" />
+         </font>
+      </Label>
+      <Button fx:id="btnLeader" layoutX="661.0" layoutY="40.0" mnemonicParsing="false" onAction="#handleButtonAction" text="check" />
+   </children>
+</AnchorPane>
