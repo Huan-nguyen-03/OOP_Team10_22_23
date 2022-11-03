@@ -698,6 +698,7 @@ public class BombermanGame extends Application {
                     GlobalVariable.stillObjects = new ArrayList<>();
                     Bomb.listBomb = new ArrayList<>();
                     Entity.listBarrier = new ArrayList<>();
+                    Entity.listBarrierForEnemies = new ArrayList<>();
                     Entity.listEvent =  new ArrayList<>();;
                     Brick.hasPortal = false;
                     Entity.listItem = new ArrayList<>();
@@ -734,6 +735,7 @@ public class BombermanGame extends Application {
                         GlobalVariable.stillObjects = new ArrayList<>();
                         Bomb.listBomb = new ArrayList<>();
                         Entity.listBarrier = new ArrayList<>();
+                        Entity.listBarrierForEnemies = new ArrayList<>();
                         Entity.listEvent =  new ArrayList<>();
                         Entity.listItem = new ArrayList<>();
                         try {
@@ -793,6 +795,7 @@ public class BombermanGame extends Application {
                     GlobalVariable.stillObjects = new ArrayList<>();
                     Bomb.listBomb = new ArrayList<>();
                     Entity.listBarrier = new ArrayList<>();
+                    Entity.listBarrierForEnemies = new ArrayList<>();
                     Entity.listEvent =  new ArrayList<>();;
                     Entity.listItem = new ArrayList<>();
                     Bomb.MAX_BOMB_NUMBER = 1;
@@ -831,6 +834,7 @@ public class BombermanGame extends Application {
                         Entity object = new Wall(j, i, Sprite.wall.getFxImage());
                         GlobalVariable.stillObjects.add(object);
                         Entity.listBarrier.add(object);
+                        Entity.listBarrierForEnemies.add(object);
                         Map.mapObjects[i][j] = object;  // để ý lỗi chỗ này
                         break;
                     }
@@ -840,6 +844,7 @@ public class BombermanGame extends Application {
                         Entity object = new Brick(j, i, Sprite.brick.getFxImage());
                         GlobalVariable.stillObjects.add(object);
                         Entity.listBarrier.add(object);
+                        Entity.listBarrierForEnemies.add(object);
                         Map.mapObjects[i][j] = object;
                         Brick.numberOfBrick ++;
                         break;
@@ -856,6 +861,30 @@ public class BombermanGame extends Application {
                         Entity object1 = new Grass(j, i, Sprite.grass.getFxImage());
                         GlobalVariable.stillObjects.add(object1);
                         Entity object = new Oneal(j, i, Sprite.oneal_left1.getFxImage());
+                        GlobalVariable.entities.add(object);
+                        Map.mapObjects[i][j] = object;
+                        break;
+                    }
+                    case '3' : {
+                        Entity object1 = new Grass(j, i, Sprite.grass.getFxImage());
+                        GlobalVariable.stillObjects.add(object1);
+                        Entity object = new Kondoria(j, i, Sprite.kondoria_left1.getFxImage());
+                        GlobalVariable.entities.add(object);
+                        Map.mapObjects[i][j] = object;
+                        break;
+                    }
+                    case '4' : {
+                        Entity object1 = new Grass(j, i, Sprite.grass.getFxImage());
+                        GlobalVariable.stillObjects.add(object1);
+                        Entity object = new Doll(j, i, Sprite.doll_left1.getFxImage());
+                        GlobalVariable.entities.add(object);
+                        Map.mapObjects[i][j] = object;
+                        break;
+                    }
+                    case '5' : {
+                        Entity object1 = new Grass(j, i, Sprite.grass.getFxImage());
+                        GlobalVariable.stillObjects.add(object1);
+                        Entity object = new Mob(j, i, Sprite.mob_dead1.getFxImage());
                         GlobalVariable.entities.add(object);
                         Map.mapObjects[i][j] = object;
                         break;

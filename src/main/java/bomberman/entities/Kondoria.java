@@ -10,7 +10,7 @@ import java.util.Random;
 
 import static bomberman.entities.GlobalVariable.entities;
 
-public class Balloon extends Entity {
+public class Kondoria extends Entity {
     public static final double VELOCITY = 1;
     private static final int MAXWIDTHBLOOM = 32;
     private static final int MAXHEIGHTBLOOM = 32;
@@ -21,11 +21,14 @@ public class Balloon extends Entity {
     private boolean death;
     public List<Integer> listDirections = new ArrayList<>();
 
+    public char overriddenEntity;
+    public Entity entityIsOverridden;
+
     private int currentDirection;
     private int animationDirection;
     private int oppositeDirection;
 
-    public Balloon(int x, int y, Image img) {
+    public Kondoria(int x, int y, Image img) {
         super(x, y, img);
         death = false;
         xDouble = x * Sprite.SCALED_SIZE;
@@ -35,13 +38,16 @@ public class Balloon extends Entity {
         animationDirection = Integer.LEFT.ordinal();
         oppositeDirection = Integer.RIGHT.ordinal();
 
+        overriddenEntity = ' ';
+        entityIsOverridden = null;
+
         x_map = y;
         y_map = x;
     }
     public void moveRight() {
         xDouble+=VELOCITY;
         x = (int) xDouble;
-        if (collisionChecker.universalCheckCollision(this, listBarrierForEnemies, MAXWIDTHBLOOM, MAXHEIGHTBLOOM)) {
+        if (collisionChecker.universalCheckCollisionWithWall(this, listBarrierForEnemies, MAXWIDTHBLOOM, MAXHEIGHTBLOOM)) {
             xDouble -= VELOCITY;
             x = (int) xDouble;
         }
@@ -51,7 +57,7 @@ public class Balloon extends Entity {
     public void moveLeft() {
         xDouble-=VELOCITY;
         x = (int) xDouble;
-        if (collisionChecker.universalCheckCollision(this, listBarrierForEnemies, MAXWIDTHBLOOM, MAXHEIGHTBLOOM)) {
+        if (collisionChecker.universalCheckCollisionWithWall(this, listBarrierForEnemies, MAXWIDTHBLOOM, MAXHEIGHTBLOOM)) {
             xDouble += VELOCITY;
             x = (int) xDouble;
         }
@@ -61,7 +67,7 @@ public class Balloon extends Entity {
     public void moveUp() {
         yDouble-=VELOCITY;
         y = (int) yDouble;
-        if (collisionChecker.universalCheckCollision(this, listBarrierForEnemies, MAXWIDTHBLOOM, MAXHEIGHTBLOOM)) {
+        if (collisionChecker.universalCheckCollisionWithWall(this, listBarrierForEnemies, MAXWIDTHBLOOM, MAXHEIGHTBLOOM)) {
             yDouble += VELOCITY;
             y = (int) yDouble;
         }
@@ -71,7 +77,7 @@ public class Balloon extends Entity {
     public void moveDown() {
         yDouble+=VELOCITY;
         y = (int) yDouble;
-        if (collisionChecker.universalCheckCollision(this, listBarrierForEnemies, MAXWIDTHBLOOM, MAXHEIGHTBLOOM)) {
+        if (collisionChecker.universalCheckCollisionWithWall(this, listBarrierForEnemies, MAXWIDTHBLOOM, MAXHEIGHTBLOOM)) {
             yDouble -= VELOCITY;
             y = (int) yDouble;
         }
@@ -81,7 +87,7 @@ public class Balloon extends Entity {
     @Override
     public void update() {
         if (death) {
-            img = Sprite.balloom_dead.getFxImage();
+            img = Sprite.kondoria_dead.getFxImage();
         } else {
             lookUp();
             moveAlgorithm();
@@ -99,9 +105,9 @@ public class Balloon extends Entity {
             }
 
             if (animationDirection == Integer.LEFT.ordinal())
-                img = Sprite.movingSprite(Sprite.balloom_left1, Sprite.balloom_left2, Sprite.balloom_left3, ANIMATE, TIME).getFxImage();
+                img = Sprite.movingSprite(Sprite.kondoria_left1, Sprite.kondoria_left2, Sprite.kondoria_left3, ANIMATE, TIME).getFxImage();
             if (animationDirection == Integer.RIGHT.ordinal())
-                img = Sprite.movingSprite(Sprite.balloom_right1, Sprite.balloom_right2, Sprite.balloom_right3, ANIMATE, TIME).getFxImage();
+                img = Sprite.movingSprite(Sprite.kondoria_right1, Sprite.kondoria_right2, Sprite.kondoria_right3, ANIMATE, TIME).getFxImage();
             updateMap();
         }
     }
@@ -121,13 +127,13 @@ public class Balloon extends Entity {
         int y_val = this.getY() / Sprite.SCALED_SIZE;
         if (this.getX()/(double) Sprite.SCALED_SIZE == x_val && this.getY()/(double) Sprite.SCALED_SIZE == y_val) {
             listDirections.clear();
-            if (Map.map[y_val][x_val - 1] == ' ')
+            if (Map.map[y_val][x_val - 1] == ' ' || Map.map[y_val][x_val - 1] == '*')
                 listDirections.add(Integer.LEFT);
-            if (Map.map[y_val][x_val + 1] == ' ')
+            if (Map.map[y_val][x_val + 1] == ' ' || Map.map[y_val][x_val + 1] == '*')
                 listDirections.add(Integer.RIGHT);
-            if (Map.map[y_val + 1][x_val] == ' ')
+            if (Map.map[y_val + 1][x_val] == ' ' || Map.map[y_val + 1][x_val] == '*')
                 listDirections.add(Integer.DOWN);
-            if (Map.map[y_val - 1][x_val] == ' ')
+            if (Map.map[y_val - 1][x_val] == ' ' || Map.map[y_val - 1][x_val] == '*')
                 listDirections.add(Integer.UP);
 
             // delete opposite direction
@@ -171,12 +177,22 @@ public class Balloon extends Entity {
         int y_val = (int) Math.ceil(this.getY() / Sprite.SCALED_SIZE);
 
         if (x_val != y_map || y_val != x_map) {
-            Grass grass = new Grass(y_map, x_map, Sprite.grass.getFxImage());
-            Map.mapObjects[x_map][y_map] = grass;
-            Map.mapObjects[y_val][x_val]= this;
+            if (overriddenEntity == ' ') {
+                Grass grass = new Grass(y_map, x_map, Sprite.grass.getFxImage());
+                Map.mapObjects[x_map][y_map] = grass;
+                Map.map[x_map][y_map] = ' ';
+            } else if (overriddenEntity == '*') {
+                Brick brick = (Brick) entityIsOverridden;
+                Map.mapObjects[x_map][y_map] = brick;
+                Map.map[x_map][y_map] = '*';
+            }
 
-            Map.map[x_map][y_map] = ' ';
-            Map.map[y_val][x_val] = '1';
+            if (Map.mapObjects[y_val][x_val] instanceof Brick) {
+                entityIsOverridden = Map.mapObjects[y_val][x_val];
+            }
+            Map.mapObjects[y_val][x_val]= this;
+            overriddenEntity = Map.map[y_val][x_val];
+            Map.map[y_val][x_val] = '3';
 
             x_map = y_val;
             y_map = x_val;

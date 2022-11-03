@@ -59,6 +59,7 @@ public class Bomb extends Entity {
         if(removeFlame()) {
             GlobalVariable.stillObjects.remove(listBomb.get(0));
             listBarrier.remove(listBomb.get(0));
+            listBarrierForEnemies.remove(listBomb.get(0));
             listBomb.remove(0);
             removeEnemy();
         }
@@ -182,6 +183,7 @@ public class Bomb extends Entity {
                 listBrickIsDestroyed.get(i).createItem();
                 GlobalVariable.stillObjects.remove(listBrickIsDestroyed.get(i));
                 listBarrier.remove(listBrickIsDestroyed.get(i));
+                listBarrierForEnemies.remove(listBrickIsDestroyed.get(i));
                 Map.map[listBrickIsDestroyed.get(i).getY()/Sprite.SCALED_SIZE][listBrickIsDestroyed.get(i).getX()/Sprite.SCALED_SIZE] = ' ';
                 listBrickIsDestroyed.remove(i);
                 Brick.numberOfBrick--;
@@ -212,6 +214,47 @@ public class Bomb extends Entity {
             Grass grass = new Grass(x, y, Sprite.grass.getFxImage());
             Map.mapObjects[y][x] = grass;
             listEnemyIsDestroyed.add(oneal);
+        }
+
+        if (Map.map[y][x] == '3') {
+            Kondoria kondoria = (Kondoria) Map.mapObjects[y][x];
+            kondoria.setDeath(true);
+            if (kondoria.entityIsOverridden != null) {
+                Brick brick = (Brick) kondoria.entityIsOverridden;
+                Map.mapObjects[y][x] = brick;
+                Map.map[y][x] = '*';
+                kondoria.entityIsOverridden = null;
+            } else {
+                Map.map[y][x] = ' ';
+                Grass grass = new Grass(x, y, Sprite.grass.getFxImage());
+                Map.mapObjects[y][x] = grass;
+            }
+            listEnemyIsDestroyed.add(kondoria);
+        }
+
+        if (Map.map[y][x] == '4') {
+            Doll doll = (Doll) Map.mapObjects[y][x];
+            doll.setDeath(true);
+            if (doll.entityIsOverridden != null) {
+                Brick brick = (Brick) doll.entityIsOverridden;
+                Map.mapObjects[y][x] = brick;
+                Map.map[y][x] = '*';
+                doll.entityIsOverridden = null;
+            } else {
+                Map.map[y][x] = ' ';
+                Grass grass = new Grass(x, y, Sprite.grass.getFxImage());
+                Map.mapObjects[y][x] = grass;
+            }
+            listEnemyIsDestroyed.add(doll);
+        }
+
+        if (Map.map[y][x] == '5') {
+            Mob mob = (Mob) Map.mapObjects[y][x];
+            mob.setDeath(true);
+            Map.map[y][x] = ' ';
+            Grass grass = new Grass(x, y, Sprite.grass.getFxImage());
+            Map.mapObjects[y][x] = grass;
+            listEnemyIsDestroyed.add(mob);
         }
 
         if(BombermanGame.bomberman.getX()/Sprite.SCALED_SIZE == x && BombermanGame.bomberman.getY()/Sprite.SCALED_SIZE == y) {
