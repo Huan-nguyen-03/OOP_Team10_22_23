@@ -227,7 +227,8 @@ public class Bomber extends Entity {
             }
         }
         for (int i = 0; i < Bomb.listBomb.size(); i++) {
-            listBarrierForEnemies.add(Bomb.listBomb.get(i));
+            if (!listBarrierForEnemies.contains(Bomb.listBomb.get(i)))
+                listBarrierForEnemies.add(Bomb.listBomb.get(i));
         }
     }
 

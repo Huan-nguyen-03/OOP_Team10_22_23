@@ -89,7 +89,7 @@ public class BombermanGame extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         try {
-            FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\Login.fxml").toURI().toURL());
+            FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\Menu.fxml").toURI().toURL());
             Parent root = loader.load();
             stage.setTitle("Bomberman");
 //            stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));

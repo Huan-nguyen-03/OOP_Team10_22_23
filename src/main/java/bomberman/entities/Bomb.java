@@ -60,6 +60,7 @@ public class Bomb extends Entity {
             GlobalVariable.stillObjects.remove(listBomb.get(0));
             listBarrier.remove(listBomb.get(0));
             listBarrierForEnemies.remove(listBomb.get(0));
+            System.out.println(listBarrierForEnemies.size());
             listBomb.remove(0);
             removeEnemy();
         }
