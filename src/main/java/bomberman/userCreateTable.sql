@@ -16,8 +16,5 @@ CREATE TABLE `qrabiloo`.`userhistory`
  `timeEnd` DATETIME NOT NULL ,
  `timePlayed` DATETIME NOT NULL ,
   `score` INT NOT NULL ,
-  PRIMARY KEY (`username`)
-  `CONSTRAINT linked_username` FOREIGN KEY (`username`)
-  REFERENCES `userbomber`(`userName`) ON DELETE RESTRICT ON UPDATE RESTRICT;
-  )
+  PRIMARY KEY (`username`))
 ENGINE = InnoDB;
