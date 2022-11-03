@@ -22,6 +22,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import bomberman.graphics.Sprite;
 import java.io.*;
@@ -37,6 +40,8 @@ public class BombermanGame extends Application {
     public static Bomber bomberman;
     private static Scene scene;
     public static Stage stage;
+
+    public Group roots = new Group();
     @FXML
     private ImageView playBtn;
 
@@ -57,6 +62,7 @@ public class BombermanGame extends Application {
     private GraphicsContext gc;
     private Canvas canvas;
 
+    private Text text = new Text();
     public static boolean gameState = false;
 
     Sound sound = new Sound();
@@ -71,6 +77,8 @@ public class BombermanGame extends Application {
     public static boolean loginSuccess = false;
 
     public static int score = 0;
+
+    public boolean pauseGame = false;
 
 
 
@@ -130,6 +138,17 @@ public class BombermanGame extends Application {
 
     }
 
+    public void pauseGame() {
+
+    }
+
+    public void continueGame() {
+
+    }
+
+    public void handlePauseGame(MouseEvent event) {
+
+    }
 
 
 
@@ -159,9 +178,24 @@ public class BombermanGame extends Application {
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
 
+
+
+        text.setText(String.valueOf(score));
+        text.setX(50);
+        text.setY(454);
+        text.setFont(Font.font("Verdana",50));
+        text.setFill(Color.LIMEGREEN);
+
+
+
+
         // Tao root container
-        Group root = new Group();
-        root.getChildren().add(canvas);
+
+        roots.getChildren().add(canvas);
+        roots.getChildren().add(text);
+
+
+
 
         Map map = new Map();
         map.loadMap(level);
@@ -175,7 +209,8 @@ public class BombermanGame extends Application {
 
 
         // Tao scene
-        scene = new Scene(root);
+        scene = new Scene(roots, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT + 100);
+
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
@@ -267,7 +302,18 @@ public class BombermanGame extends Application {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
+                roots.getChildren().remove(text);
 
+                text.setText(String.valueOf(score));
+                text.setX(50);
+                text.setY(454);
+                text.setFont(Font.font("Verdana",50));
+                text.setFill(Color.LIMEGREEN);
+                roots.getChildren().add(text);
+
+                if (pauseGame) {
+                    pauseGame();
+                }
                 if (isWinGame) {
                     isWinGame = false;
 
@@ -394,6 +440,7 @@ public class BombermanGame extends Application {
 
     }
 
+
     public void createMap() throws IOException {
         createMapFromFile();
     }
@@ -461,6 +508,7 @@ public class BombermanGame extends Application {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         GlobalVariable.stillObjects.forEach(g -> g.render(gc));
         GlobalVariable.entities.forEach(g -> g.render(gc));
+
 
     }
 }

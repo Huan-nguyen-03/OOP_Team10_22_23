@@ -10,10 +10,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.*;
 import java.util.Objects;
@@ -24,6 +27,10 @@ import static bomberman.BombermanGame.WIDTH;
 
 
 public class LeaderBoard implements Initializable {
+
+    @FXML
+    private Button returnButton;
+
     @FXML
     private Label highestscore;
 
@@ -69,7 +76,21 @@ public class LeaderBoard implements Initializable {
 //                } catch (IOException ex) {
 //                    System.out.println(ex.getMessage());
 //                }
+
             }
+        }
+        if (actionEvent.getSource() == returnButton) {
+
+            try {
+                FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\Menu.fxml").toURI().toURL());
+                Parent root = loader.load();
+                BombermanGame.stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();;
+                BombermanGame.stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
+                BombermanGame.stage.show();
+            } catch (IOException ex) {
+                System.out.println(ex.getMessage());
+            }
+
         }
     }
 
@@ -157,4 +178,6 @@ public class LeaderBoard implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
     }
+
+
 }

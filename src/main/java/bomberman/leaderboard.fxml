@@ -8,14 +8,6 @@
 
 <AnchorPane prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bomberman.LeaderBoard">
    <children>
-<!--      <ImageView fx:id="backBtn" fitHeight="34.0" fitWidth="117.0" layoutY="14.0" onMouseClicked="#backToMenu" pickOnBounds="true" preserveRatio="true">-->
-<!--         <image>-->
-<!--            <Image url="@menu/back.png" />-->
-<!--         </image>-->
-<!--         <cursor>-->
-<!--            <Cursor fx:constant="HAND" />-->
-<!--         </cursor>-->
-<!--      </ImageView>-->
       <VBox layoutX="334.0" layoutY="212.0" prefHeight="120.0" prefWidth="186.0" style="-fx-background-color: red;">
          <children>
             <Label fx:id="top1Score" alignment="CENTER" contentDisplay="CENTER" prefHeight="121.0" prefWidth="189.0" textFill="WHITE">
@@ -79,6 +71,7 @@
             <Font name="Times New Roman Bold" size="24.0" />
          </font>
       </Label>
-      <Button fx:id="btnLeader" layoutX="661.0" layoutY="40.0" mnemonicParsing="false" onAction="#handleButtonAction" text="check" />
+      <Button fx:id="btnLeader" layoutX="661.0" layoutY="40.0" mnemonicParsing="false" onAction="#handleButtonAction" style="-fx-background-image: url('https://cdn.pixabay.com/photo/2015/07/25/08/05/the-button-859351_1280.png');" text="check" />
+      <Button fx:id="returnButton" layoutX="50.0" layoutY="88.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="38.0" prefWidth="96.0" style="-fx-background-image: url('https://i.ibb.co/59Yyng7/back.png'); -fx-background-repeat: no-repeat; -fx-background-position: center; -fx-background-size: 100%;" text="" />
    </children>
 </AnchorPane>

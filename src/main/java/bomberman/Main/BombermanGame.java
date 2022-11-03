@@ -37,6 +37,7 @@ public class BombermanGame extends Application {
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
 
+
         // Tao root container
         Group root = new Group();
         root.getChildren().add(canvas);
@@ -50,6 +51,7 @@ public class BombermanGame extends Application {
             sound.stageTheme.play();
             sound.stageTheme.loop();
         }
+
 
 
         // Tao scene
