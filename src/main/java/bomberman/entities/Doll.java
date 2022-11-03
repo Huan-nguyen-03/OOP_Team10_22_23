@@ -23,7 +23,8 @@ public class Doll extends Entity {
     private int x_map;  // coordinates are saved in map
     private int y_map;  // coordinates are saved in map
 
-    private char overriddenEntity;
+    public char overriddenEntity;
+    public Entity entityIsOverridden;
     private int currentDirection;
     private int animationDirection;
 
@@ -40,13 +41,15 @@ public class Doll extends Entity {
         y_map = x;
 
         overriddenEntity = ' ';
+        entityIsOverridden = null;
+
         currentDirection = Integer.RIGHT.ordinal();
         animationDirection = Integer.RIGHT.ordinal();
     }
     public void moveRight() {
         xDouble+=VELOCITY;
         x = (int) xDouble;
-        if (collisionChecker.universalCheckCollisionWithWall(this, listBarrier, MAXWIDTHBLOOM, MAXHEIGHTBLOOM)) {
+        if (collisionChecker.universalCheckCollisionWithWall(this, listBarrierForEnemies, MAXWIDTHBLOOM, MAXHEIGHTBLOOM)) {
             xDouble -= VELOCITY;
             x = (int) xDouble;
         }
@@ -55,7 +58,7 @@ public class Doll extends Entity {
     public void moveLeft() {
         xDouble-=VELOCITY;
         x = (int) xDouble;
-        if (collisionChecker.universalCheckCollisionWithWall(this, listBarrier, MAXWIDTHBLOOM, MAXHEIGHTBLOOM)) {
+        if (collisionChecker.universalCheckCollisionWithWall(this, listBarrierForEnemies, MAXWIDTHBLOOM, MAXHEIGHTBLOOM)) {
             xDouble += VELOCITY;
             x = (int) xDouble;
         }
@@ -64,7 +67,7 @@ public class Doll extends Entity {
     public void moveUp() {
         yDouble-=VELOCITY;
         y = (int) yDouble;
-        if (collisionChecker.universalCheckCollisionWithWall(this, listBarrier, MAXWIDTHBLOOM, MAXHEIGHTBLOOM)) {
+        if (collisionChecker.universalCheckCollisionWithWall(this, listBarrierForEnemies, MAXWIDTHBLOOM, MAXHEIGHTBLOOM)) {
             yDouble += VELOCITY;
             y = (int) yDouble;
         }
@@ -74,7 +77,7 @@ public class Doll extends Entity {
     public void moveDown() {
         yDouble+=VELOCITY;
         y = (int) yDouble;
-        if (collisionChecker.universalCheckCollisionWithWall(this, listBarrier, MAXWIDTHBLOOM, MAXHEIGHTBLOOM)) {
+        if (collisionChecker.universalCheckCollisionWithWall(this, listBarrierForEnemies, MAXWIDTHBLOOM, MAXHEIGHTBLOOM)) {
             yDouble -= VELOCITY;
             y = (int) yDouble;
         }
@@ -169,9 +172,14 @@ public class Doll extends Entity {
                 Map.mapObjects[x_map][y_map] = grass;
                 Map.map[x_map][y_map] = ' ';
             } else if (overriddenEntity == '*') {
-                Brick brick = new Brick(y_map, x_map, Sprite.brick.getFxImage());
+                Brick brick = (Brick) entityIsOverridden;
                 Map.mapObjects[x_map][y_map] = brick;
                 Map.map[x_map][y_map] = '*';
+                entityIsOverridden = null;
+            }
+
+            if (Map.mapObjects[y_val][x_val] instanceof Brick) {
+                entityIsOverridden = Map.mapObjects[y_val][x_val];
             }
             Map.mapObjects[y_val][x_val]= this;
             overriddenEntity = Map.map[y_val][x_val];

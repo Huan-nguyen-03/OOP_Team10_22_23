@@ -44,7 +44,7 @@ public class Oneal extends Entity {
     public void moveRight() {
         xDouble+=VELOCITY;
         x = (int) xDouble;
-        if (collisionChecker.universalCheckCollision(this, listBarrier, MAXWIDTHBLOOM, MAXHEIGHTBLOOM)) {
+        if (collisionChecker.universalCheckCollision(this, listBarrierForEnemies, MAXWIDTHBLOOM, MAXHEIGHTBLOOM)) {
             xDouble -= VELOCITY;
             x = (int) xDouble;
         }
@@ -53,7 +53,7 @@ public class Oneal extends Entity {
     public void moveLeft() {
         xDouble-=VELOCITY;
         x = (int) xDouble;
-        if (collisionChecker.universalCheckCollision(this, listBarrier, MAXWIDTHBLOOM, MAXHEIGHTBLOOM)) {
+        if (collisionChecker.universalCheckCollision(this, listBarrierForEnemies, MAXWIDTHBLOOM, MAXHEIGHTBLOOM)) {
             xDouble += VELOCITY;
             x = (int) xDouble;
         }
@@ -62,7 +62,7 @@ public class Oneal extends Entity {
     public void moveUp() {
         yDouble-=VELOCITY;
         y = (int) yDouble;
-        if (collisionChecker.universalCheckCollision(this, listBarrier, MAXWIDTHBLOOM, MAXHEIGHTBLOOM)) {
+        if (collisionChecker.universalCheckCollision(this, listBarrierForEnemies, MAXWIDTHBLOOM, MAXHEIGHTBLOOM)) {
             yDouble += VELOCITY;
             y = (int) yDouble;
         }
@@ -72,7 +72,7 @@ public class Oneal extends Entity {
     public void moveDown() {
         yDouble+=VELOCITY;
         y = (int) yDouble;
-        if (collisionChecker.universalCheckCollision(this, listBarrier, MAXWIDTHBLOOM, MAXHEIGHTBLOOM)) {
+        if (collisionChecker.universalCheckCollision(this, listBarrierForEnemies, MAXWIDTHBLOOM, MAXHEIGHTBLOOM)) {
             yDouble -= VELOCITY;
             y = (int) yDouble;
         }

@@ -279,7 +279,7 @@ public class AStarNoBrick {
             Pair<Integer, Integer> p = new Pair<>(point.x, point.y);
             tempList.add(p);
         }
-        System.out.println(tempList);
+//        System.out.println(tempList);
 //        System.out.println("");
         return tempList;
     }

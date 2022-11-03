@@ -21,7 +21,8 @@ public class Kondoria extends Entity {
     private boolean death;
     public List<Integer> listDirections = new ArrayList<>();
 
-    private char overriddenEntity;
+    public char overriddenEntity;
+    public Entity entityIsOverridden;
 
     private int currentDirection;
     private int animationDirection;
@@ -36,7 +37,9 @@ public class Kondoria extends Entity {
         currentDirection = Integer.LEFT.ordinal();
         animationDirection = Integer.LEFT.ordinal();
         oppositeDirection = Integer.RIGHT.ordinal();
+
         overriddenEntity = ' ';
+        entityIsOverridden = null;
 
         x_map = y;
         y_map = x;
@@ -44,7 +47,7 @@ public class Kondoria extends Entity {
     public void moveRight() {
         xDouble+=VELOCITY;
         x = (int) xDouble;
-        if (collisionChecker.universalCheckCollisionWithWall(this, listBarrier, MAXWIDTHBLOOM, MAXHEIGHTBLOOM)) {
+        if (collisionChecker.universalCheckCollisionWithWall(this, listBarrierForEnemies, MAXWIDTHBLOOM, MAXHEIGHTBLOOM)) {
             xDouble -= VELOCITY;
             x = (int) xDouble;
         }
@@ -54,7 +57,7 @@ public class Kondoria extends Entity {
     public void moveLeft() {
         xDouble-=VELOCITY;
         x = (int) xDouble;
-        if (collisionChecker.universalCheckCollisionWithWall(this, listBarrier, MAXWIDTHBLOOM, MAXHEIGHTBLOOM)) {
+        if (collisionChecker.universalCheckCollisionWithWall(this, listBarrierForEnemies, MAXWIDTHBLOOM, MAXHEIGHTBLOOM)) {
             xDouble += VELOCITY;
             x = (int) xDouble;
         }
@@ -64,7 +67,7 @@ public class Kondoria extends Entity {
     public void moveUp() {
         yDouble-=VELOCITY;
         y = (int) yDouble;
-        if (collisionChecker.universalCheckCollisionWithWall(this, listBarrier, MAXWIDTHBLOOM, MAXHEIGHTBLOOM)) {
+        if (collisionChecker.universalCheckCollisionWithWall(this, listBarrierForEnemies, MAXWIDTHBLOOM, MAXHEIGHTBLOOM)) {
             yDouble += VELOCITY;
             y = (int) yDouble;
         }
@@ -74,7 +77,7 @@ public class Kondoria extends Entity {
     public void moveDown() {
         yDouble+=VELOCITY;
         y = (int) yDouble;
-        if (collisionChecker.universalCheckCollisionWithWall(this, listBarrier, MAXWIDTHBLOOM, MAXHEIGHTBLOOM)) {
+        if (collisionChecker.universalCheckCollisionWithWall(this, listBarrierForEnemies, MAXWIDTHBLOOM, MAXHEIGHTBLOOM)) {
             yDouble -= VELOCITY;
             y = (int) yDouble;
         }
@@ -179,9 +182,13 @@ public class Kondoria extends Entity {
                 Map.mapObjects[x_map][y_map] = grass;
                 Map.map[x_map][y_map] = ' ';
             } else if (overriddenEntity == '*') {
-                Brick brick = new Brick(y_map, x_map, Sprite.brick.getFxImage());
+                Brick brick = (Brick) entityIsOverridden;
                 Map.mapObjects[x_map][y_map] = brick;
                 Map.map[x_map][y_map] = '*';
+            }
+
+            if (Map.mapObjects[y_val][x_val] instanceof Brick) {
+                entityIsOverridden = Map.mapObjects[y_val][x_val];
             }
             Map.mapObjects[y_val][x_val]= this;
             overriddenEntity = Map.map[y_val][x_val];
