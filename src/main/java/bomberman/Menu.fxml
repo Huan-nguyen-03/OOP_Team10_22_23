@@ -7,20 +7,20 @@
 
 <AnchorPane centerShape="false" prefHeight="376.0" prefWidth="679.0" style="-fx-background-image: url('https://shiverstuff.files.wordpress.com/2009/12/bombawallpaper.png'); -fx-background-size: 100% 100%; -fx-background-repeat: no-repeat; -fx-background-position: center center;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bomberman.BombermanGame">
    <children>
-      <ImageView fx:id="playBtn" fitHeight="56.0" fitWidth="150.0" layoutX="42.0" layoutY="39.0" onMouseClicked="#startGame">
-         <Image url="@menu/start_game.png" />
+      <ImageView fx:id="playBtn" fitHeight="38.0" fitWidth="156.0" layoutX="8.0" layoutY="8.0" onMouseClicked="#startGame">
+         <Image url="@menu/Rectangular/Orange/Start%20192x48.png" />
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
-      <ImageView fx:id="howToPlayBtn" fitHeight="56.0" fitWidth="150.0" layoutX="42.0" layoutY="114.0" onMouseClicked="#showHowToPlay">
-         <Image url="@menu/HowToPlay.png" />
+      <ImageView fx:id="howToPlayBtn" fitHeight="38.0" fitWidth="156.0" layoutX="8.0" layoutY="54.0" onMouseClicked="#showHowToPlay">
+         <Image url="@menu/Rectangular/Orange/Status%20192x48.png" />
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
-      <ImageView fx:id="leaderboardBtn" fitHeight="113.0" fitWidth="131.0" layoutX="373.0" layoutY="220.0" onMouseClicked="#showLeaderBoard">
-         <Image url="@menu/leaderBoard.png" />
+      <ImageView fx:id="leaderboardBtn" fitHeight="38.0" fitWidth="156.0" layoutX="11.0" layoutY="99.0" onMouseClicked="#showLeaderBoard">
+         <Image url="@menu/Rectangular/Orange/Leaderboards%20192x48.png" />
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>

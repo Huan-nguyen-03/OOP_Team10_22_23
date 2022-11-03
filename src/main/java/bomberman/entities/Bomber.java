@@ -30,6 +30,7 @@ public class Bomber extends Entity {
     }
     @Override
     public void update() {
+        System.out.println(VELOCITY);
         setPlaySound();
         updateMap();
         addBombToListBarrier();

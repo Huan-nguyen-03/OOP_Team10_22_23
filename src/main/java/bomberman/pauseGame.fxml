@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-image: url('https://shiverstuff.files.wordpress.com/2009/12/bombawallpaper.png'); -fx-background-size: 100% 100%; -fx-background-repeat: no-repeat; -fx-background-position: center center;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bomberman.BombermanGame">
+    <children>
+        <ImageView fx:id="continueBtn" fitHeight="38.0" fitWidth="156.0" layoutX="14.0" layoutY="43.0" onMouseClicked="#continueGame">
+            <Image url="@menu/Continue.png" />
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
+        </ImageView>
+        <ImageView fx:id="quitBtn" fitHeight="38.0" fitWidth="156.0" layoutX="14.0" layoutY="94.0" onMouseClicked="#backToMenu">
+            <Image url="@menu/Quit.png" />
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
+        </ImageView>
+    </children>
+</AnchorPane>
