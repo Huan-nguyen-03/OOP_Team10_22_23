@@ -44,6 +44,20 @@ public class CollisionChecker {
         return false;
     }
 
+    public boolean universalCheckCollisionWithWall(Entity entity, List<Entity> listBarrier, int width, int height) {
+        for (int i = 0; i < listBarrier.size(); i++) {
+            if (!(listBarrier.get(i) instanceof Grass) && !(listBarrier.get(i) instanceof Brick)) {
+                if (entity.getX() < listBarrier.get(i).getX() + Sprite.SCALED_SIZE
+                        && entity.getX() + width > listBarrier.get(i).getX()
+                        && entity.getY() < listBarrier.get(i).getY() + Sprite.SCALED_SIZE
+                        && entity.getY() + height > listBarrier.get(i).getY() ) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public Entity checkItemCollision(Entity entity, List<Entity> listItem) {
         for (int i = 0; i < listItem.size(); i++) {
             if (entity.getX() < listItem.get(i).getX() + Sprite.SCALED_SIZE
@@ -76,6 +90,18 @@ public class CollisionChecker {
         }
 
         if (Map.map[y][x] == '2') {
+            return true;
+        }
+
+        if (Map.map[y][x] == '3') {
+            return true;
+        }
+
+        if (Map.map[y][x] == '4') {
+            return true;
+        }
+
+        if (Map.map[y][x] == '5') {
             return true;
         }
         return false;

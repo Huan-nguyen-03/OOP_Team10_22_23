@@ -365,6 +365,30 @@ public class BombermanGame extends Application {
                         Map.mapObjects[i][j] = object;
                         break;
                     }
+                    case '3' : {
+                        Entity object1 = new Grass(j, i, Sprite.grass.getFxImage());
+                        GlobalVariable.stillObjects.add(object1);
+                        Entity object = new Kondoria(j, i, Sprite.kondoria_left1.getFxImage());
+                        GlobalVariable.entities.add(object);
+                        Map.mapObjects[i][j] = object;
+                        break;
+                    }
+                    case '4' : {
+                        Entity object1 = new Grass(j, i, Sprite.grass.getFxImage());
+                        GlobalVariable.stillObjects.add(object1);
+                        Entity object = new Doll(j, i, Sprite.doll_left1.getFxImage());
+                        GlobalVariable.entities.add(object);
+                        Map.mapObjects[i][j] = object;
+                        break;
+                    }
+                    case '5' : {
+                        Entity object1 = new Grass(j, i, Sprite.grass.getFxImage());
+                        GlobalVariable.stillObjects.add(object1);
+                        Entity object = new Mob(j, i, Sprite.mob_dead1.getFxImage());
+                        GlobalVariable.entities.add(object);
+                        Map.mapObjects[i][j] = object;
+                        break;
+                    }
 
                     default: {
                         Entity object = new Grass(j, i, Sprite.grass.getFxImage());

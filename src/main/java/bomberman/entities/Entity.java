@@ -57,11 +57,9 @@ public abstract class Entity {
         ANIMATE = (int) (D_ANIMATE - longTime * ENTITIES_EFFECT_SPEED);
         if (D_ANIMATE <= 0)
             D_ANIMATE = 300000;
-//        System.out.println(ANIMATE);
         gc.drawImage(img, x, y);
     }
     public abstract void update();
-    //    public abstract void update(List<Entity> stillObjects);
     public int getX() {
         return x;
     }

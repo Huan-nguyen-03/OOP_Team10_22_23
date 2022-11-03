@@ -213,6 +213,33 @@ public class Bomb extends Entity {
             listEnemyIsDestroyed.add(oneal);
         }
 
+        if (Map.map[y][x] == '3') {
+            Kondoria kondoria = (Kondoria) Map.mapObjects[y][x];
+            kondoria.setDeath(true);
+            Map.map[y][x] = ' ';
+            Grass grass = new Grass(x, y, Sprite.grass.getFxImage());
+            Map.mapObjects[y][x] = grass;
+            listEnemyIsDestroyed.add(kondoria);
+        }
+
+        if (Map.map[y][x] == '4') {
+            Doll doll = (Doll) Map.mapObjects[y][x];
+            doll.setDeath(true);
+            Map.map[y][x] = ' ';
+            Grass grass = new Grass(x, y, Sprite.grass.getFxImage());
+            Map.mapObjects[y][x] = grass;
+            listEnemyIsDestroyed.add(doll);
+        }
+
+        if (Map.map[y][x] == '5') {
+            Mob mob = (Mob) Map.mapObjects[y][x];
+            mob.setDeath(true);
+            Map.map[y][x] = ' ';
+            Grass grass = new Grass(x, y, Sprite.grass.getFxImage());
+            Map.mapObjects[y][x] = grass;
+            listEnemyIsDestroyed.add(mob);
+        }
+
         if(BombermanGame.bomberman.getX()/Sprite.SCALED_SIZE == x && BombermanGame.bomberman.getY()/Sprite.SCALED_SIZE == y) {
             BombermanGame.bomberman.death = true;
             timer2.setTime(LocalTime.now());

@@ -4,7 +4,7 @@ import javafx.util.Pair;
 
 import java.util.*;
 
-public class AStar {
+public class AStarNoBrick {
     private static double FLT_MAX = 10000;
     public class Point {
         public int x, y, xParent, yParent;
@@ -30,7 +30,7 @@ public class AStar {
         }
     }
 
-    public List<Pair<Integer, Integer>> aStarSearch(char[][] map, int ROW, int COL, int xSrc, int ySrc, int xDest, int yDest) {
+    public List<Pair<Integer, Integer>> aStarNoBrickSearch(char[][] map, int ROW, int COL, int xSrc, int ySrc, int xDest, int yDest) {
         boolean[][] closeList = new boolean[ROW][COL];
         for (int i = 0; i < ROW; i++) {
             for (int j = 0; j < COL; j++) {
@@ -91,7 +91,7 @@ public class AStar {
                     return tracePath(points, xDest, yDest);
                 }
                 else if (!closeList[xCurrent - 1][yCurrent]
-                        && map[xCurrent - 1][yCurrent] == ' ') {
+                        && (map[xCurrent - 1][yCurrent] == ' ' || map[xCurrent - 1][yCurrent] == '*')) {
                     gNew = points[xCurrent][yCurrent].g + 1.0;
                     hNew = calculateHValue(xCurrent - 1, yCurrent, xDest, yDest);
                     fNew = gNew + hNew;
@@ -129,7 +129,7 @@ public class AStar {
                     return tracePath(points, xDest, yDest);
                 }
                 else if (!closeList[xCurrent + 1][yCurrent]
-                        && map[xCurrent + 1][yCurrent] == ' ') {
+                        && (map[xCurrent + 1][yCurrent] == ' ' || map[xCurrent + 1][yCurrent] == '*')) {
                     gNew = points[xCurrent][yCurrent].g + 1.0;
                     hNew = calculateHValue(xCurrent + 1, yCurrent, xDest, yDest);
                     fNew = gNew + hNew;
@@ -167,7 +167,7 @@ public class AStar {
                     return tracePath(points, xDest, yDest);
                 }
                 else if (!closeList[xCurrent][yCurrent - 1]
-                        && map[xCurrent][yCurrent - 1] == ' ') {
+                        && (map[xCurrent][yCurrent - 1] == ' ' || map[xCurrent][yCurrent - 1] == '*')) {
                     gNew = points[xCurrent][yCurrent].g + 1.0;
                     hNew = calculateHValue(xCurrent, yCurrent - 1, xDest, yDest);
                     fNew = gNew + hNew;
@@ -205,7 +205,7 @@ public class AStar {
                     return tracePath(points, xDest, yDest);
                 }
                 else if (!closeList[xCurrent][yCurrent + 1]
-                        && map[xCurrent][yCurrent + 1] == ' ') {
+                        && (map[xCurrent][yCurrent + 1] == ' ' || map[xCurrent][yCurrent + 1] == '*')) {
                     gNew = points[xCurrent][yCurrent].g + 1.0;
                     hNew = calculateHValue(xCurrent, yCurrent + 1, xDest, yDest);
                     fNew = gNew + hNew;
