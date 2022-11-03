@@ -35,6 +35,8 @@ import java.io.*;
 
 import java.net.MalformedURLException;
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -66,6 +68,10 @@ public class BombermanGame extends Application {
     @FXML
     private ImageView leaderboardBtn;
 
+
+    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+    LocalDateTime begin ;
+    LocalDateTime end ;
     public static final int WIDTH = 31;
     public static final int HEIGHT = 13;
 
@@ -146,6 +152,7 @@ public class BombermanGame extends Application {
     }
 
     public void winGame(Stage stage) throws IOException {
+        Bomber.VELOCITY = 2;
         FXMLLoader loaders = new FXMLLoader(new File("src\\main\\java\\bomberman\\winGame.fxml").toURI().toURL());
         Parent root = loaders.load();
 
@@ -299,7 +306,7 @@ public class BombermanGame extends Application {
                 }
             };
         });
-        GlobalVariable.entities.add(bomberman);
+//        GlobalVariable.entities.add(bomberman);
 
         // Them scene vao stage
 
@@ -327,7 +334,7 @@ public class BombermanGame extends Application {
 
                 if (pauseGame) {
                     stop();
-                    oldStage = stage;
+
                     try {
                         pauseGame(stage);
                     } catch (IOException e) {
@@ -336,6 +343,7 @@ public class BombermanGame extends Application {
                 }
                 if (isWinGame) {
                     isWinGame = false;
+
 
                     GlobalVariable.entities = new ArrayList<>();
                     GlobalVariable.stillObjects = new ArrayList<>();
@@ -373,6 +381,7 @@ public class BombermanGame extends Application {
 
                         score = 0;
                         level = 1;
+
                         GlobalVariable.entities = new ArrayList<>();
                         GlobalVariable.stillObjects = new ArrayList<>();
                         Bomb.listBomb = new ArrayList<>();
@@ -404,7 +413,8 @@ public class BombermanGame extends Application {
                 }
                 if(!gameState) {
                     render();
-                    update();}
+                    update();
+                    }
                 else {
                     stop();
                     Connection con;
@@ -429,9 +439,10 @@ public class BombermanGame extends Application {
                     }
 
 
-
+                    Bomber.VELOCITY = 2;
                     score = 0;
                     level = 1;
+                    Brick.hasPortal = false;
                     GlobalVariable.entities = new ArrayList<>();
                     GlobalVariable.stillObjects = new ArrayList<>();
                     Bomb.listBomb = new ArrayList<>();
@@ -524,6 +535,8 @@ public class BombermanGame extends Application {
         // Tao Canvas
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
+
+        begin = LocalDateTime.now();
 
         pause.setX(800);
         pause.setY(500);
@@ -686,7 +699,6 @@ public class BombermanGame extends Application {
 
                 if (pauseGame) {
                     stop();
-                    oldStage = stage;
                     try {
                         pauseGame(stage);
                     } catch (IOException e) {
@@ -767,6 +779,7 @@ public class BombermanGame extends Application {
                     render();
                     update();}
                 else {
+                    end = LocalDateTime.now();
                     stop();
                     Connection con;
                     PreparedStatement pst;
@@ -790,9 +803,10 @@ public class BombermanGame extends Application {
                         }
 
 
-
+                    Bomber.VELOCITY = 2;
                     score = 0;
                     level = 1;
+                    Brick.hasPortal = false;
                     GlobalVariable.entities = new ArrayList<>();
                     GlobalVariable.stillObjects = new ArrayList<>();
                     Bomb.listBomb = new ArrayList<>();
