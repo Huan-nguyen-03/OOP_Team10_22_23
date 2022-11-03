@@ -42,6 +42,10 @@ public class Login implements Initializable {
     @FXML
     private Label error;
 
+    String uname;
+
+    String pass;
+
 
     Connection con;
     PreparedStatement pst;
@@ -57,6 +61,7 @@ public class Login implements Initializable {
                     BombermanGame.stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();;
                     BombermanGame.stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
                     BombermanGame.stage.show();
+                    BombermanGame.username = uname;
                 } catch (IOException ex) {
                     System.out.println(ex.getMessage());
                 }
@@ -68,8 +73,8 @@ public class Login implements Initializable {
     public String logIn() {
 
 
-        String uname = txtuname.getText();
-        String pass = txtpass.getText();
+        uname = txtuname.getText();
+        pass = txtpass.getText();
 
         if (uname.equals("") && pass.equals(""))
         {
@@ -100,7 +105,7 @@ public class Login implements Initializable {
                     BombermanGame.loginSuccess = true;
                     return "Success";
                 } else {
-                    error.setText("Wrong Move");
+                    error.setText("Invalid username or password");
                     txtuname.setText("");
                     txtpass.setText("");
                     txtuname.requestFocus();

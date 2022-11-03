@@ -209,6 +209,7 @@ public class Bomb extends Entity {
         if (Map.map[y][x] == '2') {
             Oneal oneal = (Oneal) Map.mapObjects[y][x];
             oneal.setDeath(true);
+            BombermanGame.score += 200;
             Map.map[y][x] = ' ';
             Grass grass = new Grass(x, y, Sprite.grass.getFxImage());
             Map.mapObjects[y][x] = grass;
