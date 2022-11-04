@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="423.0" prefWidth="623.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bomberman.getHistory">
+   <children>
+      <TableView fx:id="tableH" layoutX="45.0" layoutY="91.0" prefHeight="222.0" prefWidth="528.0">
+        <columns>
+          <TableColumn fx:id="id" prefWidth="37.60000228881836" text="ID" />
+            <TableColumn fx:id="un" prefWidth="130.39996337890625" text="Username" />
+            <TableColumn fx:id="ts" prefWidth="199.2000274658203" text="Time Start" />
+          <TableColumn fx:id="tp" minWidth="0.0" prefWidth="77.5999755859375" text="Time Played" />
+            <TableColumn fx:id="score" prefWidth="84.0" text="Score" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>

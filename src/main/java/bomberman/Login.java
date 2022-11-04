@@ -58,7 +58,7 @@ public class Login implements Initializable {
         if (actionEvent.getSource() == btnok) {
             if(logIn().equals("admin")) {
                 try {
-                    FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\End.fxml").toURI().toURL());
+                    FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\adminMenu.fxml").toURI().toURL());
                     Parent root = loader.load();
                     BombermanGame.stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();;
                     BombermanGame.stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));

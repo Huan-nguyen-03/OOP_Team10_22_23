@@ -11,10 +11,10 @@ PRIMARY KEY (`id`, `userName`))
 ENGINE = InnoDB;
 
 CREATE TABLE `qrabiloo`.`userhistory`
-( `username` VARCHAR(50) NOT NULL ,
+( `userName` VARCHAR(50) NOT NULL ,
 `timeStart` DATETIME NOT NULL ,
  `timeEnd` DATETIME NOT NULL ,
  `timePlayed` DATETIME NOT NULL ,
   `score` INT NOT NULL ,
-  PRIMARY KEY (`username`))
+  PRIMARY KEY (`userName`))
 ENGINE = InnoDB;
