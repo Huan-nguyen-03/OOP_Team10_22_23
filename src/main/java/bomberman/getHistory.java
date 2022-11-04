@@ -35,6 +35,9 @@ public class getHistory implements Initializable {
     @FXML
     private TableColumn<user, String> un;
 
+    @FXML
+    private TableColumn<user, String> status;
+
     ObservableList<user> listM;
 
     int index = -1;
@@ -51,6 +54,7 @@ public class getHistory implements Initializable {
         ts.setCellValueFactory(new PropertyValueFactory<user, String>("ts"));
         tp.setCellValueFactory(new PropertyValueFactory<user, Integer>("tp"));
         score.setCellValueFactory(new PropertyValueFactory<user, Integer>("score"));
+        status.setCellValueFactory(new PropertyValueFactory<user, String>("status"));
 
         listM = mysqlconnect.getDatauser();
         tableH.setItems(listM);

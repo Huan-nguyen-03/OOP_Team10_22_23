@@ -34,7 +34,7 @@ public class mysqlconnect {
                 list.add(new user(Integer.parseInt(rs.getString("id")), Integer.parseInt(rs.getString("timePlayed")),
                         Integer.parseInt(rs.getString("score")),
                         rs.getString("userName"),
-                        rs.getString("timeStart")  ));
+                        rs.getString("timeStart"), rs.getString("status")  ));
             }
         } catch (Exception e) {
             System.out.println("Đần Độn Trần Thuật");

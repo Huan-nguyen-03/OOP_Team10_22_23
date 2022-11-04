@@ -2,14 +2,23 @@ package bomberman;
 
 public class user {
     int id,tp,score;
-    String un, ts;
+    String un, ts, status;
 
-    public user(int id, int tp, int score, String un, String ts) {
+    public user(int id, int tp, int score, String un, String ts, String status) {
         this.id = id;
         this.tp = tp;
         this.score = score;
         this.un = un;
         this.ts = ts;
+        this.status = status;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public int getId() {

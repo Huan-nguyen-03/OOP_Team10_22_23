@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
@@ -60,7 +61,7 @@ public class signUp implements Initializable {
 
     ResultSet rs;
 
-    String query = "insert into userbomber(firstName, lastName, username, password, dateOfBirth) values (?,?,?,?,?)";
+    String query = "insert into userbomber(firstName, lastName, username, password, dateOfBirth, timeRegister) values (?,?,?,?,?,?)";
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -166,6 +167,10 @@ public class signUp implements Initializable {
                 pst.setString(4, pass);
 
                 pst.setString(5, bday);
+
+                LocalDateTime timeRegister = LocalDateTime.now();
+
+                pst.setString(6, String.valueOf(timeRegister));
 
 
                 if (pst.executeUpdate() > 0) {

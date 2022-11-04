@@ -64,6 +64,8 @@ public class BombermanGame extends Application {
     @FXML
     private ImageView leaderboardBtn;
 
+    private String status = "";
+
 
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
     LocalDateTime begin ;
@@ -150,7 +152,7 @@ public class BombermanGame extends Application {
         FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\userHistory.fxml").toURI().toURL());
         Parent root = loader.load();
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();;
-        stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
+        stage.setScene(new Scene(root, 740, 480));
         stage.show();
 
     }
@@ -394,9 +396,11 @@ public class BombermanGame extends Application {
                     switchLevel();
                     if (level > maxLevel) {
                         stop();
+                        status = "win";
                         resetGame();
                         try {
                             gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+                            status = "";
                             gameState = false;
                             winGame(stage);
                         } catch (IOException e) {
@@ -423,11 +427,13 @@ public class BombermanGame extends Application {
                     render();
                     update();}
                 else {
+                    status = "lose";
                     stop();
                     resetGame();
                     try {
                         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
                         gameState = false;
+                        status = "";
                         endGame(stage);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
@@ -552,7 +558,7 @@ public class BombermanGame extends Application {
         Connection con;
         PreparedStatement pst;
         ResultSet rs;
-        String query = "INSERT INTO userhistory(username, timeStart, timeEnd ,timePlayed, score) VALUES (?,?,?,?,?)";
+        String query = "INSERT INTO userhistory(username, timeStart, timeEnd ,timePlayed, score, status) VALUES (?,?,?,?,?,?)";
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -568,6 +574,7 @@ public class BombermanGame extends Application {
             pst.setString(3, dtf.format(end));
             pst.setDouble(4,timePlay);
             pst.setInt(5, score);
+            pst.setString(6,status);
 
             pst.executeUpdate();
         } catch (SQLException e) {
@@ -779,11 +786,13 @@ public class BombermanGame extends Application {
                 if (isWinGame) {
                     switchLevel();
                     if (level > maxLevel) {
+                        status = "win";
                         stop();
                         resetGame();
                         try {
                             gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
                             gameState = false;
+                            status = "";
                             winGame(stage);
                         } catch (IOException e) {
                             throw new RuntimeException(e);
@@ -810,11 +819,13 @@ public class BombermanGame extends Application {
                     update();
                 }
                 else {
+                    status = "lose";
                     stop();
                     resetGame();
                     try {
                         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
                         gameState = false;
+                        status = "";
                         endGame(stage);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
