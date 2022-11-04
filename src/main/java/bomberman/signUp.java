@@ -61,7 +61,7 @@ public class signUp implements Initializable {
 
     ResultSet rs;
 
-    String query = "insert into userbomber(firstName, lastName, username, password, dateOfBirth, timeRegister) values (?,?,?,?,?,?)";
+    String query = "insert into userbomber(firstName, lastName, username, password, dateOfBirth, timeRegister, highestScore) values (?,?,?,?,?,?,?)";
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -171,6 +171,8 @@ public class signUp implements Initializable {
                 LocalDateTime timeRegister = LocalDateTime.now();
 
                 pst.setString(6, String.valueOf(timeRegister));
+
+                pst.setInt(7, 0);
 
 
                 if (pst.executeUpdate() > 0) {

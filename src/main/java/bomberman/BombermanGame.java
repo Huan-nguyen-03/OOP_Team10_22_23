@@ -557,9 +557,12 @@ public class BombermanGame extends Application {
 
         Connection con;
         PreparedStatement pst;
+        PreparedStatement pst1;
         ResultSet rs;
-        String query = "INSERT INTO userhistory(username, timeStart, timeEnd ,timePlayed, score, status) VALUES (?,?,?,?,?,?)";
-
+        ResultSet rs1;
+        String query1 = "Select * from userbomber where userName = ?";
+        String query2 = "INSERT INTO userhistory(username, timeStart, timeEnd ,timePlayed, score, status) VALUES (?,?,?,?,?,?)";
+        String query3 = "Update userbomber set highestScore = ? where userName = ?";
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
@@ -568,7 +571,24 @@ public class BombermanGame extends Application {
         }
         try {
             con = DriverManager.getConnection("jdbc:mysql://localhost/qrabiloo", "root", "");
-            pst = con.prepareStatement(query);
+            pst = con.prepareStatement(query1);
+            pst.setString(1,username);
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                if (score > rs.getInt("highestScore")) {
+                    pst1 = con.prepareStatement(query3);
+                    pst1.setInt(1,score);
+                    pst1.setString(2,username);
+                    pst1.executeUpdate();
+                }
+            }
+
+
+
+
+
+
+            pst = con.prepareStatement(query2);
             pst.setString(1,username);
             pst.setString(2,dtf.format(begin));
             pst.setString(3, dtf.format(end));

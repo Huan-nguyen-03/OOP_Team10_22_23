@@ -71,7 +71,6 @@
             <Font name="Times New Roman Bold" size="24.0" />
          </font>
       </Label>
-      <Button fx:id="btnLeader" layoutX="661.0" layoutY="40.0" mnemonicParsing="false" onAction="#handleButtonAction" style="-fx-background-image: url('https://cdn.pixabay.com/photo/2015/07/25/08/05/the-button-859351_1280.png');" text="check" />
       <Button fx:id="returnButton" layoutX="51.0" layoutY="82.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="38.0" prefWidth="119.0" style="-fx-background-image: url('https://i.ibb.co/59Yyng7/back.png'); -fx-background-repeat: no-repeat; -fx-background-position: center; -fx-background-size: 100% 100%;" text="" />
    </children>
 </AnchorPane>

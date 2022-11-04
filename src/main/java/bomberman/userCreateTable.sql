@@ -7,6 +7,7 @@ CREATE TABLE `qrabiloo`.`userbomber`
 `dateOfBirth` DATE NOT NULL ,
 `timeRegister` DATETIME NULL ,
 `admin` BOOLEAN NULL ,
+`highestScore` INT NOT NULL ,
 PRIMARY KEY ( `userName`))
 ENGINE = InnoDB;
 
@@ -18,9 +19,8 @@ CREATE TABLE `qrabiloo`.`userhistory`
  `timeEnd` DATETIME NOT NULL ,
  `timePlayed` INT NOT NULL ,
   `score` INT NOT NULL ,
-  `status` TEXT NOT NULL
-  PRIMARY KEY (`id`)
-  CONSTRAINT linked_user FOREIGN KEY userName
-  REFERENCES userbomber (userName) ON DELETE CASCADE ON
+  `status` TEXT NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT linked_user FOREIGN KEY (userName) REFERENCES userbomber (userName) ON DELETE CASCADE ON
   UPDATE CASCADE)
 ENGINE = InnoDB;
