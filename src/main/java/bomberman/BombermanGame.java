@@ -2,10 +2,9 @@ package bomberman;
 
 import bomberman.Sound.Sound;
 import bomberman.entities.*;
-import bomberman.linhtinh.CollisionChecker;
+import bomberman.linhtinh.Timer;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,9 +14,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -29,17 +25,15 @@ import javafx.stage.Stage;
 import bomberman.graphics.Sprite;
 import javafx.scene.shape.Rectangle;
 
-import java.awt.*;
 import java.io.*;
 
 
-import java.net.MalformedURLException;
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class BombermanGame extends Application {
     public final List<Sound> sounds = new ArrayList<>();
@@ -48,6 +42,8 @@ public class BombermanGame extends Application {
     public static Stage stage;
 
     public static Stage oldStage;
+
+    public double timePlay = 0;
 
     public Group roots = new Group();
     @FXML
@@ -72,6 +68,11 @@ public class BombermanGame extends Application {
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
     LocalDateTime begin ;
     LocalDateTime end ;
+
+    Timer timeBegin = new Timer();
+
+
+
     public static final int WIDTH = 31;
     public static final int HEIGHT = 13;
 
@@ -105,6 +106,10 @@ public class BombermanGame extends Application {
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
+    }
+
+    public double switchBackToSecond(LocalTime time) {
+        return time.getHour() * 3600 + time.getMinute() * 60 + time.getSecond() + time.getNano()/(double) 1000000000;
     }
 
     @Override
@@ -353,7 +358,11 @@ public class BombermanGame extends Application {
                     Brick.hasPortal = false;
                     Entity.listItem = new ArrayList<>();
                     level++;
+                    Brick.numberOfBrick = 0;
                     if (level > maxLevel) {
+                        end = LocalDateTime.now();
+                        Timer timeEnd = new Timer();
+                        timePlay = timeBegin.TimeDiff(timeEnd);
 
                         stop();
                         Connection con;
@@ -388,6 +397,8 @@ public class BombermanGame extends Application {
                         Entity.listBarrier = new ArrayList<>();
                         Entity.listEvent =  new ArrayList<>();
                         Entity.listItem = new ArrayList<>();
+                        Brick.numberOfBrick = 0;
+                        timePlay = 0;
                         try {
                             gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
                             gameState = false;
@@ -416,6 +427,9 @@ public class BombermanGame extends Application {
                     update();
                     }
                 else {
+                    end = LocalDateTime.now();
+                    Timer timeEnd = new Timer();
+                    timePlay = timeBegin.TimeDiff(timeEnd);
                     stop();
                     Connection con;
                     PreparedStatement pst;
@@ -452,6 +466,8 @@ public class BombermanGame extends Application {
                     Bomb.MAX_BOMB_NUMBER = 1;
                     Bomb.SIZE = 1;
                     Bomber.checkBombPass = false;
+                    Brick.numberOfBrick = 0;
+                    timePlay = 0;
                     try {
                         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
                         gameState = false;
@@ -535,8 +551,8 @@ public class BombermanGame extends Application {
         // Tao Canvas
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
-
         begin = LocalDateTime.now();
+        timeBegin = new Timer();
 
         pause.setX(800);
         pause.setY(500);
@@ -706,8 +722,10 @@ public class BombermanGame extends Application {
                     }
                 }
                 if (isWinGame) {
-                    isWinGame = false;
 
+
+                    isWinGame = false;
+                    Brick.numberOfBrick = 0;
                     GlobalVariable.entities = new ArrayList<>();
                     GlobalVariable.stillObjects = new ArrayList<>();
                     Bomb.listBomb = new ArrayList<>();
@@ -718,6 +736,9 @@ public class BombermanGame extends Application {
                     Entity.listItem = new ArrayList<>();
                     level++;
                     if (level > maxLevel) {
+                        end = LocalDateTime.now();
+                        Timer timeEnd = new Timer();
+                        timePlay = timeBegin.TimeDiff(timeEnd);
 
                         stop();
                         Connection con;
@@ -745,6 +766,7 @@ public class BombermanGame extends Application {
 
                         score = 0;
                         level = 1;
+                        Brick.numberOfBrick = 0;
                         GlobalVariable.entities = new ArrayList<>();
                         GlobalVariable.stillObjects = new ArrayList<>();
                         Bomb.listBomb = new ArrayList<>();
@@ -752,6 +774,7 @@ public class BombermanGame extends Application {
                         Entity.listBarrierForEnemies = new ArrayList<>();
                         Entity.listEvent =  new ArrayList<>();
                         Entity.listItem = new ArrayList<>();
+                        timePlay = 0;
                         try {
                             gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
                             gameState = false;
@@ -779,6 +802,8 @@ public class BombermanGame extends Application {
                     render();
                     update();}
                 else {
+                    Timer timeEnd = new Timer();
+                    timePlay = timeBegin.TimeDiff(timeEnd);
                     end = LocalDateTime.now();
                     stop();
                     Connection con;
@@ -802,7 +827,7 @@ public class BombermanGame extends Application {
                             throw new RuntimeException(e);
                         }
 
-
+                    Brick.numberOfBrick = 0;
                     Bomber.VELOCITY = 2;
                     score = 0;
                     level = 1;
@@ -817,6 +842,7 @@ public class BombermanGame extends Application {
                     Bomb.MAX_BOMB_NUMBER = 1;
                     Bomb.SIZE = 1;
                     Bomber.checkBombPass = false;
+                    timePlay = 0;
                     try {
                         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
                         gameState = false;
