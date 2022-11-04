@@ -64,6 +64,7 @@ public class Login implements Initializable {
                     BombermanGame.stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
                     BombermanGame.stage.show();
                     BombermanGame.username = uname;
+                    BombermanGame.admin = true;
                 } catch (IOException ex) {
                     System.out.println(ex.getMessage());
                 }

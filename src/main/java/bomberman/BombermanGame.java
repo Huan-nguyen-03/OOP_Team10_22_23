@@ -43,6 +43,8 @@ public class BombermanGame extends Application {
 
     public static Stage oldStage;
 
+    public static boolean admin = false;
+
     public double timePlay = 0;
 
     public Group roots = new Group();
@@ -148,6 +150,14 @@ public class BombermanGame extends Application {
 
     }
 
+    public void showAllPlayerHistory(MouseEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\allHistory.fxml").toURI().toURL());
+        Parent root = loader.load();
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();;
+        stage.setScene(new Scene(root, 740, 480));
+        stage.show();
+    }
+
     public void showPlayerHistory(MouseEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\userHistory.fxml").toURI().toURL());
         Parent root = loader.load();
@@ -156,6 +166,8 @@ public class BombermanGame extends Application {
         stage.show();
 
     }
+
+
 
     public void endGame(Stage stage) throws IOException {
         FXMLLoader loaders = new FXMLLoader(new File("src\\main\\java\\bomberman\\End.fxml").toURI().toURL());
@@ -198,12 +210,19 @@ public class BombermanGame extends Application {
 
 
     public void backToMenu(MouseEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\Menu.fxml").toURI().toURL());
-        Parent root = loader.load();
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();;
-        stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
-        stage.show();
-
+        if (!admin) {
+            FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\Menu.fxml").toURI().toURL());
+            Parent root = loader.load();
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
+            stage.show();
+        } else {
+            FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\adminMenu.fxml").toURI().toURL());
+            Parent root = loader.load();
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
+            stage.show();
+        }
     }
 
     @FXML

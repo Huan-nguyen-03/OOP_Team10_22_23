@@ -41,4 +41,23 @@ public class mysqlconnect {
         }
         return list;
     }
+
+    public static ObservableList<user> getDataAllUser() {
+        Connection conn = ConnectDb();
+        ObservableList<user> list = FXCollections.observableArrayList();
+        try {
+            PreparedStatement pst = conn.prepareStatement("select * from userhistory");
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                list.add(new user(Integer.parseInt(rs.getString("id")), Integer.parseInt(rs.getString("timePlayed")),
+                        Integer.parseInt(rs.getString("score")),
+                        rs.getString("userName"),
+                        rs.getString("timeStart"), rs.getString("status")  ));
+            }
+        } catch (Exception e) {
+            System.out.println("Đần Độn Trần Thuật");
+        }
+        return list;
+    }
 }
