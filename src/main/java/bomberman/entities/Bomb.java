@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Bomb extends Entity {
-    public static int MAX_BOMB_NUMBER = 1;
+    public static int MAX_BOMB_NUMBER = BombermanGame.MAX_BOMB_DEFAULT;
     public static int SIZE = 1;
     public static double TIME_EXPLOSION = 2; // second
     public static List<Bomb> listBomb = new ArrayList<>();

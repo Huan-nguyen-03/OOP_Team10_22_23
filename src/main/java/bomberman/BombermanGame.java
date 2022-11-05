@@ -68,6 +68,11 @@ public class BombermanGame extends Application {
 
     private String status = "";
 
+    public static int MAX_BOMB_DEFAULT = 1;
+
+    public static int VELOCITY_DEFAULT = 2;
+
+
 
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
     LocalDateTime begin ;
@@ -158,6 +163,13 @@ public class BombermanGame extends Application {
         stage.show();
     }
 
+    public void orderMenu(MouseEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\orderMenu.fxml").toURI().toURL());
+        Parent root = loader.load();
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();;
+        stage.setScene(new Scene(root, 740, 480));
+        stage.show();
+    }
     public void showPlayerHistory(MouseEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\userHistory.fxml").toURI().toURL());
         Parent root = loader.load();
@@ -624,7 +636,7 @@ public class BombermanGame extends Application {
 
         score = 0;
         level = 1;
-        Bomber.VELOCITY = 2;
+        Bomber.VELOCITY = VELOCITY_DEFAULT;
         Brick.numberOfBrick = 0;
         GlobalVariable.entities = new ArrayList<>();
         GlobalVariable.stillObjects = new ArrayList<>();
@@ -634,7 +646,7 @@ public class BombermanGame extends Application {
         Entity.listEvent =  new ArrayList<>();
         Entity.listItem = new ArrayList<>();
         timePlay = 0;
-        Bomb.MAX_BOMB_NUMBER = 1;
+        Bomb.MAX_BOMB_NUMBER = MAX_BOMB_DEFAULT;
         Bomb.SIZE = 1;
         Bomber.checkBombPass = false;
     }
