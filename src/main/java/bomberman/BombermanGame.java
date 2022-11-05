@@ -2,10 +2,9 @@ package bomberman;
 
 import bomberman.Sound.Sound;
 import bomberman.entities.*;
-import bomberman.linhtinh.CollisionChecker;
+import bomberman.linhtinh.Timer;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,9 +14,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -29,15 +25,15 @@ import javafx.stage.Stage;
 import bomberman.graphics.Sprite;
 import javafx.scene.shape.Rectangle;
 
-import java.awt.*;
 import java.io.*;
 
 
-import java.net.MalformedURLException;
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class BombermanGame extends Application {
     public final List<Sound> sounds = new ArrayList<>();
@@ -46,6 +42,10 @@ public class BombermanGame extends Application {
     public static Stage stage;
 
     public static Stage oldStage;
+
+    public static boolean admin = false;
+
+    public double timePlay = 0;
 
     public Group roots = new Group();
     @FXML
@@ -65,6 +65,22 @@ public class BombermanGame extends Application {
 
     @FXML
     private ImageView leaderboardBtn;
+
+    private String status = "";
+
+    public static int MAX_BOMB_DEFAULT = 1;
+
+    public static int VELOCITY_DEFAULT = 2;
+
+
+
+    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+    LocalDateTime begin ;
+    LocalDateTime end ;
+
+    Timer timeBegin = new Timer();
+
+
 
     public static final int WIDTH = 31;
     public static final int HEIGHT = 13;
@@ -100,10 +116,16 @@ public class BombermanGame extends Application {
         Application.launch(BombermanGame.class);
     }
 
+    public double switchBackToSecond(LocalTime time) {
+        return time.getHour() * 3600 + time.getMinute() * 60 + time.getSecond() + time.getNano()/(double) 1000000000;
+    }
+
     @Override
     public void start(Stage stage) throws IOException {
         try {
-            FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\Menu.fxml").toURI().toURL());
+
+            FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\Login.fxml").toURI().toURL());
+
             Parent root = loader.load();
             stage.setTitle("Bomberman");
 //            stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
@@ -131,6 +153,32 @@ public class BombermanGame extends Application {
         stage.show();
 
     }
+
+    public void showAllPlayerHistory(MouseEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\allHistory.fxml").toURI().toURL());
+        Parent root = loader.load();
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();;
+        stage.setScene(new Scene(root, 740, 480));
+        stage.show();
+    }
+
+    public void orderMenu(MouseEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\orderMenu.fxml").toURI().toURL());
+        Parent root = loader.load();
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();;
+        stage.setScene(new Scene(root, 740, 480));
+        stage.show();
+    }
+    public void showPlayerHistory(MouseEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\userHistory.fxml").toURI().toURL());
+        Parent root = loader.load();
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();;
+        stage.setScene(new Scene(root, 740, 480));
+        stage.show();
+
+    }
+
+
 
     public void endGame(Stage stage) throws IOException {
         FXMLLoader loaders = new FXMLLoader(new File("src\\main\\java\\bomberman\\End.fxml").toURI().toURL());
@@ -162,296 +210,7 @@ public class BombermanGame extends Application {
     }
 
     public void continueGame(MouseEvent event) throws IOException {
-        pauseGame = false;
-        canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
-        gc = canvas.getGraphicsContext2D();
-
-        pause.setX(800);
-        pause.setY(500);
-        pause.setWidth(15);
-        pause.setHeight(15);
-        pause.setFill(Color.RED);
-        statusBoard.setX(0);
-        statusBoard.setY(Sprite.SCALED_SIZE * HEIGHT);
-        statusBoard.setHeight(Sprite.SCALED_SIZE * HEIGHT);
-        statusBoard.setWidth(Sprite.SCALED_SIZE * WIDTH);
-        statusBoard.setFill(Color.BLACK);
-
-
-        text.setText(String.valueOf(score));
-        text.setX(50);
-        text.setY(454);
-        text.setFont(Font.font("Verdana",50));
-        text.setFill(Color.LIMEGREEN);
-
-
-
-
-        // Tao root container
-        System.out.println("Truoc Khi canvas");
-        roots.getChildren().add(canvas);
-        System.out.println("Truoc Khi text");
-        roots.getChildren().add(text);
-        System.out.println("Truoc Khi statusboard");
-        roots.getChildren().add(statusBoard);
-        roots.getChildren().add(pause);
-
-        pause.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                System.out.println("mouse click detected!");
-                pauseGame = true;
-            }
-        });
-
-
-
-        if (!playSound) {
-            sound.stageTheme.play();
-            sound.stageTheme.loop();
-        }
-
-
-        // Tao scene
-        scene = new Scene(roots, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT + 100);
-
-        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent keyEvent) {
-                KeyCode code = keyEvent.getCode();
-                switch (code) {
-                    case RIGHT: {
-                        if (!Entity.listEvent.contains(Entity.Integer.RIGHT))
-                            Entity.listEvent.add(Entity.Integer.RIGHT);
-                        break;
-                    }
-                    case LEFT: {
-                        if (!Entity.listEvent.contains(Entity.Integer.LEFT))
-                            Entity.listEvent.add(Entity.Integer.LEFT);
-                        break;
-                    }
-                    case UP: {
-                        if (!Entity.listEvent.contains(Entity.Integer.UP))
-                            Entity.listEvent.add(Entity.Integer.UP);
-                        break;
-
-                    }
-                    case DOWN: {
-                        if (!Entity.listEvent.contains(Entity.Integer.DOWN))
-                            Entity.listEvent.add(Entity.Integer.DOWN);
-                        break;
-                    }
-                    case SPACE: {
-                        if (Bomb.listBomb.size() < Bomb.MAX_BOMB_NUMBER) {
-                            if (!Entity.listEvent.contains(Entity.Integer.SPACE))
-                                Entity.listEvent.add(Entity.Integer.SPACE);
-                            Bomb bomb = new Bomb(bomberman.getX() / Sprite.SCALED_SIZE, bomberman.getY() / Sprite.SCALED_SIZE, Sprite.bomb.getFxImage());
-                            GlobalVariable.stillObjects.add(bomb);
-                            Bomb.listBomb.add(bomb);
-                        }
-                        break;
-                    }
-                }
-            }
-        });
-
-        scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent keyEvent) {
-                KeyCode code = keyEvent.getCode();
-                switch (code) {
-                    case RIGHT: {
-                        if (Entity.listEvent.contains(Entity.Integer.RIGHT)) {
-                            Entity.listEvent.remove(Entity.Integer.RIGHT);
-                            bomberman.setImg(Sprite.player_right.getFxImage());
-                        }
-                        break;
-                    }
-                    case LEFT: {
-                        if (Entity.listEvent.contains(Entity.Integer.LEFT)) {
-                            Entity.listEvent.remove(Entity.Integer.LEFT);
-                            bomberman.setImg(Sprite.player_left.getFxImage());
-                        }
-                        break;
-                    }
-                    case UP: {
-                        if (Entity.listEvent.contains(Entity.Integer.UP)) {
-                            Entity.listEvent.remove(Entity.Integer.UP);
-                            bomberman.setImg(Sprite.player_up.getFxImage());
-                        }
-                        break;
-
-                    }
-                    case DOWN: {
-                        if (Entity.listEvent.contains(Entity.Integer.DOWN)) {
-                            Entity.listEvent.remove(Entity.Integer.DOWN);
-                            bomberman.setImg(Sprite.player_down.getFxImage());
-                        }
-                        break;
-                    }
-                    case SPACE: {
-
-                        break;
-                    }
-                }
-            };
-        });
-        GlobalVariable.entities.add(bomberman);
-
-        // Them scene vao stage
-
-        stage.setScene(scene);
-        stage.show();
-
-        AnimationTimer timer = new AnimationTimer() {
-            @Override
-            public void handle(long l) {
-                roots.getChildren().remove(text);
-
-                statusBoard.setX(0);
-                statusBoard.setY(Sprite.SCALED_SIZE * HEIGHT);
-                statusBoard.setHeight(Sprite.SCALED_SIZE * HEIGHT);
-                statusBoard.setWidth(Sprite.SCALED_SIZE * WIDTH);
-                statusBoard.setFill(Color.BLACK);
-
-                text.setText(String.valueOf(score));
-                text.setX(50);
-                text.setY(454);
-                text.setFont(Font.font("Verdana",50));
-                text.setFill(Color.LIMEGREEN);
-
-                roots.getChildren().add(text);
-
-                if (pauseGame) {
-                    stop();
-                    oldStage = stage;
-                    try {
-                        pauseGame(stage);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                if (isWinGame) {
-                    isWinGame = false;
-
-                    GlobalVariable.entities = new ArrayList<>();
-                    GlobalVariable.stillObjects = new ArrayList<>();
-                    Bomb.listBomb = new ArrayList<>();
-                    Entity.listBarrier = new ArrayList<>();
-                    Entity.listEvent =  new ArrayList<>();;
-                    Brick.hasPortal = false;
-                    Entity.listItem = new ArrayList<>();
-                    level++;
-                    if (level > maxLevel) {
-
-                        stop();
-                        Connection con;
-                        PreparedStatement pst;
-                        ResultSet rs;
-                        String query = "UPDATE adminn SET highestScore = ? where adminAcc = ?";
-
-                        try {
-                            Class.forName("com.mysql.cj.jdbc.Driver");
-
-                        } catch (ClassNotFoundException e) {
-                            throw new RuntimeException(e);
-                        }
-                        try {
-                            con = DriverManager.getConnection("jdbc:mysql://localhost/qrabiloo", "root", "");
-                            pst = con.prepareStatement(query);
-                            pst.setInt(1,score);
-                            pst.setString(2,username);
-                            pst.executeUpdate();
-                        } catch (SQLException e) {
-                            throw new RuntimeException(e);
-                        }
-
-
-
-                        score = 0;
-                        level = 1;
-                        GlobalVariable.entities = new ArrayList<>();
-                        GlobalVariable.stillObjects = new ArrayList<>();
-                        Bomb.listBomb = new ArrayList<>();
-                        Entity.listBarrier = new ArrayList<>();
-                        Entity.listEvent =  new ArrayList<>();
-                        Entity.listItem = new ArrayList<>();
-                        try {
-                            gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-                            gameState = false;
-                            winGame(stage);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                    gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-                    try {
-                        map.loadMap(level);
-                        bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
-                        Map.map[1][1] = '0';
-                        GlobalVariable.entities.add(bomberman);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                    try {
-                        createMap();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                if(!gameState) {
-                    render();
-                    update();}
-                else {
-                    stop();
-                    Connection con;
-                    PreparedStatement pst;
-                    ResultSet rs;
-                    String query = "UPDATE adminn SET highestScore = ? where adminAcc = ?";
-
-                    try {
-                        Class.forName("com.mysql.cj.jdbc.Driver");
-
-                    } catch (ClassNotFoundException e) {
-                        throw new RuntimeException(e);
-                    }
-                    try {
-                        con = DriverManager.getConnection("jdbc:mysql://localhost/qrabiloo", "root", "");
-                        pst = con.prepareStatement(query);
-                        pst.setInt(1,score);
-                        pst.setString(2,username);
-                        pst.executeUpdate();
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    }
-
-
-
-                    score = 0;
-                    level = 1;
-                    GlobalVariable.entities = new ArrayList<>();
-                    GlobalVariable.stillObjects = new ArrayList<>();
-                    Bomb.listBomb = new ArrayList<>();
-                    Entity.listBarrier = new ArrayList<>();
-                    Entity.listEvent =  new ArrayList<>();;
-                    Entity.listItem = new ArrayList<>();
-                    Bomb.MAX_BOMB_NUMBER = 1;
-                    Bomb.SIZE = 1;
-                    Bomber.checkBombPass = false;
-                    try {
-                        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-                        gameState = false;
-                        endGame(stage);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-
-
-            }
-        };
-        timer.start();
-
+        renderMap();
     }
 
     public void handlePauseGame(MouseEvent event) {
@@ -462,48 +221,19 @@ public class BombermanGame extends Application {
 
 
     public void backToMenu(MouseEvent event) throws IOException {
-
-        Connection con;
-        PreparedStatement pst;
-        ResultSet rs;
-        String query = "UPDATE adminn SET highestScore = ? where adminAcc = ?";
-
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+        if (!admin) {
+            FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\Menu.fxml").toURI().toURL());
+            Parent root = loader.load();
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
+            stage.show();
+        } else {
+            FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\adminMenu.fxml").toURI().toURL());
+            Parent root = loader.load();
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
+            stage.show();
         }
-        try {
-            con = DriverManager.getConnection("jdbc:mysql://localhost/qrabiloo", "root", "");
-            pst = con.prepareStatement(query);
-            pst.setInt(1,score);
-            pst.setString(2,username);
-            pst.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-
-
-        score = 0;
-        level = 1;
-        GlobalVariable.entities = new ArrayList<>();
-        GlobalVariable.stillObjects = new ArrayList<>();
-        Bomb.listBomb = new ArrayList<>();
-        Entity.listBarrier = new ArrayList<>();
-        Entity.listEvent =  new ArrayList<>();;
-        Entity.listItem = new ArrayList<>();
-        Bomb.MAX_BOMB_NUMBER = 1;
-        Bomb.SIZE = 1;
-        Bomber.checkBombPass = false;
-
-        FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\Menu.fxml").toURI().toURL());
-        Parent root = loader.load();
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();;
-        stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
-        stage.show();
-
     }
 
     @FXML
@@ -518,9 +248,12 @@ public class BombermanGame extends Application {
 
 
     public void startGame(MouseEvent event) throws IOException {
+        begin = LocalDateTime.now();
+        timeBegin = new Timer();
         // Tao Canvas
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
+
 
         pause.setX(800);
         pause.setY(500);
@@ -683,7 +416,6 @@ public class BombermanGame extends Application {
 
                 if (pauseGame) {
                     stop();
-                    oldStage = stage;
                     try {
                         pauseGame(stage);
                     } catch (IOException e) {
@@ -691,118 +423,47 @@ public class BombermanGame extends Application {
                     }
                 }
                 if (isWinGame) {
-                    isWinGame = false;
-
-                    GlobalVariable.entities = new ArrayList<>();
-                    GlobalVariable.stillObjects = new ArrayList<>();
-                    Bomb.listBomb = new ArrayList<>();
-                    Entity.listBarrier = new ArrayList<>();
-                    Entity.listBarrierForEnemies = new ArrayList<>();
-                    Entity.listEvent =  new ArrayList<>();;
-                    Brick.hasPortal = false;
-                    Entity.listItem = new ArrayList<>();
-                    level++;
+                    switchLevel();
                     if (level > maxLevel) {
-
                         stop();
-                        Connection con;
-                        PreparedStatement pst;
-                        ResultSet rs;
-                        String query = "UPDATE adminn SET highestScore = ? where adminAcc = ?";
-
-                        try {
-                            Class.forName("com.mysql.cj.jdbc.Driver");
-
-                        } catch (ClassNotFoundException e) {
-                            throw new RuntimeException(e);
-                        }
-                        try {
-                            con = DriverManager.getConnection("jdbc:mysql://localhost/qrabiloo", "root", "");
-                            pst = con.prepareStatement(query);
-                            pst.setInt(1,score);
-                            pst.setString(2,username);
-                            pst.executeUpdate();
-                        } catch (SQLException e) {
-                            throw new RuntimeException(e);
-                        }
-
-
-
-                        score = 0;
-                        level = 1;
-                        GlobalVariable.entities = new ArrayList<>();
-                        GlobalVariable.stillObjects = new ArrayList<>();
-                        Bomb.listBomb = new ArrayList<>();
-                        Entity.listBarrier = new ArrayList<>();
-                        Entity.listBarrierForEnemies = new ArrayList<>();
-                        Entity.listEvent =  new ArrayList<>();
-                        Entity.listItem = new ArrayList<>();
+                        status = "win";
+                        resetGame();
                         try {
                             gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+                            status = "";
                             gameState = false;
                             winGame(stage);
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
-                    }
-                    gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-                    try {
-                        map.loadMap(level);
-                        bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
-                        Map.map[1][1] = '0';
-                        GlobalVariable.entities.add(bomberman);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                    try {
-                        createMap();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
+                    } else {
+                        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+                        try {
+                            map.loadMap(level);
+                            bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
+                            Map.map[1][1] = '0';
+                            GlobalVariable.entities.add(bomberman);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                        try {
+                            createMap();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 }
                 if(!gameState) {
                     render();
                     update();}
                 else {
+                    status = "lose";
                     stop();
-                    Connection con;
-                    PreparedStatement pst;
-                    ResultSet rs;
-                    String query = "UPDATE adminn SET highestScore = ? where adminAcc = ?";
-
-                        try {
-                            Class.forName("com.mysql.cj.jdbc.Driver");
-
-                        } catch (ClassNotFoundException e) {
-                            throw new RuntimeException(e);
-                        }
-                        try {
-                            con = DriverManager.getConnection("jdbc:mysql://localhost/qrabiloo", "root", "");
-                            pst = con.prepareStatement(query);
-                            pst.setInt(1,score);
-                            pst.setString(2,username);
-                            pst.executeUpdate();
-                        } catch (SQLException e) {
-                            throw new RuntimeException(e);
-                        }
-
-
-
-                    score = 0;
-                    level = 1;
-                    GlobalVariable.entities = new ArrayList<>();
-                    GlobalVariable.stillObjects = new ArrayList<>();
-                    Bomb.listBomb = new ArrayList<>();
-                    Entity.listBarrier = new ArrayList<>();
-                    Entity.listBarrierForEnemies = new ArrayList<>();
-                    Entity.listEvent =  new ArrayList<>();;
-                    Entity.listItem = new ArrayList<>();
-                    Bomb.MAX_BOMB_NUMBER = 1;
-                    Bomb.SIZE = 1;
-                    Bomber.checkBombPass = false;
+                    resetGame();
                     try {
                         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
                         gameState = false;
+                        status = "";
                         endGame(stage);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
@@ -916,4 +577,316 @@ public class BombermanGame extends Application {
 
 
     }
+
+
+    public void resetGame() {
+        end = LocalDateTime.now();
+        Timer timeEnd = new Timer();
+        timePlay = timeBegin.TimeDiff(timeEnd);
+
+
+        Connection con;
+        PreparedStatement pst;
+        PreparedStatement pst1;
+        ResultSet rs;
+        ResultSet rs1;
+        String query1 = "Select * from userbomber where userName = ?";
+        String query2 = "INSERT INTO userhistory(username, timeStart, timeEnd ,timePlayed, score, status) VALUES (?,?,?,?,?,?)";
+        String query3 = "Update userbomber set highestScore = ? where userName = ?";
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            con = DriverManager.getConnection("jdbc:mysql://localhost/qrabiloo", "root", "");
+            pst = con.prepareStatement(query1);
+            pst.setString(1,username);
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                if (score > rs.getInt("highestScore")) {
+                    pst1 = con.prepareStatement(query3);
+                    pst1.setInt(1,score);
+                    pst1.setString(2,username);
+                    pst1.executeUpdate();
+                }
+            }
+
+
+
+
+
+
+            pst = con.prepareStatement(query2);
+            pst.setString(1,username);
+            pst.setString(2,dtf.format(begin));
+            pst.setString(3, dtf.format(end));
+            pst.setDouble(4,timePlay);
+            pst.setInt(5, score);
+            pst.setString(6,status);
+
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
+
+        score = 0;
+        level = 1;
+        Bomber.VELOCITY = VELOCITY_DEFAULT;
+        Brick.numberOfBrick = 0;
+        GlobalVariable.entities = new ArrayList<>();
+        GlobalVariable.stillObjects = new ArrayList<>();
+        Bomb.listBomb = new ArrayList<>();
+        Entity.listBarrier = new ArrayList<>();
+        Entity.listBarrierForEnemies = new ArrayList<>();
+        Entity.listEvent =  new ArrayList<>();
+        Entity.listItem = new ArrayList<>();
+        timePlay = 0;
+        Bomb.MAX_BOMB_NUMBER = MAX_BOMB_DEFAULT;
+        Bomb.SIZE = 1;
+        Bomber.checkBombPass = false;
+    }
+
+    public void switchLevel() {
+        isWinGame = false;
+        Brick.numberOfBrick = 0;
+        GlobalVariable.entities = new ArrayList<>();
+        GlobalVariable.stillObjects = new ArrayList<>();
+        Bomb.listBomb = new ArrayList<>();
+        Entity.listBarrier = new ArrayList<>();
+        Entity.listBarrierForEnemies = new ArrayList<>();
+        Entity.listEvent =  new ArrayList<>();;
+        Brick.hasPortal = false;
+        Entity.listItem = new ArrayList<>();
+        level++;
+    }
+    public void renderMap() {
+        pauseGame = false;
+        canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
+        gc = canvas.getGraphicsContext2D();
+
+        pause.setX(800);
+        pause.setY(500);
+        pause.setWidth(15);
+        pause.setHeight(15);
+        pause.setFill(Color.RED);
+        statusBoard.setX(0);
+        statusBoard.setY(Sprite.SCALED_SIZE * HEIGHT);
+        statusBoard.setHeight(Sprite.SCALED_SIZE * HEIGHT);
+        statusBoard.setWidth(Sprite.SCALED_SIZE * WIDTH);
+        statusBoard.setFill(Color.BLACK);
+
+
+        text.setText(String.valueOf(score));
+        text.setX(50);
+        text.setY(454);
+        text.setFont(Font.font("Verdana",50));
+        text.setFill(Color.LIMEGREEN);
+
+
+
+
+        // Tao root container
+        System.out.println("Truoc Khi canvas");
+        roots.getChildren().add(canvas);
+        System.out.println("Truoc Khi text");
+        roots.getChildren().add(text);
+        System.out.println("Truoc Khi statusboard");
+        roots.getChildren().add(statusBoard);
+        roots.getChildren().add(pause);
+
+        pause.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                System.out.println("mouse click detected!");
+                pauseGame = true;
+            }
+        });
+
+
+
+        if (!playSound) {
+            sound.stageTheme.play();
+            sound.stageTheme.loop();
+        }
+
+
+        // Tao scene
+        scene = new Scene(roots, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT + 100);
+
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                KeyCode code = keyEvent.getCode();
+                switch (code) {
+                    case RIGHT: {
+                        if (!Entity.listEvent.contains(Entity.Integer.RIGHT))
+                            Entity.listEvent.add(Entity.Integer.RIGHT);
+                        break;
+                    }
+                    case LEFT: {
+                        if (!Entity.listEvent.contains(Entity.Integer.LEFT))
+                            Entity.listEvent.add(Entity.Integer.LEFT);
+                        break;
+                    }
+                    case UP: {
+                        if (!Entity.listEvent.contains(Entity.Integer.UP))
+                            Entity.listEvent.add(Entity.Integer.UP);
+                        break;
+
+                    }
+                    case DOWN: {
+                        if (!Entity.listEvent.contains(Entity.Integer.DOWN))
+                            Entity.listEvent.add(Entity.Integer.DOWN);
+                        break;
+                    }
+                    case SPACE: {
+                        if (Bomb.listBomb.size() < Bomb.MAX_BOMB_NUMBER) {
+                            if (!Entity.listEvent.contains(Entity.Integer.SPACE))
+                                Entity.listEvent.add(Entity.Integer.SPACE);
+                            Bomb bomb = new Bomb(bomberman.getX() / Sprite.SCALED_SIZE, bomberman.getY() / Sprite.SCALED_SIZE, Sprite.bomb.getFxImage());
+                            GlobalVariable.stillObjects.add(bomb);
+                            Bomb.listBomb.add(bomb);
+                        }
+                        break;
+                    }
+                }
+            }
+        });
+
+        scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                KeyCode code = keyEvent.getCode();
+                switch (code) {
+                    case RIGHT: {
+                        if (Entity.listEvent.contains(Entity.Integer.RIGHT)) {
+                            Entity.listEvent.remove(Entity.Integer.RIGHT);
+                            bomberman.setImg(Sprite.player_right.getFxImage());
+                        }
+                        break;
+                    }
+                    case LEFT: {
+                        if (Entity.listEvent.contains(Entity.Integer.LEFT)) {
+                            Entity.listEvent.remove(Entity.Integer.LEFT);
+                            bomberman.setImg(Sprite.player_left.getFxImage());
+                        }
+                        break;
+                    }
+                    case UP: {
+                        if (Entity.listEvent.contains(Entity.Integer.UP)) {
+                            Entity.listEvent.remove(Entity.Integer.UP);
+                            bomberman.setImg(Sprite.player_up.getFxImage());
+                        }
+                        break;
+
+                    }
+                    case DOWN: {
+                        if (Entity.listEvent.contains(Entity.Integer.DOWN)) {
+                            Entity.listEvent.remove(Entity.Integer.DOWN);
+                            bomberman.setImg(Sprite.player_down.getFxImage());
+                        }
+                        break;
+                    }
+                    case SPACE: {
+
+                        break;
+                    }
+                }
+            };
+        });
+//        GlobalVariable.entities.add(bomberman);
+
+        // Them scene vao stage
+
+        stage.setScene(scene);
+        stage.show();
+
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                roots.getChildren().remove(text);
+
+                statusBoard.setX(0);
+                statusBoard.setY(Sprite.SCALED_SIZE * HEIGHT);
+                statusBoard.setHeight(Sprite.SCALED_SIZE * HEIGHT);
+                statusBoard.setWidth(Sprite.SCALED_SIZE * WIDTH);
+                statusBoard.setFill(Color.BLACK);
+
+                text.setText(String.valueOf(score));
+                text.setX(50);
+                text.setY(454);
+                text.setFont(Font.font("Verdana",50));
+                text.setFill(Color.LIMEGREEN);
+
+                roots.getChildren().add(text);
+
+                if (pauseGame) {
+                    stop();
+
+                    try {
+                        pauseGame(stage);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                if (isWinGame) {
+                    switchLevel();
+                    if (level > maxLevel) {
+                        status = "win";
+                        stop();
+                        resetGame();
+                        try {
+                            gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+                            gameState = false;
+                            status = "";
+                            winGame(stage);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    } else {
+                        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+                        try {
+                            map.loadMap(level);
+                            bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
+                            Map.map[1][1] = '0';
+                            GlobalVariable.entities.add(bomberman);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                        try {
+                            createMap();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+                if(!gameState) {
+                    render();
+                    update();
+                }
+                else {
+                    status = "lose";
+                    stop();
+                    resetGame();
+                    try {
+                        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+                        gameState = false;
+                        status = "";
+                        endGame(stage);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+
+
+            }
+        };
+        timer.start();
+
+    }
+
 }

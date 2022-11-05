@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Bomb extends Entity {
-    public static int MAX_BOMB_NUMBER = 1;
+    public static int MAX_BOMB_NUMBER = BombermanGame.MAX_BOMB_DEFAULT;
     public static int SIZE = 1;
     public static double TIME_EXPLOSION = 2; // second
     public static List<Bomb> listBomb = new ArrayList<>();
@@ -219,6 +219,7 @@ public class Bomb extends Entity {
         if (Map.map[y][x] == '3') {
             Kondoria kondoria = (Kondoria) Map.mapObjects[y][x];
             kondoria.setDeath(true);
+            BombermanGame.score += 300;
             if (kondoria.entityIsOverridden != null) {
                 Brick brick = (Brick) kondoria.entityIsOverridden;
                 Map.mapObjects[y][x] = brick;
@@ -235,6 +236,7 @@ public class Bomb extends Entity {
         if (Map.map[y][x] == '4') {
             Doll doll = (Doll) Map.mapObjects[y][x];
             doll.setDeath(true);
+            BombermanGame.score += 400;
             if (doll.entityIsOverridden != null) {
                 Brick brick = (Brick) doll.entityIsOverridden;
                 Map.mapObjects[y][x] = brick;
@@ -251,6 +253,7 @@ public class Bomb extends Entity {
         if (Map.map[y][x] == '5') {
             Mob mob = (Mob) Map.mapObjects[y][x];
             mob.setDeath(true);
+            BombermanGame.score += 500;
             Map.map[y][x] = ' ';
             Grass grass = new Grass(x, y, Sprite.grass.getFxImage());
             Map.mapObjects[y][x] = grass;

@@ -12,7 +12,7 @@ import java.time.LocalTime;
 public class Bomber extends Entity {
     public static int ANIMATE = 30;
     public static int TIME = 10;
-    public static int VELOCITY = 2;
+    public static int VELOCITY = BombermanGame.VELOCITY_DEFAULT;
     public static int VELOCITY_MAX = 4;
 
     public static double dieTime = -100000;

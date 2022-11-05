@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bomberman.OrderMenu">
+   <children>
+      <Label layoutX="46.0" layoutY="180.0" text="Số bomb ban đầu" />
+      <Label layoutX="51.0" layoutY="241.0" text="Tốc độ ban đầu" />
+      <HBox layoutX="168.0" layoutY="173.0" prefHeight="30.0" prefWidth="262.0">
+         <children>
+            <RadioButton mnemonicParsing="false" text="1">
+               <toggleGroup>
+                  <ToggleGroup fx:id="bomb" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton mnemonicParsing="false" text="2" toggleGroup="$bomb" />
+            <RadioButton mnemonicParsing="false" text="3" toggleGroup="$bomb" />
+            <RadioButton mnemonicParsing="false" prefHeight="18.0" prefWidth="43.0" text="4" toggleGroup="$bomb" />
+         </children>
+      </HBox>
+      <HBox layoutX="168.0" layoutY="243.0" prefHeight="30.0" prefWidth="200.0">
+         <children>
+            <RadioButton mnemonicParsing="false" text="1">
+               <toggleGroup>
+                  <ToggleGroup fx:id="speed" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton mnemonicParsing="false" text="2" toggleGroup="$speed" />
+            <RadioButton mnemonicParsing="false" text="3" toggleGroup="$speed" />
+         </children>
+      </HBox>
+      <Label layoutX="48.0" layoutY="80.0" text="Số Map tối đa" />
+      <ImageView fitWidth="156.0" layoutX="394.0" layoutY="322.0" onMouseClicked="#save" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@menu/Orange/Save%20192x48.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="150.0" fitWidth="156.0" layoutX="15.0" layoutY="14.0" onMouseClicked="#back" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@menu/Orange/Exit%20192x48.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="94.0" layoutY="322.0" text="Đặt lại mặc định" />
+      <Label layoutX="214.0" layoutY="137.0" onMouseClicked="#level3" prefHeight="18.0" prefWidth="43.0" text="Level3" />
+      <Label layoutX="48.0" layoutY="128.0" onMouseClicked="#level1" prefHeight="18.0" prefWidth="43.0" text="Level1" />
+      <Label layoutX="146.0" layoutY="137.0" onMouseClicked="#level2" prefHeight="18.0" prefWidth="43.0" text="Level2" />
+      <Label layoutX="277.0" layoutY="137.0" onMouseClicked="#level4" prefHeight="18.0" prefWidth="43.0" text="Level4" />
+      <Label layoutX="368.0" layoutY="137.0" onMouseClicked="#level5" prefHeight="18.0" prefWidth="43.0" text="Level5" />
+      <HBox layoutX="167.0" layoutY="88.0" prefHeight="18.0" prefWidth="262.0">
+         <children>
+            <RadioButton mnemonicParsing="false" onMouseClicked="#one" text="1">
+               <toggleGroup>
+                  <ToggleGroup fx:id="map" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton mnemonicParsing="false" onMouseClicked="#two" text="2" toggleGroup="$map" />
+            <RadioButton mnemonicParsing="false" onMouseClicked="#three" text="3" toggleGroup="$map" />
+            <RadioButton mnemonicParsing="false" onMouseClicked="#four" text="4" toggleGroup="$map" />
+            <RadioButton mnemonicParsing="false" onMouseClicked="#five" text="5" toggleGroup="$map" />
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

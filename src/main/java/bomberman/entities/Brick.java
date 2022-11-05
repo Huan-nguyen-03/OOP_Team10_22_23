@@ -60,8 +60,6 @@ public class Brick extends Entity {
         System.out.println(hasPortal);
         if (!hasPortal){
             int r = rand.nextInt((numberOfBrick / 3) > 3 ? (numberOfBrick / 3 - 2) : 1);
-//            System.out.println((numberOfBrick / 3) > 3 ? (numberOfBrick / 3 - 2) : 1);
-//            System.out.println(r);
             if (r == 0) {
                 hasPortal = true;
                 return Type_Item.PORTAL.ordinal();

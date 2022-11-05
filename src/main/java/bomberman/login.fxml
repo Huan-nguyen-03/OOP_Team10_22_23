@@ -31,9 +31,9 @@
             <Font name="Arial" size="12.0" />
          </font>
       </TextField>
-      <Button fx:id="btnok" layoutX="475.0" layoutY="314.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="37.0" prefWidth="88.0" style="-fx-background-color: cyan;" text="Login">
+      <Button fx:id="btnok" layoutX="484.0" layoutY="314.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="37.0" prefWidth="88.0" style="-fx-background-color: cyan; -fx-border-radius: 20pt;" text="Login">
          <font>
-            <Font name="System Bold" size="12.0" />
+            <Font name="Times New Roman Bold" size="14.0" />
          </font></Button>
       <PasswordField fx:id="txtpass" layoutX="287.0" layoutY="228.0" prefHeight="30.0" prefWidth="292.0" promptText="Enter password" />
       <ImageView fitHeight="380.0" fitWidth="265.0" layoutX="-3.0" layoutY="-3.0" pickOnBounds="true" preserveRatio="true">
@@ -47,5 +47,15 @@
          </image>
       </ImageView>
       <Label fx:id="error" alignment="CENTER" layoutX="317.0" layoutY="271.0" prefHeight="26.0" prefWidth="238.0" textFill="#e11d12" />
+      <Label layoutX="288.0" layoutY="314.0" text="You don't have account?">
+         <font>
+            <Font name="Times New Roman" size="14.0" />
+         </font>
+      </Label>
+      <Button fx:id="signUp" layoutX="317.0" layoutY="332.0" mnemonicParsing="false" onAction="#handleButtonAction" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Sign Up!" textFill="#141cbf" underline="true">
+         <font>
+            <Font name="Times New Roman" size="14.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

@@ -65,24 +65,10 @@ public class LeaderBoard implements Initializable {
 
 
     public void handleButtonAction(ActionEvent actionEvent) {
-        if (actionEvent.getSource() == btnLeader) {
-            if(updateLeaderBoard().equals("true")) {
-//                try {
-//                    FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\Menu.fxml").toURI().toURL());
-//                    Parent root = loader.load();
-//                    BombermanGame.stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();;
-//                    BombermanGame.stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
-//                    BombermanGame.stage.show();
-//                } catch (IOException ex) {
-//                    System.out.println(ex.getMessage());
-//                }
-
-            }
-        }
         if (actionEvent.getSource() == returnButton) {
 
             try {
-                FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\Menu.fxml").toURI().toURL());
+                FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\adminMenu.fxml").toURI().toURL());
                 Parent root = loader.load();
                 BombermanGame.stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();;
                 BombermanGame.stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
@@ -100,7 +86,7 @@ public class LeaderBoard implements Initializable {
          Connection con;
          PreparedStatement pst;
          ResultSet rs;
-         String query = "SELECT * from adminn order by highestScore DESC";
+         String query = "SELECT * from userbomber order by highestScore DESC";
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException ex) {
@@ -132,7 +118,7 @@ public class LeaderBoard implements Initializable {
                 System.out.println("HEHE");
 
                 try {
-                    top1.setText(rs.getString("adminAcc"));
+                    top1.setText(rs.getString("userName"));
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -146,7 +132,7 @@ public class LeaderBoard implements Initializable {
                 try {
                     top2Score.setText(String.valueOf(rs.getInt("highestScore")));
 
-                    top2.setText(rs.getString("adminAcc"));
+                    top2.setText(rs.getString("userName"));
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -156,13 +142,13 @@ public class LeaderBoard implements Initializable {
                 try {
                     top3Score.setText(String.valueOf(rs.getInt("highestScore")));
 
-                    top3.setText(rs.getString("adminAcc"));
+                    top3.setText(rs.getString("username"));
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 }
             }
             try {
-                if (rs.getString("adminAcc").equals(BombermanGame.username)) {
+                if (rs.getString("userName").equals(BombermanGame.username)) {
                     rank.setText(String.valueOf(dem));
                     highestscore.setText(String.valueOf(rs.getInt("highestScore")));
                 }
@@ -177,6 +163,7 @@ public class LeaderBoard implements Initializable {
     }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        updateLeaderBoard();
     }
 
 

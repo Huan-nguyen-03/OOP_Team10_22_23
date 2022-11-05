@@ -29,6 +29,8 @@ import static bomberman.BombermanGame.HEIGHT;
 import static bomberman.BombermanGame.WIDTH;
 
 public class Login implements Initializable {
+    @FXML
+    private Button signUp;
 
     @FXML
     private Button btnok;
@@ -54,7 +56,20 @@ public class Login implements Initializable {
 
     public void handleButtonAction(ActionEvent actionEvent) {
         if (actionEvent.getSource() == btnok) {
-            if(logIn().equals("Success")) {
+            if(logIn().equals("admin")) {
+                try {
+                    FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\adminMenu.fxml").toURI().toURL());
+                    Parent root = loader.load();
+                    BombermanGame.stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();;
+                    BombermanGame.stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
+                    BombermanGame.stage.show();
+                    BombermanGame.username = uname;
+                    BombermanGame.admin = true;
+                } catch (IOException ex) {
+                    System.out.println(ex.getMessage());
+                }
+            }
+            if(logIn().equals("user")) {
                 try {
                     FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\Menu.fxml").toURI().toURL());
                     Parent root = loader.load();
@@ -65,6 +80,20 @@ public class Login implements Initializable {
                 } catch (IOException ex) {
                     System.out.println(ex.getMessage());
                 }
+            }
+
+
+        }
+        if (actionEvent.getSource() == signUp) {
+            try {
+                FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\signUp.fxml").toURI().toURL());
+                Parent root = loader.load();
+                BombermanGame.stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();;
+                BombermanGame.stage.setScene(new Scene(root));
+                BombermanGame.stage.show();
+                BombermanGame.username = uname;
+            } catch (IOException ex) {
+                System.out.println(ex.getMessage());
             }
         }
     }
@@ -91,7 +120,7 @@ public class Login implements Initializable {
             try {
                 con = DriverManager.getConnection("jdbc:mysql://localhost/qrabiloo", "root", "");
 
-                pst = con.prepareStatement("select * from adminn where adminAcc = ? and adminPass = ?");
+                pst = con.prepareStatement("select * from userbomber where username = ? and password = ?");
 
                 pst.setString(1, uname);
 
@@ -100,10 +129,18 @@ public class Login implements Initializable {
                 rs = pst.executeQuery();
 
                 if (rs.next()) {
-                    error.setText("Login Successfully");
-                    System.out.println("Successfully");
-                    BombermanGame.loginSuccess = true;
-                    return "Success";
+                    if (rs.getBoolean("admin")) {
+                        error.setText("Login Successfully");
+                        System.out.println("Successfully");
+                        BombermanGame.loginSuccess = true;
+                        return "admin";
+                    } else
+                    {
+                        error.setText("Login Successfully");
+                        System.out.println("Successfully");
+                        BombermanGame.loginSuccess = true;
+                        return "user";
+                    }
                 } else {
                     error.setText("Invalid username or password");
                     txtuname.setText("");

@@ -1,5 +1,5 @@
 CREATE TABLE `qrabiloo`.`userbomber`
-( `id` INT(11) NOT NULL AUTO_INCREMENT ,
+(
 `firstName` VARCHAR(50) NOT NULL ,
 `lastName` VARCHAR(50) NOT NULL ,
 `userName` VARCHAR(50) NOT NULL ,
@@ -7,17 +7,20 @@ CREATE TABLE `qrabiloo`.`userbomber`
 `dateOfBirth` DATE NOT NULL ,
 `timeRegister` DATETIME NULL ,
 `admin` BOOLEAN NULL ,
-PRIMARY KEY (`id`, `userName`))
+`highestScore` INT NOT NULL ,
+PRIMARY KEY ( `userName`))
 ENGINE = InnoDB;
 
 CREATE TABLE `qrabiloo`.`userhistory`
-( `username` VARCHAR(50) NOT NULL ,
+(
+`id` INT(11) NOT NULL AUTO_INCREMENT ,
+`userName` VARCHAR(50) NOT NULL ,
 `timeStart` DATETIME NOT NULL ,
  `timeEnd` DATETIME NOT NULL ,
- `timePlayed` DATETIME NOT NULL ,
+ `timePlayed` INT NOT NULL ,
   `score` INT NOT NULL ,
-  PRIMARY KEY (`username`)
-  `CONSTRAINT linked_username` FOREIGN KEY (`username`)
-  REFERENCES `userbomber`(`userName`) ON DELETE RESTRICT ON UPDATE RESTRICT;
-  )
+  `status` TEXT NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT linked_user FOREIGN KEY (userName) REFERENCES userbomber (userName) ON DELETE CASCADE ON
+  UPDATE CASCADE)
 ENGINE = InnoDB;
