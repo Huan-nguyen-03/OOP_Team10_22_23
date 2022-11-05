@@ -22,8 +22,8 @@ public abstract class Entity {
         SPACE,
         ESC,
     }
-    public Timer timer1 = new Timer(); // begin
-    public Timer timer2 = new Timer(); // run
+    public Timer timer1 = new Timer(); // begin ban đầu
+    public Timer timer2 = new Timer(); // run cần thì lấy
     public  int D_ANIMATE = 300000;
     public  int ANIMATE = 300000;
     public  int TIME = 3;
