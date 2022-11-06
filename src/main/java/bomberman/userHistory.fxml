@@ -13,14 +13,14 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="367.0" prefWidth="840.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bomberman.getHistory">
+<AnchorPane prefHeight="367.0" prefWidth="840.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bomberman.getHistory">
     <children>
         <ImageView fitHeight="498.0" fitWidth="1059.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true">
             <image>
-                <Image url="@Blue%20Professional%20Corporate%20Envelope%20(1).png" />
+                <Image url="@menu/Blue%20Professional%20Corporate%20Envelope%20(1).png" />
             </image>
         </ImageView>
-        <TableView fx:id="tableH" layoutX="147.0" layoutY="126.0" prefHeight="305.0" prefWidth="763.0" style="-fx-border-style: double; -fx-border-color: coral; -fx-border-image-source: url(&quot;pngtree-gold-thailand-border-frame-thai-png-image_5829597&quot;);">
+        <TableView fx:id="tableH" layoutX="147.0" layoutY="126.0" prefHeight="305.0" prefWidth="763.0" style="-fx-border-style: double; -fx-border-color: coral;">
             <columns>
                 <TableColumn fx:id="id" prefWidth="62.666648864746094" text="ID" />
                 <TableColumn fx:id="un" prefWidth="157.3332977294922" text="Username" />

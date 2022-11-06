@@ -158,7 +158,7 @@ public class BombermanGame extends Application {
         FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\allHistory.fxml").toURI().toURL());
         Parent root = loader.load();
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();;
-        stage.setScene(new Scene(root, 740, 480));
+        stage.setScene(new Scene(root, 1058, 461));
         stage.show();
     }
 
@@ -173,7 +173,7 @@ public class BombermanGame extends Application {
         FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\userHistory.fxml").toURI().toURL());
         Parent root = loader.load();
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();;
-        stage.setScene(new Scene(root, 740, 480));
+        stage.setScene(new Scene(root, 1058, 461));
         stage.show();
 
     }
@@ -242,7 +242,7 @@ public class BombermanGame extends Application {
         FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\leaderboard.fxml").toURI().toURL());
         Parent root = loader.load();
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();;
-        stage.setScene(new Scene(root, 800,500));
+        stage.setScene(new Scene(root, 928,528));
         stage.show();
     }
 
