@@ -40,7 +40,7 @@ public class Bomb extends Entity {
     @Override
     public void update() {
         img = Sprite.movingSprite(Sprite.bomb, Sprite.bomb_1, Sprite.bomb_2, ANIMATE, TIME).getFxImage();
-
+        System.out.println(MAX_BOMB_NUMBER);
         if (listEvent.contains(Integer.SPACE)) {
             listEvent.remove(Integer.SPACE);
         }

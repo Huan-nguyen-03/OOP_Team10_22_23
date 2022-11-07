@@ -32,6 +32,7 @@ public class Bomber extends Entity {
     public void update() {
         setPlaySound();
         updateMap();
+        System.out.println(VELOCITY);
         addBombToListBarrier();
         if(Entity.listEvent.contains(Integer.LEFT)) {
             img = Sprite.movingSprite(Sprite.player_left, Sprite.player_left_1, Sprite.player_left_2, Bomber.ANIMATE, Bomber.TIME).getFxImage();

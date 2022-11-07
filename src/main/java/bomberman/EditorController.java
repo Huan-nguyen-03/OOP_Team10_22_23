@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -19,6 +20,12 @@ public class EditorController implements Initializable {
 
     @FXML
     private TextArea mapTxt;
+
+    private EditorModel model;
+
+    public EditorController(EditorModel model) {
+        this.model = model;
+    }
 
     @FXML
     void back(MouseEvent event) throws IOException {
@@ -35,7 +42,8 @@ public class EditorController implements Initializable {
     }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File("res/levels/Level1.txt"));
     }
 
 }
