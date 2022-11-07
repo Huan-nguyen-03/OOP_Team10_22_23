@@ -14,6 +14,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -54,6 +55,9 @@ public class BombermanGame extends Application {
     private ImageView quitBtn;
     @FXML
     private ImageView continueBtn;
+    private Text scoreText = new Text();
+
+    private static final int statusBoardHeight = 50;
 
     public static String username = "";
 
@@ -74,9 +78,10 @@ public class BombermanGame extends Application {
 
 
 
-    public DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+
+    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
     private static LocalDateTime begin ;
-    private static LocalDateTime end;
+    private static LocalDateTime end ;
 
     Timer timeBegin = new Timer();
 
@@ -87,18 +92,24 @@ public class BombermanGame extends Application {
     private GraphicsContext gc;
     private Canvas canvas;
 
+    Image optionsImage = new Image(new FileInputStream("src\\main\\java\\bomberman\\menu\\Pause.png"));
+    Image enableSoundImg = new Image(new FileInputStream("src\\main\\java\\bomberman\\menu\\Speaker.png"));
+    Image disableSoundImg = new Image(new FileInputStream("src\\main\\java\\bomberman\\menu\\Speaker-muted.png"));
+
+    //Setting the image view
+    ImageView optionsBtn = new ImageView(optionsImage);
+    ImageView soundBtn = new ImageView(enableSoundImg);
     private Text text = new Text();
     private Rectangle statusBoard = new Rectangle();
 
-    private Rectangle pause = new Rectangle();
     public static boolean gameState = false;
 
-    Sound sound = new Sound();
-    private boolean playSound = false;
+    private static Sound sound = new Sound();
+    public static boolean playSound = false;
 
     public static int level = 1;
 
-    public final int maxLevel = 2;
+    public static int maxLevel = 2;
 
     public static boolean isWinGame = false;
 
@@ -110,6 +121,8 @@ public class BombermanGame extends Application {
 
     public Map map = new Map();
 
+    public BombermanGame() throws FileNotFoundException {
+    }
 
 
     public static void main(String[] args) {
@@ -158,7 +171,7 @@ public class BombermanGame extends Application {
         FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\allHistory.fxml").toURI().toURL());
         Parent root = loader.load();
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();;
-        stage.setScene(new Scene(root, 740, 480));
+        stage.setScene(new Scene(root, 1058, 461));
         stage.show();
     }
 
@@ -173,7 +186,7 @@ public class BombermanGame extends Application {
         FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\userHistory.fxml").toURI().toURL());
         Parent root = loader.load();
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();;
-        stage.setScene(new Scene(root, 740, 480));
+        stage.setScene(new Scene(root, 1058, 461));
         stage.show();
 
     }
@@ -181,12 +194,16 @@ public class BombermanGame extends Application {
 
 
     public void endGame(Stage stage) throws IOException {
-        FXMLLoader loaders = new FXMLLoader(new File("src\\main\\java\\bomberman\\End.fxml").toURI().toURL());
-        Parent root = loaders.load();
 
-        stage.setTitle("Bomberman");
-        stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
-        stage.show();
+
+
+            FXMLLoader loaders = new FXMLLoader(new File("src\\main\\java\\bomberman\\End.fxml").toURI().toURL());
+            Parent root = loaders.load();
+
+            stage.setTitle("Bomberman");
+            stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
+            stage.show();
+
 
     }
 
@@ -201,6 +218,10 @@ public class BombermanGame extends Application {
     }
 
     public void pauseGame(Stage stage) throws IOException {
+        if (playSound) {
+            sound.stopAllSound();
+            playSound = false;
+        }
         FXMLLoader loaders = new FXMLLoader(new File("src\\main\\java\\bomberman\\pauseGame.fxml").toURI().toURL());
         Parent root = loaders.load();
 
@@ -213,14 +234,35 @@ public class BombermanGame extends Application {
         renderMap();
     }
 
-    public void handlePauseGame(MouseEvent event) {
-
-    }
-
 
 
 
     public void backToMenu(MouseEvent event) throws IOException {
+        score = 0;
+        level = 1;
+        Bomber.VELOCITY = VELOCITY_DEFAULT;
+        Brick.numberOfBrick = 0;
+        GlobalVariable.entities = new ArrayList<>();
+        GlobalVariable.stillObjects = new ArrayList<>();
+        Bomb.listBomb = new ArrayList<>();
+        Entity.listBarrier = new ArrayList<>();
+        Entity.listBarrierForEnemies = new ArrayList<>();
+        Entity.listEvent =  new ArrayList<>();
+        Entity.listItem = new ArrayList<>();
+        timePlay = 0;
+        Bomb.MAX_BOMB_NUMBER = MAX_BOMB_DEFAULT;
+        Bomb.SIZE = 1;
+        Bomber.checkBombPass = false;
+        if (!playSound) {
+            sound.titleScreen.play();
+            sound.titleScreen.loop();
+            playSound = true;
+        }
+        if (playSound) {
+            sound.stopAllSound();
+            sound.titleScreen.play();
+            sound.titleScreen.loop();
+        }
         if (!admin) {
             FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\Menu.fxml").toURI().toURL());
             Parent root = loader.load();
@@ -242,7 +284,7 @@ public class BombermanGame extends Application {
         FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\leaderboard.fxml").toURI().toURL());
         Parent root = loader.load();
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();;
-        stage.setScene(new Scene(root, 800,500));
+        stage.setScene(new Scene(root, 928,528));
         stage.show();
     }
 
@@ -255,35 +297,66 @@ public class BombermanGame extends Application {
         gc = canvas.getGraphicsContext2D();
 
 
-        pause.setX(800);
-        pause.setY(500);
-        pause.setWidth(15);
-        pause.setHeight(15);
-        pause.setFill(Color.RED);
+
+
+        optionsBtn.setX(Sprite.SCALED_SIZE * WIDTH - 200);
+        optionsBtn.setY(Sprite.SCALED_SIZE * HEIGHT);
+        optionsBtn.setFitWidth(30);
+        optionsBtn.setFitHeight(30);
+
+        soundBtn.setX(Sprite.SCALED_SIZE * WIDTH - 200 - 64);
+        soundBtn.setY(Sprite.SCALED_SIZE * HEIGHT);
+        soundBtn.setFitWidth(30);
+        soundBtn.setFitHeight(30);
+
         statusBoard.setX(0);
         statusBoard.setY(Sprite.SCALED_SIZE * HEIGHT);
-        statusBoard.setHeight(Sprite.SCALED_SIZE * HEIGHT);
+        statusBoard.setHeight(50);
         statusBoard.setWidth(Sprite.SCALED_SIZE * WIDTH);
-        statusBoard.setFill(Color.BLACK);
-
+        statusBoard.setFill(Color.DIMGRAY);
 
         text.setText(String.valueOf(score));
-        text.setX(50);
-        text.setY(454);
-        text.setFont(Font.font("Verdana",50));
-        text.setFill(Color.LIMEGREEN);
+        text.setX(200);
+        text.setY(Sprite.SCALED_SIZE * HEIGHT + 25);
+        text.setFont(Font.font("Verdana",25));
+        text.setFill(Color.WHITE);
 
-
-
+        // show score
+        scoreText.setText("Score: ");
+        scoreText.setX(50);
+        scoreText.setY(Sprite.SCALED_SIZE * HEIGHT + 25);
+        scoreText.setFont(Font.font("Verdana",25));
+        scoreText.setFill(Color.WHITE);
 
         // Tao root container
-
         roots.getChildren().add(canvas);
         roots.getChildren().add(text);
         roots.getChildren().add(statusBoard);
-        roots.getChildren().add(pause);
+        roots.getChildren().add(optionsBtn);
+        roots.getChildren().add(scoreText);
 
-        pause.setOnMousePressed(new EventHandler<MouseEvent>() {
+        if (playSound) {
+            soundBtn.setImage(new Image("file:src\\main\\java\\bomberman\\menu\\Speaker.png"));
+            sound.titleScreen.stop();
+            sound.stageTheme.play();
+            sound.stageTheme.loop();
+            System.out.println(playSound);
+
+        }
+        if (!playSound) {
+//            soundBtn.setImage(new Image("file:src\\main\\java\\bomberman\\menu\\Speaker-muted.png"));
+//            sound.stopAllSound();
+//            sound.stageTheme.play();
+//            sound.stageTheme.loop();
+            sound.titleScreen.stop();
+            playSound = true;
+            sound.stageTheme.play();
+            sound.stageTheme.loop();
+            System.out.println(playSound);
+        }
+        roots.getChildren().add(soundBtn);
+
+        optionsBtn.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 System.out.println("mouse click detected!");
@@ -291,6 +364,25 @@ public class BombermanGame extends Application {
             }
         });
 
+        soundBtn.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                System.out.println(playSound);
+                if (playSound) {
+                    sound.stopAllSound();
+                    playSound = false;
+                    soundBtn.setImage(new Image("file:src\\main\\java\\bomberman\\menu\\Speaker-muted.png"));
+                    System.out.println(playSound);
+
+                } else if (!playSound) {
+                    sound.stageTheme.play();
+                    sound.stageTheme.loop();
+                    playSound = true;
+                    soundBtn.setImage(new Image("file:src\\main\\java\\bomberman\\menu\\Speaker.png"));
+                    System.out.println(playSound);
+                }
+            }
+        });
 
 
 
@@ -298,14 +390,9 @@ public class BombermanGame extends Application {
         bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
         Map.map[1][1] = '0';
 
-        if (!playSound) {
-            sound.stageTheme.play();
-            sound.stageTheme.loop();
-        }
-
 
         // Tao scene
-        scene = new Scene(roots, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT + 100);
+        scene = new Scene(roots, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT + statusBoardHeight);
 
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
@@ -402,15 +489,15 @@ public class BombermanGame extends Application {
 
                 statusBoard.setX(0);
                 statusBoard.setY(Sprite.SCALED_SIZE * HEIGHT);
-                statusBoard.setHeight(Sprite.SCALED_SIZE * HEIGHT);
+                statusBoard.setHeight(statusBoardHeight);
                 statusBoard.setWidth(Sprite.SCALED_SIZE * WIDTH);
-                statusBoard.setFill(Color.BLACK);
+                statusBoard.setFill(Color.DIMGRAY);
 
                 text.setText(String.valueOf(score));
-                text.setX(50);
-                text.setY(454);
-                text.setFont(Font.font("Verdana",50));
-                text.setFill(Color.LIMEGREEN);
+                text.setX(200);
+                text.setY(Sprite.SCALED_SIZE * HEIGHT + 25);
+                text.setFont(Font.font("Verdana",25));
+                text.setFill(Color.WHITE);
 
                 roots.getChildren().add(text);
 
@@ -669,37 +756,64 @@ public class BombermanGame extends Application {
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
 
-        pause.setX(800);
-        pause.setY(500);
-        pause.setWidth(15);
-        pause.setHeight(15);
-        pause.setFill(Color.RED);
+        optionsBtn.setX(Sprite.SCALED_SIZE * WIDTH - 200);
+        optionsBtn.setY(Sprite.SCALED_SIZE * HEIGHT);
+        optionsBtn.setFitWidth(30);
+        optionsBtn.setFitHeight(30);
+
+        soundBtn.setX(Sprite.SCALED_SIZE * WIDTH - 200 - 64);
+        soundBtn.setY(Sprite.SCALED_SIZE * HEIGHT);
+        soundBtn.setFitWidth(30);
+        soundBtn.setFitHeight(30);
+
         statusBoard.setX(0);
         statusBoard.setY(Sprite.SCALED_SIZE * HEIGHT);
-        statusBoard.setHeight(Sprite.SCALED_SIZE * HEIGHT);
+        statusBoard.setHeight(50);
         statusBoard.setWidth(Sprite.SCALED_SIZE * WIDTH);
-        statusBoard.setFill(Color.BLACK);
-
+        statusBoard.setFill(Color.DIMGRAY);
 
         text.setText(String.valueOf(score));
-        text.setX(50);
-        text.setY(454);
-        text.setFont(Font.font("Verdana",50));
-        text.setFill(Color.LIMEGREEN);
+        text.setX(200);
+        text.setY(Sprite.SCALED_SIZE * HEIGHT + 25);
+        text.setFont(Font.font("Verdana",25));
+        text.setFill(Color.WHITE);
 
-
-
+        // show score
+        scoreText.setText("Score: ");
+        scoreText.setX(50);
+        scoreText.setY(Sprite.SCALED_SIZE * HEIGHT + 25);
+        scoreText.setFont(Font.font("Verdana",25));
+        scoreText.setFill(Color.WHITE);
 
         // Tao root container
-        System.out.println("Truoc Khi canvas");
         roots.getChildren().add(canvas);
-        System.out.println("Truoc Khi text");
         roots.getChildren().add(text);
-        System.out.println("Truoc Khi statusboard");
         roots.getChildren().add(statusBoard);
-        roots.getChildren().add(pause);
+        roots.getChildren().add(optionsBtn);
+        roots.getChildren().add(scoreText);
 
-        pause.setOnMousePressed(new EventHandler<MouseEvent>() {
+        if (playSound) {
+            soundBtn.setImage(new Image("file:src\\main\\java\\bomberman\\menu\\Speaker.png"));
+            sound.titleScreen.stop();
+            sound.stageTheme.play();
+            sound.stageTheme.loop();
+            System.out.println(playSound);
+
+        }
+        if (!playSound) {
+//            soundBtn.setImage(new Image("file:src\\main\\java\\bomberman\\menu\\Speaker-muted.png"));
+//            sound.stopAllSound();
+//            sound.stageTheme.play();
+//            sound.stageTheme.loop();
+            sound.titleScreen.stop();
+            playSound = true;
+            sound.stageTheme.play();
+            sound.stageTheme.loop();
+            System.out.println(playSound);
+        }
+        roots.getChildren().add(soundBtn);
+
+        optionsBtn.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 System.out.println("mouse click detected!");
@@ -707,16 +821,28 @@ public class BombermanGame extends Application {
             }
         });
 
+        soundBtn.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                System.out.println(playSound);
+                if (playSound) {
+                    sound.stopAllSound();
+                    playSound = false;
+                    soundBtn.setImage(new Image("file:src\\main\\java\\bomberman\\menu\\Speaker-muted.png"));
+                    System.out.println(playSound);
 
-
-        if (!playSound) {
-            sound.stageTheme.play();
-            sound.stageTheme.loop();
-        }
+                } else if (!playSound) {
+                    sound.stageTheme.play();
+                    playSound = true;
+                    soundBtn.setImage(new Image("file:src\\main\\java\\bomberman\\menu\\Speaker.png"));
+                    System.out.println(playSound);
+                }
+            }
+        });
 
 
         // Tao scene
-        scene = new Scene(roots, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT + 100);
+        scene = new Scene(roots, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT + statusBoardHeight);
 
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
@@ -813,15 +939,15 @@ public class BombermanGame extends Application {
 
                 statusBoard.setX(0);
                 statusBoard.setY(Sprite.SCALED_SIZE * HEIGHT);
-                statusBoard.setHeight(Sprite.SCALED_SIZE * HEIGHT);
+                statusBoard.setHeight(statusBoardHeight);
                 statusBoard.setWidth(Sprite.SCALED_SIZE * WIDTH);
-                statusBoard.setFill(Color.BLACK);
+                statusBoard.setFill(Color.DIMGRAY);
 
                 text.setText(String.valueOf(score));
-                text.setX(50);
-                text.setY(454);
-                text.setFont(Font.font("Verdana",50));
-                text.setFill(Color.LIMEGREEN);
+                text.setX(200);
+                text.setY(Sprite.SCALED_SIZE * HEIGHT + 25);
+                text.setFont(Font.font("Verdana",25));
+                text.setFill(Color.WHITE);
 
                 roots.getChildren().add(text);
 

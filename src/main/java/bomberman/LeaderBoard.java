@@ -66,15 +66,29 @@ public class LeaderBoard implements Initializable {
 
     public void handleButtonAction(ActionEvent actionEvent) {
         if (actionEvent.getSource() == returnButton) {
-
-            try {
-                FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\adminMenu.fxml").toURI().toURL());
-                Parent root = loader.load();
-                BombermanGame.stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();;
-                BombermanGame.stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
-                BombermanGame.stage.show();
-            } catch (IOException ex) {
-                System.out.println(ex.getMessage());
+            if (!BombermanGame.admin) {
+                try {
+                    FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\Menu.fxml").toURI().toURL());
+                    Parent root = loader.load();
+                    BombermanGame.stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                    ;
+                    BombermanGame.stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
+                    BombermanGame.stage.show();
+                } catch (IOException ex) {
+                    System.out.println(ex.getMessage());
+                }
+            }
+            else {
+                try {
+                    FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\adminMenu.fxml").toURI().toURL());
+                    Parent root = loader.load();
+                    BombermanGame.stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                    ;
+                    BombermanGame.stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
+                    BombermanGame.stage.show();
+                } catch (IOException ex) {
+                    System.out.println(ex.getMessage());
+                }
             }
 
         }

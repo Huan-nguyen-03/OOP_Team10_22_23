@@ -3,6 +3,8 @@ package bomberman.entities.Item;
 import bomberman.entities.*;
 import javafx.scene.image.Image;
 
+import static bomberman.BombermanGame.playSound;
+
 public class Item extends Entity {
 
     public Item(int x, int y, Image img) {
@@ -16,6 +18,8 @@ public class Item extends Entity {
     }
 
     public void setPlaySound() {
-        sound.item.play();
+        if (playSound) {
+            sound.item.play();
+        }
     }
 }

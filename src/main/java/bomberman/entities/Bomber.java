@@ -8,6 +8,8 @@ import javafx.scene.image.Image;
 
 import java.time.LocalTime;
 
+import static bomberman.BombermanGame.playSound;
+
 
 public class Bomber extends Entity {
     public static int ANIMATE = 30;
@@ -32,6 +34,7 @@ public class Bomber extends Entity {
     public void update() {
         setPlaySound();
         updateMap();
+        System.out.println(VELOCITY);
         addBombToListBarrier();
         if(Entity.listEvent.contains(Integer.LEFT)) {
             img = Sprite.movingSprite(Sprite.player_left, Sprite.player_left_1, Sprite.player_left_2, Bomber.ANIMATE, Bomber.TIME).getFxImage();
@@ -211,6 +214,7 @@ public class Bomber extends Entity {
             TIME = 60;
         }
         img = Sprite.movingSprite(Sprite.player_dead1, Sprite.player_dead2, Sprite.player_dead3, Bomber.ANIMATE, Bomber.TIME).getFxImage();
+//        sound.gameOver.play();
         ANIMATE ++;
 
         if (Bomber.ANIMATE >= 60) {
@@ -250,8 +254,10 @@ public class Bomber extends Entity {
     }
 
     public void setPlaySound() {
-        if (Entity.listEvent.size() != 0 && !sound.click.isRunning()) {
-            sound.click.play();
+        if (playSound) {
+            if (Entity.listEvent.size() != 0 && !sound.click.isRunning()) {
+                sound.click.play();
+            }
         }
     }
 

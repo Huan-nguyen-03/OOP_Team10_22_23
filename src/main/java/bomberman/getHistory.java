@@ -1,17 +1,31 @@
 package bomberman;
 
+import bomberman.entities.*;
+import bomberman.graphics.Sprite;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+
+import static bomberman.BombermanGame.*;
 
 
 public class getHistory implements Initializable {
@@ -59,5 +73,37 @@ public class getHistory implements Initializable {
         listM = mysqlconnect.getDatauser();
         tableH.setItems(listM);
 
+    }
+
+//    public void backToMenu(ActionEvent event) throws IOException {
+//        if (!admin) {
+//            FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\Menu.fxml").toURI().toURL());
+//            Parent root = loader.load();
+//            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+//            stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
+//            stage.show();
+//        } else {
+//            FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\adminMenu.fxml").toURI().toURL());
+//            Parent root = loader.load();
+//            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+//            stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
+//            stage.show();
+//        }
+//    }
+
+    public void backToMenu(javafx.event.ActionEvent event) throws IOException {
+        if (!admin) {
+            FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\Menu.fxml").toURI().toURL());
+            Parent root = loader.load();
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
+            stage.show();
+        } else {
+            FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\adminMenu.fxml").toURI().toURL());
+            Parent root = loader.load();
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT));
+            stage.show();
+        }
     }
 }

@@ -9,6 +9,8 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static bomberman.BombermanGame.playSound;
+
 public class Bomb extends Entity {
     public static int MAX_BOMB_NUMBER = BombermanGame.MAX_BOMB_DEFAULT;
     public static int SIZE = 1;
@@ -40,7 +42,7 @@ public class Bomb extends Entity {
     @Override
     public void update() {
         img = Sprite.movingSprite(Sprite.bomb, Sprite.bomb_1, Sprite.bomb_2, ANIMATE, TIME).getFxImage();
-
+        System.out.println(MAX_BOMB_NUMBER);
         if (listEvent.contains(Integer.SPACE)) {
             listEvent.remove(Integer.SPACE);
         }
@@ -275,7 +277,9 @@ public class Bomb extends Entity {
         }
     }
     void setSoundPlay() {
-        sound.bom.play();
+        if (playSound) {
+            sound.bom.play();
+        }
     }
 
 
