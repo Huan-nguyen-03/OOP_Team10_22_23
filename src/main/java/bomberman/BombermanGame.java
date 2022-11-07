@@ -101,7 +101,6 @@ public class BombermanGame extends Application {
     ImageView soundBtn = new ImageView(enableSoundImg);
     private Text text = new Text();
     private Rectangle statusBoard = new Rectangle();
-
     public static boolean gameState = false;
 
     private static Sound sound = new Sound();
@@ -263,6 +262,7 @@ public class BombermanGame extends Application {
             sound.titleScreen.play();
             sound.titleScreen.loop();
         }
+
         if (!admin) {
             FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\Menu.fxml").toURI().toURL());
             Parent root = loader.load();

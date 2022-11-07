@@ -3,10 +3,9 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
 <AnchorPane prefHeight="489.0" prefWidth="695.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bomberman.EditorController">
    <children>
       <TextArea layoutX="49.0" layoutY="82.0" prefHeight="163.0" prefWidth="582.0" text="Mô tả cấu trúc tệp cấu hình màn chơi:&#10;1/ Dòng đầu tiên bao gồm 3 số nguyên L, R, C:&#10;L - số thứ tự màn chơi&#10;R - số hàng của bản đồ&#10;C - số cột của bản đồ&#10;&#10;2/ R dòng tiếp theo, mỗi dòng có C kí tự. Mỗi kí tự đại diện cho một đối tượng trên bản đồ:&#10;Tiles:&#10;# - Wall&#10;* - Brick&#10;&#10;Character:&#10;p - Bomber&#10;1 - Balloon&#10;2 - Oneal&#10;3 - Ghost&#10;4 - Boss Ghost&#10;5 - Teleporter&#10;" />
-      <TextArea fx:id="mapTxt" layoutX="99.0" layoutY="275.0" prefHeight="200.0" prefWidth="530.0" text="hjhh" />
+      <TextArea fx:id="mapTxt" layoutX="99.0" layoutY="275.0" prefHeight="200.0" prefWidth="530.0" />
    </children>
 </AnchorPane>

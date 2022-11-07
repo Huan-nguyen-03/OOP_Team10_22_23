@@ -1,5 +1,7 @@
 package bomberman;
 
+import bomberman.entities.Entity;
+import bomberman.entities.Map;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -11,21 +13,15 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class EditorController implements Initializable {
 
     @FXML
     private TextArea mapTxt;
-
-    private EditorModel model;
-
-    public EditorController(EditorModel model) {
-        this.model = model;
-    }
 
     @FXML
     void back(MouseEvent event) throws IOException {
@@ -42,8 +38,21 @@ public class EditorController implements Initializable {
     }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setInitialDirectory(new File("res/levels/Level1.txt"));
+        Map m = new Map();
+        try {
+            m.loadMap(1);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        for (int i = 0; i < Map.row; i++) {
+            for (int j = 0; j < Map.column; j++) {
+                mapTxt.appendText(String.valueOf(Map.map[i][j]));
+                System.out.println(mapTxt);
+            }
+            mapTxt.appendText("\n");
+        }
+
+
     }
 
 }
