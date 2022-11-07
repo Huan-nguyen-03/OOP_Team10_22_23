@@ -74,9 +74,9 @@ public class BombermanGame extends Application {
 
 
 
-    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-    LocalDateTime begin ;
-    LocalDateTime end ;
+    public DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+    private static LocalDateTime begin ;
+    private static LocalDateTime end;
 
     Timer timeBegin = new Timer();
 
@@ -416,6 +416,7 @@ public class BombermanGame extends Application {
 
                 if (pauseGame) {
                     stop();
+                    System.out.println(begin);
                     try {
                         pauseGame(stage);
                     } catch (IOException e) {
@@ -826,7 +827,7 @@ public class BombermanGame extends Application {
 
                 if (pauseGame) {
                     stop();
-
+                    System.out.println(begin);
                     try {
                         pauseGame(stage);
                     } catch (IOException e) {
