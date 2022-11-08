@@ -87,6 +87,11 @@ public class OrderMenu implements Initializable {
 
     @FXML
     private Label lv5;
+
+    @FXML
+    private Label error;
+
+
     @FXML
     void back(MouseEvent event) throws IOException{
         FXMLLoader loader = new FXMLLoader(new File("src\\main\\java\\bomberman\\adminMenu.fxml").toURI().toURL());
@@ -95,6 +100,8 @@ public class OrderMenu implements Initializable {
         stage.setScene(new Scene(root, 800,500));
         stage.show();
     }
+
+
 
     @FXML
     void five(MouseEvent event) {
@@ -197,6 +204,7 @@ public class OrderMenu implements Initializable {
         BombermanGame.MAX_BOMB_DEFAULT = bombNum;
         BombermanGame.VELOCITY_DEFAULT = speedUp;
         BombermanGame.maxLevel = maxLevel;
+        error.setText("Save Successfully");
 
     }
 
@@ -216,6 +224,14 @@ public class OrderMenu implements Initializable {
         lv3.setText("");
         lv4.setText("");
         lv5.setText("");
+    }
+
+    @FXML
+    void setDefault(MouseEvent event) {
+        BombermanGame.MAX_BOMB_DEFAULT = 1;
+        BombermanGame.VELOCITY_DEFAULT = 2;
+        BombermanGame.maxLevel = 2;
+        error.setText("Set default Successfully");
     }
 
 

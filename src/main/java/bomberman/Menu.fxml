@@ -14,7 +14,7 @@
          </cursor>
       </ImageView>
       <ImageView fx:id="howToPlayBtn" fitHeight="38.0" fitWidth="156.0" layoutX="8.0" layoutY="54.0" onMouseClicked="#showHowToPlay">
-         <Image url="@menu/Rectangular/Orange/Status%20192x48.png" />
+         <Image url="@menu/Rectangular/Orange/HowToPlay.png" />
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
