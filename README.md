@@ -7,6 +7,7 @@ Tài khoản người chơi:
   Các con quái càng về màn sau sẽ có thuật toán tìm đường càng mạnh. 
   Kết thúc game sẽ có điểm số và thông báo chiến thắng hay thất bại. 
   Người dùng có thể xem lại lịch sử chơi của mình ở phần History và xem phần điểm cao ở LeaderBoard.
+
 Tài khoản người chơi VIP: 
   Cơ chế chơi giống với tài khoản thường. 
   Tuy nhiên, tài khoản VIP có thể xem được lịch sử chơi của tất cả mọi người. 
